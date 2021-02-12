@@ -13,24 +13,12 @@ public class Solution {
     public final static String PASSWORD = "rra";
 
     public static void main(String[] args) throws  Exception{
-        //System.out.println("Hello, Maven!");
-        /*String query = "SELECT id,name FROM ippo WHERE id > 0";
-        Connection connection;
-
-            Driver driver = new SQLServerDriver();
-            DriverManager.registerDriver(driver);
-
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery(query);
-            *//**st.execute("INSERT INTO HorseRacing.dbo.ippo ( name) VALUES ('bb')");*//*
-            while (rs.next()){
-                System.out.println(rs.getInt(1)+ " : "+rs.getString("name"));
-            }
-            rs.close();
-            connection.close();*/
         JokeyDAO jokeyDAO = new JokeyDAO();
-        jokeyDAO.get(3);
+        /** Вывод на экран одной строки с жокеем 3*/
+        System.out.println(jokeyDAO.get(3));
+        System.out.println("-------------------------------");
+
+        /** Вывод на экран всех жоеев*/
         for (Jokey j: jokeyDAO.getJokeys()
              ) {
             System.out.println(j);

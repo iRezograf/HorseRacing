@@ -60,7 +60,6 @@ public class JokeyDAO implements IJokeyDAO {
         } finally {
 
         }
-        System.out.println(jokey);
         return jokey;
     }
 
