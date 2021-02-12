@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="HorseRacing@RRA-W10" uuid="f61f4d65-8d15-4679-b402-104217e7b16e">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://RRA-W10\SQLEXPRESS;database=HorseRacing</jdbc-url>
+    </data-source>
+  </component>
+</project>
