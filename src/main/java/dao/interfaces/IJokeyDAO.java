@@ -1,6 +1,7 @@
-package dao;
+package dao.interfaces;
 
-import java.sql.Connection;
+import dao.Jokey;
+
 import java.util.List;
 
 public interface IJokeyDAO extends ICrud {
