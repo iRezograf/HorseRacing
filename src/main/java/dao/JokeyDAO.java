@@ -1,12 +1,13 @@
 package dao;
 
 import dao.interfaces.IJokeyDAO;
+import entity.Jokey;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static db.Solution.*;
+import static entity.Solution.*;
 
 public class JokeyDAO implements IJokeyDAO {
 
@@ -75,4 +76,6 @@ public class JokeyDAO implements IJokeyDAO {
     public Object update(Object obj, Object id) {
         return null;
     }
+
+
 }

@@ -1,10 +1,10 @@
 package dao.interfaces;
 
-import dao.Jokey;
+import entity.Jokey;
 
 import java.util.List;
 
 public interface IJokeyDAO extends ICrud {
-    public List<Jokey> getJokeys();
-    public Jokey get(int id);
+    List<Jokey> getJokeys();
+    Jokey get(int id);
 }
