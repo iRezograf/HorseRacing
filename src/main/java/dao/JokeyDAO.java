@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static entity.Solution.*;
+import static racing.Solution.*;
 
 public class JokeyDAO implements IJokeyDAO {
 
@@ -34,7 +34,7 @@ public class JokeyDAO implements IJokeyDAO {
     }
 
     @Override
-    public Jokey get(int id) {
+    public Jokey get(Long id) {
         Jokey jokey = null;
         PreparedStatement pst = null;
         String sql = "SELECT id,name FROM jokey WHERE id = ?";
@@ -63,18 +63,18 @@ public class JokeyDAO implements IJokeyDAO {
     }
 
     @Override
-    public Object save(Object obj) {
+    public Jokey save(Jokey jokey) {
+        return jokey;
+    }
+
+    @Override
+    public Jokey remove(Long id) {
         return null;
     }
 
     @Override
-    public Object remove(Object id) {
-        return null;
-    }
-
-    @Override
-    public Object update(Object obj, Object id) {
-        return null;
+    public Jokey update(Jokey jokey, Long id) {
+        return jokey;
     }
 
 

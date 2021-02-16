@@ -1,5 +1,7 @@
 package entity;
 
+import org.testng.annotations.Test;
+
 public class Player {
     private int id;
     private String firstName;
@@ -38,7 +40,7 @@ public class Player {
     public void setLogin(String login) {
         this.login = login;
     }
-
+    @Test
     @Override
     public String toString() {
         return "Player: " +

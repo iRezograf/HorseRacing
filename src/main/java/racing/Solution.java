@@ -1,7 +1,7 @@
-package entity;
+package racing;
 
-import dao.JokeyDAO;
 import dao.PlayerDAO;
+import entity.Player;
 
 import java.sql.*;
 
@@ -15,30 +15,28 @@ public class Solution {
     public static void main(String[] args) throws  Exception{
         try {
             con = DriverManager.getConnection(URL, USER,PASSWORD);
-            //con =DriverManager.getConnection(URL);
-            /**
-             * попытка подключиться к БД используя роли
-             * con =DriverManager.getConnection(URL, "user_player","");
-             * */
 
             PlayerDAO playerDAO = new PlayerDAO();
-            System.out.println(playerDAO.get(1));
 
-            for (BetsOfPlayer p: playerDAO.bets_of_player(42)
+            /** Вывод на экран одного игрока */
+            System.out.println(playerDAO.get((long) 1));
+
+            /** Вывод на экран всех игроков */
+            for ( Player p: playerDAO.getPlayers()
                  ) {
                 System.out.println(p);
             }
 
-/*
+            /*
             JokeyDAO jokeyDAO = new JokeyDAO();
             */
-/** Вывод на экран одной строки с жокеем 3*//*
+            /** Вывод на экран одной строки с жокеем 3*//*
 
             System.out.println(jokeyDAO.get(1));
             System.out.println("-------------------------------");
 
             */
-/** Вывод на экран всех жоеев*//*
+            /** Вывод на экран всех жоеев*//*
 
             for (Jokey j: jokeyDAO.getJokeys()
                  ) {
