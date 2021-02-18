@@ -15,7 +15,7 @@ import java.util.List;
 public class PlayerBetDAO implements IPlayerBetDAO {
 
     @Override
-    public List<BetsOfPlayer> getBetsOfPlayerOnDate(Date date, Long id) {
+    public List<BetsOfPlayer> getBetsOfPlayerOnDate(Date date, int id) {
         String sql = "SELECT dbo.player.id, dbo.player.last_n, dbo.player.first_n,\n"+
         "dbo.player_bet.date_ride, dbo.player_bet.num_ride, dbo.horse.name AS horse,\n"+
         "dbo.type_bet.type_bet, dbo.player_bet.bet AS [bet(roubles)], dbo.type_bet.rate, \n" +
@@ -31,7 +31,7 @@ public class PlayerBetDAO implements IPlayerBetDAO {
         List<BetsOfPlayer> betsOfPlayers = null;
         try {
             st = con.prepareStatement(sql);
-            st.setLong(1, id);
+            st.setInt(1, id);
             st.setDate(2, date);
             st.executeQuery();
             ResultSet rs = st.getResultSet();
@@ -73,24 +73,24 @@ public class PlayerBetDAO implements IPlayerBetDAO {
     }
 
     @Override
-    public BetsOfPlayer remove(Long id) {
+    public BetsOfPlayer remove(int id) {
         return null;
     }
 
     @Override
-    public BetsOfPlayer update(BetsOfPlayer player, Long id) {
+    public BetsOfPlayer update(BetsOfPlayer player, int id) {
         return null;
     }
 
     @Override
     /** method get didn't need for entity dbo.player_bet */
-    public BetsOfPlayer get(Long id) {
+    public BetsOfPlayer get(int id) {
         System.out.println("--- method get didn't need for entity dbo.player_bet ---");
         return null;
     }
 
     public BetsOfPlayer getBetsOfPlayerOnDateNumHorseBet(
-            Long player_id, Date date, Long num,Long horse_id, Long bet_id) {
+            int player_id, Date date, int num, int horse_id, int bet_id) {
         String sql = "SELECT dbo.player.id, dbo.player.last_n, dbo.player.first_n,\n"+
         "dbo.player_bet.date_ride, dbo.player_bet.num_ride, dbo.horse.name AS horse,\n"+
         "dbo.type_bet.type_bet, dbo.player_bet.bet AS [bet(roubles)], dbo.type_bet.rate, \n" +
@@ -108,11 +108,11 @@ public class PlayerBetDAO implements IPlayerBetDAO {
         BetsOfPlayer betsOfPlayer = null;
         try {
             st = con.prepareStatement(sql);
-            st.setLong(1, player_id);
+            st.setInt(1, player_id);
             st.setDate(2, date);
-            st.setLong(3, num);
-            st.setLong(4, horse_id);
-            st.setLong(5, bet_id);
+            st.setInt(3, num);
+            st.setInt(4, horse_id);
+            st.setInt(5, bet_id);
             st.executeQuery();
             ResultSet rs = st.getResultSet();
             rs.next();

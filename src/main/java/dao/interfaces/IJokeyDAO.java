@@ -4,7 +4,7 @@ import entity.Jokey;
 
 import java.util.List;
 
-public interface IJokeyDAO extends ICrud <Jokey, Long> {
+public interface IJokeyDAO extends ICrud <Jokey> {
     List<Jokey> getJokeys();
-    Jokey get(Long id);
+    Jokey get(int id);
 }

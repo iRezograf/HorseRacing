@@ -34,17 +34,17 @@ public class JokeyDAO implements IJokeyDAO {
     }
 
     @Override
-    public Jokey get(Long id) {
+    public Jokey get(int id) {
         Jokey jokey = null;
         PreparedStatement pst = null;
         String sql = "SELECT id,name FROM jokey WHERE id = ?";
         try {
             pst = con.prepareStatement(sql);
-            pst.setLong(1, id);
+            pst.setInt(1, id);
             pst.executeQuery();
             ResultSet resultSet = pst.getResultSet();
             resultSet.next();
-            /**jokey = new Jokey(resultSet.getLong("id"), resultSet.getString("name"));*/
+            /**jokey = new Jokey(resultSet.getInt("id"), resultSet.getString("name"));*/
             jokey = new Jokey();
             jokey.setId(resultSet.getInt("id"));
             jokey.setName(resultSet.getString("name"));
@@ -91,12 +91,12 @@ public class JokeyDAO implements IJokeyDAO {
     }
 
     @Override
-    public Jokey remove(Long id) {
+    public Jokey remove(int id) {
         return null;
     }
 
     @Override
-    public Jokey update(Jokey jokey, Long id) {
+    public Jokey update(Jokey jokey, int id) {
         return jokey;
     }
 

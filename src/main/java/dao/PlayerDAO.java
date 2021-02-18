@@ -44,7 +44,7 @@ public class PlayerDAO implements IPlayerDAO {
     }
 
     @Override
-    public Player remove(Long id) {
+    public Player remove(int id) {
         /** delete */
         Player player = new Player();
         PreparedStatement pst = null;
@@ -73,7 +73,7 @@ public class PlayerDAO implements IPlayerDAO {
     }
 
     @Override
-    public Player update(Player player, Long id) {
+    public Player update(Player player, int id) {
         /** update */
         PreparedStatement pst = null;
         String sql =    "UPDATE [dbo].[player] \n" +
@@ -88,7 +88,7 @@ public class PlayerDAO implements IPlayerDAO {
             pst.setString   (2, player.getLastName());
             pst.setString   (3, player.getLogin());
             pst.setString   (4, player.getPassword());
-            pst.setLong      (5, id);
+            pst.setInt      (5, id);
 
             pst.executeUpdate();
             ResultSet resultSet = pst.getResultSet();
@@ -139,7 +139,7 @@ public class PlayerDAO implements IPlayerDAO {
     }
 
     @Override
-    public Player get(Long id) {
+    public Player get(int id) {
         String sql = "SELECT [id]\n" +
                 "      ,[first_n]\n" +
                 "      ,[last_n]\n" +
@@ -150,7 +150,7 @@ public class PlayerDAO implements IPlayerDAO {
         Player player = null;
         try {
             st = con.prepareStatement(sql);
-            st.setLong(1, id);
+            st.setInt(1, id);
             st.executeQuery();
             ResultSet rs = st.getResultSet();
             rs.next();

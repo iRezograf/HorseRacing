@@ -1,9 +1,17 @@
 package racing;
 
+import dao.PlayerBetDAO;
 import dao.PlayerDAO;
+import dao.RacingMapDAO;
+import entity.BetsOfPlayer;
 import entity.Player;
+import entity.RacingMap;
 
+import static racing.Solution.*;
+
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class PlayerActivity {
@@ -85,11 +93,39 @@ public class PlayerActivity {
                 playerIn.setLogin     (in.nextLine());
                 System.out.println("Input password:");
                 playerIn.setPassword  (in.nextLine());
-                player = playerDAO.update(playerIn, (long) player.getId());
+                player = playerDAO.update(playerIn, player.getId());
             }
         }
         in.close();
         return player;
+    }
+
+    public PlayerBetDAO setBet(Player player){
+        /** player makes bet*/
+
+        /** show map racing: num, horses, jokeys etc*/
+        RacingMapDAO racingMapDAO = new RacingMapDAO();
+        List<RacingMap> racingMaps = new ArrayList<RacingMap>();
+        racingMaps = racingMapDAO.getRacingMaps(curIppo, curDate);
+
+        for (RacingMap r: racingMaps
+             ) {
+            System.out.println(r);
+        }
+
+        /** show bets of player*/
+        PlayerBetDAO playerBetDAO = new PlayerBetDAO();
+        List<BetsOfPlayer> betsOfPlayers = new ArrayList<BetsOfPlayer>();
+        betsOfPlayers = playerBetDAO.getBetsOfPlayerOnDate(curDate, player.getId());
+
+        for (BetsOfPlayer bp: betsOfPlayers
+             ) {
+            System.out.println(bp);
+        }
+
+        //playerBetDAO.get(player.getId());
+        //System.out.println(playerBetDAO);
+        return playerBetDAO;
     }
 
 }

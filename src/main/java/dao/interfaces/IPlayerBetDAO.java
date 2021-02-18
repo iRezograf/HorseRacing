@@ -5,11 +5,11 @@ import entity.BetsOfPlayer;
 import java.sql.Date;
 import java.util.List;
 
-public interface IPlayerBetDAO extends ICrud <BetsOfPlayer, Long>{
-    List<BetsOfPlayer> getBetsOfPlayerOnDate(Date date, Long id);
-    BetsOfPlayer getBetsOfPlayerOnDateNumHorseBet(Long player_id,
+public interface IPlayerBetDAO extends ICrud <BetsOfPlayer>{
+    List<BetsOfPlayer> getBetsOfPlayerOnDate(Date date, int id);
+    BetsOfPlayer getBetsOfPlayerOnDateNumHorseBet(int player_id,
                                                   Date date,
-                                                  Long num,
-                                                  Long horse_id,
-                                                  Long bet_id);
+                                                  int num,
+                                                  int horse_id,
+                                                  int bet_id);
 }
