@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.coach</OriginalElement>
+  <nodes>
+    <node x="739.5" y="0.0">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.sysdiagrams</node>
+    <node x="450.0" y="179.0">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.coach</node>
+    <node x="222.9576802507837" y="477.5297805642634">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.racing_map</node>
+    <node x="152.0" y="146.0">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.horse</node>
+    <node x="544.5" y="446.0">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.type_bet</node>
+    <node x="377.5" y="424.0">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.player</node>
+    <node x="298.0" y="179.0">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.ippo</node>
+    <node x="392.5423197492164" y="855.0564263322884">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.player_bet</node>
+    <node x="0.0" y="179.0">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.jokey</node>
+    <node x="149.0" y="0.0">f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.stud</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.racing_map" target="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.coach">
+      <point x="51.0" y="-147.0" />
+      <point x="340.5" y="338.0" />
+      <point x="516.0" y="338.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.player_bet" target="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.racing_map">
+      <point x="-38.0" y="-104.0" />
+      <point x="292.01253918495297" y="808.1912225705329" />
+      <point x="289.5" y="677.0" />
+      <point x="0.0" y="147.0" />
+    </edge>
+    <edge source="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.racing_map" target="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.horse">
+      <point x="-17.0" y="-147.0" />
+      <point x="272.5" y="328.0" />
+      <point x="215.0" y="328.0" />
+      <point x="0.0" y="81.0" />
+    </edge>
+    <edge source="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.horse" target="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.stud">
+      <point x="0.0" y="-81.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.racing_map" target="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.jokey">
+      <point x="-51.0" y="-147.0" />
+      <point x="238.5" y="338.0" />
+      <point x="66.0" y="338.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.player_bet" target="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.player">
+      <point x="0.0" y="-104.0" />
+      <point x="0.0" y="81.0" />
+    </edge>
+    <edge source="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.racing_map" target="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.ippo">
+      <point x="17.0" y="-147.0" />
+      <point x="306.5" y="328.0" />
+      <point x="364.0" y="328.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.player_bet" target="f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.type_bet">
+      <point x="38.0" y="-104.0" />
+      <point x="620.191222570533" y="856.294670846395" />
+      <point x="619.5" y="677.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.5027675276752768" x="455.0" y="532.0" />
+  <SelectedNodes>
+    <node>f61f4d65-8d15-4679-b402-104217e7b16e.TABLE:HorseRacing.dbo.coach</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

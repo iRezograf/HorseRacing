@@ -60,11 +60,11 @@ public class BetsOfPlayer {
                 ", first_n='" + first_n + '\'' +
                 ", date_ride='" + date_ride + '\'' +
                 ", num_ride='" + num_ride + '\'' +
-                ", horse='" + horse + '\'' +
+                ",\n horse='" + horse + '\'' +
                 ", type_bet='" + type_bet + '\'' +
                 ", bet='" + bet + '\'' +
                 ", rate='" + rate + '\'' +
                 ", payout='" + payout + '\'' +
-                '}';
+                "\n}";
     }
 }

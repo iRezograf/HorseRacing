@@ -64,6 +64,29 @@ public class JokeyDAO implements IJokeyDAO {
 
     @Override
     public Jokey save(Jokey jokey) {
+        /** INSERT INTO [dbo].[jokey]
+         ([name])
+         VALUES
+         (<name, varchar(100),>)*/
+        PreparedStatement pst = null;
+        String sql = "INSERT INTO jokey (name) VALUES (?)";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, jokey.getName());
+            pst.executeUpdate();
+            ResultSet resultSet = pst.getResultSet();
+            /*resultSet.next();*/
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return jokey;
     }
 

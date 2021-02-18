@@ -40,7 +40,15 @@ public class Player {
     public void setLogin(String login) {
         this.login = login;
     }
-    @Test
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "Player: " +
@@ -52,11 +60,6 @@ public class Player {
                 '\n'+'}';
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+
 }
