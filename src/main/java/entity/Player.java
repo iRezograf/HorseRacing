@@ -4,10 +4,10 @@ import org.testng.annotations.Test;
 
 public class Player {
     private int id;
-    private String firstName;
-    private String lastName;
-    private String login;
-    private String password;
+    private String firstName = null;
+    private String lastName = null;
+    private String login = null;
+    private String password = null;
 
     public int getId() {
         return id;

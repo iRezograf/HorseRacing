@@ -1,8 +1,8 @@
-1,Золотко,2017-02-02,жеребец,1
-2,Буйный,2018-06-05,жеребец,2
-3,Изумруд,2017-01-06,жеребец,1
-5,Дульсинея,2018-06-02,кобыла,2
-6,Надежда,2018-07-20,кобыла,1
-8,Кокотка,2017-04-21,кобыла,1
-9,Жасмин,2017-05-20,кобыла,1
-10,Сандал,2018-03-02,жеребец,2
+INSERT INTO HorseRacing.dbo.horse (id, name, birth, sex, id_stud) VALUES (1, N'Золотко', N'2017-02-02', N'жеребец', 1);
+INSERT INTO HorseRacing.dbo.horse (id, name, birth, sex, id_stud) VALUES (2, N'Буйный', N'2018-06-05', N'жеребец', 2);
+INSERT INTO HorseRacing.dbo.horse (id, name, birth, sex, id_stud) VALUES (3, N'Изумруд', N'2017-01-06', N'жеребец', 1);
+INSERT INTO HorseRacing.dbo.horse (id, name, birth, sex, id_stud) VALUES (5, N'Дульсинея', N'2018-06-02', N'кобыла', 2);
+INSERT INTO HorseRacing.dbo.horse (id, name, birth, sex, id_stud) VALUES (6, N'Надежда', N'2018-07-20', N'кобыла', 1);
+INSERT INTO HorseRacing.dbo.horse (id, name, birth, sex, id_stud) VALUES (8, N'Кокотка', N'2017-04-21', N'кобыла', 1);
+INSERT INTO HorseRacing.dbo.horse (id, name, birth, sex, id_stud) VALUES (9, N'Жасмин', N'2017-05-20', N'кобыла', 1);
+INSERT INTO HorseRacing.dbo.horse (id, name, birth, sex, id_stud) VALUES (10, N'Сандал', N'2018-03-02', N'жеребец', 2);

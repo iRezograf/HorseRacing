@@ -1,15 +1,8 @@
-1,Conan,Gonzalez,iaculis@risus.org,%B4237505191365^AmeryHyde^22032632? 
-2,MacKensie,Campbell,taciti.sociosqu@temporerat.com,%B30592771705951^MaiteMays^91089532176?1
-3,Kimberly,Clark,enim.Sed.nulla@loremluctusut.com,%B30300093893582^DillonLowery^1907573868? 
-4,Macaulay,Turner,amet@estac.org,%B349973813000328^OttoBlanchard^81088435?9
-5,Aidan,Harrell,vel@magnis.net,%B201441862262675^DorothyHaney^26043071868? 
-6,Amaya,Green,magna.sed.dui@et.com,%B30401226784456^VielkaGilliam^04097442? 
-7,Rylee,Bauer,amet.consectetuer.adipiscing@Morbisit.ca,%B501880942021^VladimirHickman^78039577906? 
-8,Emerald,Santana,faucibus.lectus.a@nibhdolor.ca,%B317588310466513^DustinMckay^05056036149?5
-9,Yolanda,Rutledge,a@loremsemper.com,%B5587589113894549^ColtFrench^29038153472?5
-10,Warren,Thompson,egestas.urna@dui.org,%B6771184095410300^DarrylHuff^0608239501?8
-41,Петр ,Иванов,Ivanov,123456
-42,Надежда,Федорова,Fedorova,123456
-43,Михаил,Светлов,Svetlov,123456
-44,Юрий,Сорокин,Sorokin,123456
-45,Владимир,Мамаев,Mamaev,123456
+INSERT INTO HorseRacing.dbo.player (id, first_n, last_n, login, password) VALUES (41, N'П', N'И', N'П', N'1');
+INSERT INTO HorseRacing.dbo.player (id, first_n, last_n, login, password) VALUES (42, N'Надежда', N'Федорова', N'Fedorova', N'123456');
+INSERT INTO HorseRacing.dbo.player (id, first_n, last_n, login, password) VALUES (43, N'Михаил', N'Светлов', N'Svetlov', N'123456');
+INSERT INTO HorseRacing.dbo.player (id, first_n, last_n, login, password) VALUES (44, N'Юрий', N'Сорокин', N'Sorokin', N'123456');
+INSERT INTO HorseRacing.dbo.player (id, first_n, last_n, login, password) VALUES (45, N'Владимир', N'Мамаев', N'Mamaev', N'123456');
+INSERT INTO HorseRacing.dbo.player (id, first_n, last_n, login, password) VALUES (46, N'Надежда', N'Васильевна', N'Nadejda', N'123456');
+INSERT INTO HorseRacing.dbo.player (id, first_n, last_n, login, password) VALUES (47, N'Rafael', N'Rezyapov', N'rra', N'123456');
+INSERT INTO HorseRacing.dbo.player (id, first_n, last_n, login, password) VALUES (48, N'Rinata', N'Litvinova', N'Rinata', N'123456');

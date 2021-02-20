@@ -1,8 +1,5 @@
-1,Кракер
-2,Малыш
-3,Хромой
-4,Трус
-5,Балбес
-6,Бармалей
-7,ИванВаныч
-8,Петров
+INSERT INTO HorseRacing.dbo.jokey (id, name) VALUES (1, N'Александр Чугуевец -  побед более 1000');
+INSERT INTO HorseRacing.dbo.jokey (id, name) VALUES (2, N'Сергей Лавриков -     побед более 500');
+INSERT INTO HorseRacing.dbo.jokey (id, name) VALUES (3, N'Алексей Волик  -      побед более 400');
+INSERT INTO HorseRacing.dbo.jokey (id, name) VALUES (4, N'Игорь Перышков -      побед более 400');
+INSERT INTO HorseRacing.dbo.jokey (id, name) VALUES (5, N'Станислав Круглыхин - побед более 300');

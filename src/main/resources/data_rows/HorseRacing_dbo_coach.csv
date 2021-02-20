@@ -1,6 +1,6 @@
-1,Иванов Никита Сергеевич
-2,Угрюмов Вячеслав Семенович
-3,Большаков Михаил Сергеевич
-4,Деревянко Вадим Семенович
-5,Божко Александр Степанович
-6,Суменков Михаил Иванович
+1INSERT INTO HorseRacing.dbo.coach (id, name) VALUES (1, N'Иванов Никита Сергеевич');
+ INSERT INTO HorseRacing.dbo.coach (id, name) VALUES (2, N'Угрюмов Вячеслав Семенович');
+ INSERT INTO HorseRacing.dbo.coach (id, name) VALUES (3, N'Большаков Михаил Сергеевич');
+ INSERT INTO HorseRacing.dbo.coach (id, name) VALUES (4, N'Деревянко Вадим Семенович');
+ INSERT INTO HorseRacing.dbo.coach (id, name) VALUES (5, N'Божко Александр Степанович');
+ INSERT INTO HorseRacing.dbo.coach (id, name) VALUES (6, N'Суменков Михаил Иванович');

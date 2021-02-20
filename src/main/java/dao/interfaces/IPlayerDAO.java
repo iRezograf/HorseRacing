@@ -1,8 +1,5 @@
 package dao.interfaces;
 
-import dao.PlayerDAO;
-import entity.BetsOfPlayer;
-import entity.Jokey;
 import entity.Player;
 
 import java.util.List;

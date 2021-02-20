@@ -1,5 +1,4 @@
-1,"Центральный Московский ипподром,
-АО «Росипподромы»*"
-2,Ипподром «Акбузат»
-3,Нижний Новгород
-4,Раменский ипподром
+INSERT INTO HorseRacing.dbo.ippo (id, name) VALUES (1, N'Центральный Московский ипподром,АО «Росипподромы»*');
+INSERT INTO HorseRacing.dbo.ippo (id, name) VALUES (2, N'Ипподром «Акбузат»');
+INSERT INTO HorseRacing.dbo.ippo (id, name) VALUES (3, N'Нижний Новгород');
+INSERT INTO HorseRacing.dbo.ippo (id, name) VALUES (4, N'Раменский ипподром');

@@ -1,4 +1,4 @@
-1,Ставка на победителя,3.00
-2,Пари на попадавние в тройку призеров,1.50
-3,Финиш,1.25
-5,Обратная ставка на победителя,3.00
+INSERT INTO HorseRacing.dbo.type_bet (id, type_bet, rate) VALUES (1, N'Ставка на победителя', 3.00);
+INSERT INTO HorseRacing.dbo.type_bet (id, type_bet, rate) VALUES (2, N'Пари на попадавние в тройку призеров', 1.50);
+INSERT INTO HorseRacing.dbo.type_bet (id, type_bet, rate) VALUES (3, N'Финиш', 1.25);
+INSERT INTO HorseRacing.dbo.type_bet (id, type_bet, rate) VALUES (5, N'Обратная ставка на победителя', 3.00);

@@ -1,7 +1,5 @@
-1,"Алтайский конный завод №39, ООО"
-2,"""Вологодский конный завод"", СПК ПКЗ"
-3,"«Конный завод Воронцовский», ООО
-
-"
-4,"Еланский конный завод, ООО"
-5,"«Дуванок» конный завод, ООО СХП"
+INSERT INTO HorseRacing.dbo.stud (id, name) VALUES (1, N'Алтайский конный завод №39, ООО');
+INSERT INTO HorseRacing.dbo.stud (id, name) VALUES (2, N'"Вологодский конный завод", СПК ПКЗ');
+INSERT INTO HorseRacing.dbo.stud (id, name) VALUES (3, N'«Конный завод Воронцовский», ООО');
+INSERT INTO HorseRacing.dbo.stud (id, name) VALUES (4, N'Еланский конный завод, ООО');
+INSERT INTO HorseRacing.dbo.stud (id, name) VALUES (5, N'«Дуванок» конный завод, ООО СХП');

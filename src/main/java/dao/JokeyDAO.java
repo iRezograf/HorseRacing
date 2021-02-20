@@ -91,14 +91,53 @@ public class JokeyDAO implements IJokeyDAO {
     }
 
     @Override
-    public Jokey remove(int id) {
-        return null;
-    }
-
-    @Override
-    public Jokey update(Jokey jokey, int id) {
+    public Jokey remove(Jokey jokey){
+    PreparedStatement pst = null;
+    String sql = "DELETE FROM jokey WHERE id = ?";
+        try {
+        pst = con.prepareStatement(sql);
+        pst.setInt(1, jokey.getId());
+        pst.executeUpdate();
+        ResultSet resultSet = pst.getResultSet();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return jokey;
     }
 
+    @Override
+    public Jokey update(Jokey jokey) {
+        PreparedStatement pst = null;
+        String sql =    "UPDATE [dbo].[jokey] \n" +
+                        "SET [name] = ? \n" +
+                        "WHERE [id] = ?";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString   (1, jokey.getName());
+            pst.setInt      (2, jokey.getId());
 
+            pst.executeUpdate();
+            ResultSet resultSet = pst.getResultSet();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return jokey;
+    }
 }

@@ -1,12 +1,8 @@
 package racing;
 
-import dao.PlayerBetDAO;
-import dao.PlayerDAO;
-import entity.BetsOfPlayer;
 import entity.Player;
 
 import java.sql.*;
-import java.util.Scanner;
 
 public class Solution {
     public final static String URL = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacing";
@@ -51,7 +47,7 @@ public class Solution {
 
             //PlayerDAO playerDAO = new PlayerDAO();
             /** output one player */
-            //System.out.println(playerDAO.get((long) 1));
+            //System.out.println(playerDAO.get(1));
 
             /** output all players */
             //for ( Player p: playerDAO.getPlayers()
@@ -61,16 +57,16 @@ public class Solution {
             /** output one bets of one player id */
             //PlayerBetDAO playerBetDAO = new PlayerBetDAO();
             //    System.out.println(playerBetDAO.getBetsOfPlayerOnDateNumHorseBet(
-            //            (long)41,
+            //            41,
             //            Date.valueOf("2021-01-08"),
-            //            (long)1,
-            //            (long)1,
-            //            (long)1));
+            //            1,
+            //            1,
+            //            1));
 
             /** output all bets of player id */
             //playerBetDAO = new PlayerBetDAO();
-            //for (BetsOfPlayer  p:
-            //     playerBetDAO.getBetsOfPlayerOnDate(Date.valueOf("2021-01-08"), (long) 41)
+            //for (PlayerBet  p:
+            //     playerBetDAO.getBetsOfPlayerOnDate(Date.valueOf("2021-01-08"), 41)
             //) {
             //    System.out.println(p);
             //}

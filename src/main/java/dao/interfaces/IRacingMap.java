@@ -1,6 +1,5 @@
 package dao.interfaces;
 
-import entity.BetsOfPlayer;
 import entity.RacingMap;
 
 import java.sql.Date;
