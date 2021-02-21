@@ -14,12 +14,12 @@ public class JokeyDAO implements IJokeyDAO {
     @Override
     public List<Jokey> getJokeys() {
         Jokey jokey = null;
-        Statement st = null;
+        Statement ps = null;
         String sql = "SELECT id,name FROM jokey ";
         List<Jokey> jokeys = new ArrayList<Jokey>();
         try {
-            st = con.createStatement();
-            ResultSet resultSet = st.executeQuery(sql);
+            ps = con.createStatement();
+            ResultSet resultSet = ps.executeQuery(sql);
             while (resultSet.next()){
                 /**Jokey jokey = new Jokey(resultSet.getInt("id"), resultSet.getString("name"));*/
                 jokey = new Jokey();
@@ -29,6 +29,14 @@ public class JokeyDAO implements IJokeyDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return jokeys;
     }
@@ -36,13 +44,13 @@ public class JokeyDAO implements IJokeyDAO {
     @Override
     public Jokey get(int id) {
         Jokey jokey = null;
-        PreparedStatement pst = null;
+        PreparedStatement ps = null;
         String sql = "SELECT id,name FROM jokey WHERE id = ?";
         try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
-            pst.executeQuery();
-            ResultSet resultSet = pst.getResultSet();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeQuery();
+            ResultSet resultSet = ps.getResultSet();
             resultSet.next();
             /**jokey = new Jokey(resultSet.getInt("id"), resultSet.getString("name"));*/
             jokey = new Jokey();
@@ -51,9 +59,9 @@ public class JokeyDAO implements IJokeyDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (pst != null) {
+            if (ps != null) {
                 try {
-                    pst.close();
+                    ps.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -68,20 +76,20 @@ public class JokeyDAO implements IJokeyDAO {
          ([name])
          VALUES
          (<name, varchar(100),>)*/
-        PreparedStatement pst = null;
+        PreparedStatement ps = null;
         String sql = "INSERT INTO jokey (name) VALUES (?)";
         try {
-            pst = con.prepareStatement(sql);
-            pst.setString(1, jokey.getName());
-            pst.executeUpdate();
-            ResultSet resultSet = pst.getResultSet();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, jokey.getName());
+            ps.executeUpdate();
+            ResultSet resultSet = ps.getResultSet();
             /*resultSet.next();*/
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (pst != null) {
+            if (ps != null) {
                 try {
-                    pst.close();
+                    ps.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -92,19 +100,19 @@ public class JokeyDAO implements IJokeyDAO {
 
     @Override
     public Jokey remove(Jokey jokey){
-    PreparedStatement pst = null;
+    PreparedStatement ps = null;
     String sql = "DELETE FROM jokey WHERE id = ?";
         try {
-        pst = con.prepareStatement(sql);
-        pst.setInt(1, jokey.getId());
-        pst.executeUpdate();
-        ResultSet resultSet = pst.getResultSet();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, jokey.getId());
+        ps.executeUpdate();
+        ResultSet resultSet = ps.getResultSet();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (pst != null) {
+            if (ps != null) {
                 try {
-                    pst.close();
+                    ps.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -115,24 +123,24 @@ public class JokeyDAO implements IJokeyDAO {
 
     @Override
     public Jokey update(Jokey jokey) {
-        PreparedStatement pst = null;
+        PreparedStatement ps = null;
         String sql =    "UPDATE [dbo].[jokey] \n" +
                         "SET [name] = ? \n" +
                         "WHERE [id] = ?";
         try {
-            pst = con.prepareStatement(sql);
-            pst.setString   (1, jokey.getName());
-            pst.setInt      (2, jokey.getId());
+            ps = con.prepareStatement(sql);
+            ps.setString   (1, jokey.getName());
+            ps.setInt      (2, jokey.getId());
 
-            pst.executeUpdate();
-            ResultSet resultSet = pst.getResultSet();
+            ps.executeUpdate();
+            ResultSet resultSet = ps.getResultSet();
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (pst != null) {
+            if (ps != null) {
                 try {
-                    pst.close();
+                    ps.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

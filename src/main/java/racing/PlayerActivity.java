@@ -20,63 +20,50 @@ public class PlayerActivity {
     }
 
     public Player registration(){
-        /*String firstName,
-                             String lastName,
-                             String login,
-                             String password*/
+        Player playerIn;
+
         PlayerDAO playerDAO = new PlayerDAO();
-        Player player = null;
-        Player playerIn = null;
-
-        Scanner in  = new Scanner(System.in);
-
-        player      = new Player();
         playerIn    = new Player();
+        Scanner in  = new Scanner(System.in);
 
         System.out.println("You need to login:");
         System.out.println("------------------");
-        //System.out.println("Input First Name:");
-        //playerIn.setFirstName (in.nextLine());
-        //System.out.println("Input Last Name:");
-        //playerIn.setLastName  (in.nextLine());
+
         System.out.println("Input login:");
         playerIn.setLogin     (in.nextLine());
         System.out.println("Input password:");
         playerIn.setPassword  (in.nextLine());
 
+        Player player;
         player = playerDAO.lookFor(playerIn.getLogin(), playerIn.getPassword());
 
         if(player.getId() == 0){
             System.out.println("Player not found. Would you register? [Y/N]");
             if ("Y".equals(in.nextLine())){
+                System.out.println("Input First Name:");
+                playerIn.setFirstName (in.nextLine());
+                System.out.println("Input Last Name:");
+                playerIn.setLastName  (in.nextLine());
                 player = playerDAO.save(playerIn);
             }
         }
-        in.close();
         return player;
     }
 
     public Player changeMyInfo(){
+        Player playerIn;
         PlayerDAO playerDAO = new PlayerDAO();
-        Player player = null;
-        Player playerIn = null;
+        playerIn    = new Player();
 
         Scanner in  = new Scanner(System.in);
 
-        player      = new Player();
-        playerIn    = new Player();
-
-        System.out.println("Input First Name:");
-        playerIn.setFirstName (in.nextLine());
-        System.out.println("Input Last Name:");
-        playerIn.setLastName  (in.nextLine());
         System.out.println("Input login:");
         playerIn.setLogin     (in.nextLine());
         System.out.println("Input password:");
         playerIn.setPassword  (in.nextLine());
 
-        player = playerDAO.lookFor(playerIn);
-        System.out.println(player);
+        Player player;
+        player = playerDAO.lookFor(playerIn.getLogin(), playerIn.getPassword());
 
         if(player.getId() == 0) {
             System.out.println("Player not found.");
@@ -93,10 +80,11 @@ public class PlayerActivity {
                 playerIn.setLogin     (in.nextLine());
                 System.out.println("Input password:");
                 playerIn.setPassword  (in.nextLine());
+
+                playerIn.setId(player.getId());
                 player = playerDAO.update(playerIn);
             }
         }
-        in.close();
         return player;
     }
 
@@ -104,17 +92,16 @@ public class PlayerActivity {
         /** player makes bet*/
 
         /** Look at the map of ride*/
-        ShowRacingMap(curIppo, curDate);
+        showRacingMap(curIppo, curDate);
 
         PlayerBetDAO playerBetDAO = new PlayerBetDAO();
         PlayerBet playerBet = new PlayerBet();
-        System.out.println(player);
 
         /** инициализируем значения перед поиском его ставок*/
         playerBet.setId(player.getId());
         playerBet.setDateRide(Date.valueOf("2021-01-08"));
         /** Let's look at bets made by player before*/
-        ShowBetsOfPlayer(playerBet);
+        showBetsOfPlayer(playerBet);
 
         playerBet.setIdIppodrom(1);
         playerBet.setDateRide(Date.valueOf("2021-01-08"));
@@ -133,17 +120,19 @@ public class PlayerActivity {
             playerBet.setIdTypeBet(5);
             playerBet.setBet(900);
             playerBetDAO.update(playerBet);
-            /*Change*/
         }
-
         return playerBetDAO;
     }
 
-    public void ShowRacingMap(int id_ippodrom, Date date){
+    public void showRacingMap(int id_ippodrom, Date date){
         /** show map racing: num, horses, jokeys etc*/
         RacingMapDAO racingMapDAO = new RacingMapDAO();
-        List<RacingMap> racingMaps = new ArrayList<RacingMap>();
-        racingMaps = racingMapDAO.getRacingMaps(curIppo, curDate);
+        RacingMap racingMap = new RacingMap();
+        List<RacingMap> racingMaps;// = new ArrayList<RacingMap>();
+
+        racingMap.setId_ippodrom(id_ippodrom);
+        racingMap.setDate_ride(date);
+        racingMaps = racingMapDAO.getRacingMaps(racingMap);
 
         for (RacingMap r: racingMaps
         ) {
@@ -151,10 +140,10 @@ public class PlayerActivity {
         }
     }
 
-    public void ShowBetsOfPlayer(PlayerBet playerBet){
+    public void showBetsOfPlayer(PlayerBet playerBet){
         /** show bets of player*/
         PlayerBetDAO playerBetDAO = new PlayerBetDAO();
-        List<PlayerBet> playerBets = new ArrayList<PlayerBet>();
+        List<PlayerBet> playerBets; // = new ArrayList<PlayerBet>();
 
         playerBets = playerBetDAO.getPlayerBets(playerBet);
 
@@ -162,5 +151,16 @@ public class PlayerActivity {
         ) {
             System.out.println(bp);
         }
+    }
+
+    public PlayerBet removeBet(PlayerBet playerBet){
+        PlayerBetDAO playerBetDAO = new PlayerBetDAO();
+        Scanner in = new Scanner(System.in);
+            System.out.println("Are you real would remove this bet? [Y/N]");
+            if ("Y".equals(in.nextLine())) {
+                playerBetDAO.remove(playerBet);
+                showBetsOfPlayer(playerBet);
+            }
+        return playerBet;
     }
 }

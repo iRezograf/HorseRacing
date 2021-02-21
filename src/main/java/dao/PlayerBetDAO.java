@@ -29,18 +29,18 @@ public class PlayerBetDAO implements IPlayerBetDAO {
                         " dbo.type_bet ON dbo.player_bet.id_type_bet = dbo.type_bet.id\n" +
                         "WHERE        (dbo.player.id = ?) AND (dbo.player_bet.date_ride = ?)";
 
-        PreparedStatement st = null;
+
+        PreparedStatement ps = null;
         Player player = null;
         List<PlayerBet> playerBets = null;
         try {
-            st = con.prepareStatement(sql);
-            st.setInt(1, playerBet.getId());
-            st.setDate(2, playerBet.getDateRide());
-            st.executeQuery();
-            ResultSet rs = st.getResultSet();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, playerBet.getId());
+            ps.setDate(2, playerBet.getDateRide());
+            ps.executeQuery();
+            ResultSet rs = ps.getResultSet();
             playerBets = new ArrayList<>();
             while (rs.next()){
-                // PlayerBet playerBet = new PlayerBet();
                 playerBet.setId(rs.getInt(1));
                 playerBet.setLastName(rs.getString(2));
                 playerBet.setFirstName(rs.getString(3));
@@ -55,14 +55,15 @@ public class PlayerBetDAO implements IPlayerBetDAO {
                 playerBet.setPayout(rs.getInt(12));
 
                 playerBets.add(playerBet);
+                System.out.println(playerBets);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (st != null) {
+            if (ps != null) {
                 try {
-                    st.close();
+                    ps.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -86,17 +87,17 @@ public class PlayerBetDAO implements IPlayerBetDAO {
                 " AND (dbo.player_bet.id_horse = ?)\n"+
                 " AND (dbo.player_bet.id_type_bet = ?\n)"+
                 " AND (dbo.player_bet.id_ippo = ?)";
-        PreparedStatement st = null;
+        PreparedStatement ps = null;
         try {
-            st = con.prepareStatement(sql);
-            st.setInt (1, playerBet.getId());
-            st.setDate(2, playerBet.getDateRide());
-            st.setInt (3, playerBet.getNumRide());
-            st.setInt (4, playerBet.getIdHorse());
-            st.setInt (5, playerBet.getIdTypeBet());
-            st.setInt (6, playerBet.getIdIppodrom());
-            st.executeQuery();
-            ResultSet rs = st.getResultSet();
+            ps = con.prepareStatement(sql);
+            ps.setInt (1, playerBet.getId());
+            ps.setDate(2, playerBet.getDateRide());
+            ps.setInt (3, playerBet.getNumRide());
+            ps.setInt (4, playerBet.getIdHorse());
+            ps.setInt (5, playerBet.getIdTypeBet());
+            ps.setInt (6, playerBet.getIdIppodrom());
+            ps.executeQuery();
+            ResultSet rs = ps.getResultSet();
             rs.next();
             playerBet = new PlayerBet();
             playerBet.setId(rs.getInt(1));
@@ -109,12 +110,13 @@ public class PlayerBetDAO implements IPlayerBetDAO {
             playerBet.setBet(rs.getInt(8));
             playerBet.setRate(rs.getDouble(9));
             playerBet.setPayout(rs.getInt(10));
+            System.out.println(playerBet);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (st != null) {
+            if (ps != null) {
                 try {
-                    st.close();
+                    ps.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -138,36 +140,74 @@ public class PlayerBetDAO implements IPlayerBetDAO {
                 "     VALUES\n" +
                 "           (?,?,?,?, ?,?,?,?)";
 
-        PreparedStatement st = null;
+        PreparedStatement ps = null;
         try {
-            st = con.prepareStatement(sql);
-            st.setInt (1, playerBet.getId());
-            st.setInt (2, playerBet.getIdIppodrom());
-            st.setDate(3, playerBet.getDateRide());
-            st.setInt (4, playerBet.getNumRide());
-            st.setInt (5, playerBet.getIdHorse());
-            st.setInt (6, playerBet.getIdTypeBet());
-            st.setInt (7, playerBet.getBet());
-            st.setInt (8, playerBet.getPayout());
-            int rows = st.executeUpdate();
+            ps = con.prepareStatement(sql);
+            ps.setInt (1, playerBet.getId());
+            ps.setInt (2, playerBet.getIdIppodrom());
+            ps.setDate(3, playerBet.getDateRide());
+            ps.setInt (4, playerBet.getNumRide());
+            ps.setInt (5, playerBet.getIdHorse());
+            ps.setInt (6, playerBet.getIdTypeBet());
+            ps.setInt (7, playerBet.getBet());
+            ps.setInt (8, playerBet.getPayout());
+            int rows = ps.executeUpdate();
             if (rows > 0 ){
-                System.out.println("Bet is added");
+                System.out.println(playerBet+ "\n Bet is added");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return playerBet;
     }
 
     @Override
     public PlayerBet remove(PlayerBet playerBet) {
-
-        return null;
+        String sql =  "DELETE TOP(1)FROM [dbo].[player_bet]\n"+
+                        "WHERE [id_player] = ?\n"+
+                        " AND  [id_ippo] = ?\n" +
+                        " AND  [date_ride] = ?\n" +
+                        " AND  [num_ride] = ?\n" +
+                        " AND  [id_horse] = ?\n" +
+                        " AND  [id_type_bet] = ?";
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt (1, playerBet.getId());
+            ps.setInt (2, playerBet.getIdIppodrom());
+            ps.setDate(3, playerBet.getDateRide());
+            ps.setInt (4, playerBet.getNumRide());
+            ps.setInt (5, playerBet.getIdHorse());
+            ps.setInt (6, playerBet.getIdTypeBet());
+            int rows = ps.executeUpdate();
+            if (rows > 0 ){
+                System.out.println(playerBet +"\n Bet is deleted");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return playerBet;
     }
 
     @Override
     public PlayerBet update(PlayerBet playerBet) {
-        String sql ="UPDATE [dbo].[player_bet]\n" +
+        String sql ="UPDATE TOP(1) [dbo].[player_bet]\n" +
                     "SET  [bet] = ?\n" +
                         ",[payout] = ?\n" +
                     "WHERE [id_player] = ?\n" +
@@ -176,25 +216,33 @@ public class PlayerBetDAO implements IPlayerBetDAO {
                         "AND [num_ride] = ?\n" +
                         "AND [id_horse] = ?\n" +
                         "AND [id_type_bet] = ?";
-        PreparedStatement st = null;
+        PreparedStatement ps = null;
         try {
-            st = con.prepareStatement(sql);
-            st.setInt (1, playerBet.getBet());
-            st.setInt (2, playerBet.getPayout());
+            ps = con.prepareStatement(sql);
+            ps.setInt (1, playerBet.getBet());
+            ps.setInt (2, playerBet.getPayout());
 
-            st.setInt (3, playerBet.getId());
-            st.setInt (4, playerBet.getIdIppodrom());
-            st.setDate(5, playerBet.getDateRide());
-            st.setInt (6, playerBet.getNumRide());
-            st.setInt (7, playerBet.getIdHorse());
-            st.setInt (8, playerBet.getIdTypeBet());
+            ps.setInt (3, playerBet.getId());
+            ps.setInt (4, playerBet.getIdIppodrom());
+            ps.setDate(5, playerBet.getDateRide());
+            ps.setInt (6, playerBet.getNumRide());
+            ps.setInt (7, playerBet.getIdHorse());
+            ps.setInt (8, playerBet.getIdTypeBet());
 
-            int rows = st.executeUpdate();
+            int rows = ps.executeUpdate();
             if (rows > 0 ){
-                System.out.println("Bet is updated");
+                System.out.println(playerBet + "\n Bet is updated");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return playerBet;
     }

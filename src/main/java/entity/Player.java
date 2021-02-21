@@ -4,8 +4,8 @@ import org.testng.annotations.Test;
 
 public class Player {
     private int id;
-    private String firstName = null;
-    private String lastName = null;
+    private String firstName = "";
+    private String lastName = "" ;
     private String login = null;
     private String password = null;
 

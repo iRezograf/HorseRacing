@@ -6,5 +6,5 @@ import java.sql.Date;
 import java.util.List;
 
 public interface IRacingMap extends ICrud <RacingMap>{
-    List<RacingMap> getRacingMaps(int ippo, Date date);
+    List<RacingMap> getRacingMaps(RacingMap racingMap);
 }

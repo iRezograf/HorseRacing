@@ -14,8 +14,8 @@ import static racing.Solution.*;
 public class RacingMapDAO implements IRacingMap {
 
     @Override
-    public List<RacingMap> getRacingMaps(int ippo, Date date) {
-        PreparedStatement st = null;
+    public List<RacingMap> getRacingMaps(RacingMap racingMap) {
+        PreparedStatement ps = null;
         String sql =
                   "SELECT  dbo.racing_map.id_ippo, dbo.ippo.name AS ippodrom,\n"+
                           "dbo.racing_map.date_ride, dbo.racing_map.num_ride,\n"+
@@ -36,14 +36,14 @@ public class RacingMapDAO implements IRacingMap {
         List<RacingMap> racingMaps = new ArrayList<RacingMap>();
         try {
 
-            st = con.prepareStatement(sql);
-            st.setInt(1, curIppo);
-            st.setDate(2, curDate);
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, racingMap.getId_ippodrom());
+            ps.setDate(2, racingMap.getDate_ride());
 
-            ResultSet rs = st.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                RacingMap racingMap = new RacingMap();
+                //RacingMap racingMap = new RacingMap();
                 racingMap.setId_ippodrom(rs.getInt(1));
                 racingMap.setIppodromName(rs.getString(2));
                 racingMap.setDate_ride(rs.getDate(3));
@@ -65,22 +65,155 @@ public class RacingMapDAO implements IRacingMap {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return racingMaps;
     }
 
     @Override
-    public RacingMap save(RacingMap obj) {
-        return null;
+    public RacingMap save(RacingMap racingMap) {
+        PreparedStatement ps = null;
+        String sql =    "INSERT INTO [dbo].[racing_map]\n" +
+                        "([id_ippo]\n" +
+                        ",[date_ride]\n" +
+                        ",[num_ride]\n" +
+                        ",[id_horse]\n" +
+                        ",[id_jokey]\n" +
+                        ",[id_coach]\n" +
+                        ",[weight]\n" +
+                        ",[last_ride]\n" +
+                        ",[distance]\n" +
+                        ",[rating]\n" +
+                        ",[prize_place]) \n" +
+                        "VALUES (?,?,? ,?,?,?, ?,?,?, ?,?)";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt (1, racingMap.getId_ippodrom());
+            ps.setDate(2, racingMap.getDate_ride());
+            ps.setInt (3, racingMap.getNum_ride());
+            ps.setInt (4, racingMap.getId_horse());
+            ps.setInt (5, racingMap.getId_jokey());
+            ps.setInt (6, racingMap.getId_coach());
+            ps.setInt (7, racingMap.getWeight());
+            ps.setDate(8,racingMap.getLast_ride());
+            ps.setInt (9, racingMap.getDistance());
+            ps.setDouble(10, racingMap.getRating());
+            ps.setInt (11, racingMap.getPrize_place());
+
+            ps.executeUpdate();
+            ResultSet resultSet = ps.getResultSet();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return racingMap;
     }
 
     @Override
     public RacingMap remove(RacingMap racingMap) {
-        return null;
+                String sql = "DELETE TOP(1) FROM [dbo].[racing_map]\n" +
+                            " WHERE id_ippo = ?\n" +
+                            " AND   date_ride   = ?\n" +
+                            " AND   num_ride    = ?\n" +
+                            " AND   id_horse    = ?";
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+
+            ps.setInt (1, racingMap.getId_ippodrom());
+            ps.setDate(2, racingMap.getDate_ride());
+            ps.setInt (3, racingMap.getNum_ride());
+            ps.setInt (4, racingMap.getId_horse());
+            int cnt = ps.executeUpdate();
+            if (cnt > 0) {
+                System.out.println(racingMap + "\n was deleted.");
+            }
+            else {
+                System.out.println(racingMap + "\n didn't deleted.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return racingMap;
     }
 
     @Override
     public RacingMap update(RacingMap racingMap) {
+        String sql = "UPDATE [dbo].[racing_map] \n" +
+                        "SET [id_ippo] = ?\n" +
+                        ",[date_ride] = ?\n" +
+                        ",[num_ride] = ?\n" +
+                        ",[id_horse] = ?\n" +
+                        ",[id_jokey] = ?\n" +
+                        ",[id_coach] = ?\n" +
+                        ",[weight] = ?\n" +
+                        ",[last_ride] = ?\n" +
+                        ",[distance] = ?\n" +
+                        ",[rating] = ?\n" +
+                        ",[prize_place] = ?\n"+
+                        "WHERE [id_ippo] = ?\n" +
+                        " AND [date_ride] = ?\n" +
+                        " AND [num_ride] = ?\n" +
+                        " AND[id_horse] = ?";
+                        /** = 15*/
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            /**SET*/
+            ps.setInt (1, racingMap.getId_ippodrom());
+            ps.setDate(2, racingMap.getDate_ride());
+            ps.setInt (3, racingMap.getNum_ride());
+            ps.setInt (4, racingMap.getId_horse());
+            ps.setInt (5, racingMap.getId_jokey());
+            ps.setInt (6, racingMap.getId_coach());
+            ps.setInt (7, racingMap.getWeight());
+            ps.setDate(8, racingMap.getLast_ride());
+            ps.setInt (9, racingMap.getDistance());
+            ps.setDouble(10, racingMap.getRating());
+            ps.setInt   (11, racingMap.getPrize_place());
+            /**WHERE*/
+            ps.setInt (12, racingMap.getId_ippodrom());
+            ps.setDate(13, racingMap.getDate_ride());
+            ps.setInt (14, racingMap.getNum_ride());
+            ps.setInt (15, racingMap.getId_horse());
+
+            int rows = ps.executeUpdate();
+            if (rows > 0 ){
+                System.out.println("RacingMap is updated");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return null;
     }
 }
