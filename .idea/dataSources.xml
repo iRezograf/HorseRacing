@@ -7,5 +7,11 @@
       <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
       <jdbc-url>jdbc:sqlserver://RRA-W10\SQLEXPRESS;database=HorseRacing</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="HorseRacingTest@RRA-W10" uuid="dc4581b3-5ad4-4f60-9acd-6853a654b3d0">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://RRA-W10\SQLEXPRESS;database=HorseRacingTest</jdbc-url>
+    </data-source>
   </component>
 </project>

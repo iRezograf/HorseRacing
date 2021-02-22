@@ -1,8 +1,8 @@
 package entity;
 
 public class Jokey {
-    int id;
-    String name;
+    private int id;
+    private String name;
 
     public Jokey(int id, String name) {
         this.id = id;

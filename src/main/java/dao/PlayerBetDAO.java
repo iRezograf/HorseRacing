@@ -202,6 +202,13 @@ public class PlayerBetDAO implements IPlayerBetDAO {
                 }
             }
         }
+        /** String below wos added for the correctly working testNG*/
+        playerBet.setId(0);
+        playerBet.setIdIppodrom(0);
+        playerBet.setDateRide(null);
+        playerBet.setNumRide(0);
+        playerBet.setIdHorse(0);
+        playerBet.setIdTypeBet(0);
         return playerBet;
     }
 

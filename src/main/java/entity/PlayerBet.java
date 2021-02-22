@@ -3,20 +3,20 @@ package entity;
 import java.sql.Date;
 
 public class PlayerBet {
-    int    id;
-    String lastName;
-    String firstName;
-    int    idIppodrom = 1;
-    String ippodromName;
-    Date   dateRide;
-    int    numRide;
-    int    idHorse;
-    String horse;
-    int    idTypeBet;
-    String typeBet;
-    int    bet;
-    double rate;
-    int    payout;
+    private int    id;
+    private String lastName;
+    private String firstName;
+    private int    idIppodrom = 1;
+    private String ippodromName;
+    private Date   dateRide;
+    private int    numRide;
+    private int    idHorse;
+    private String horse;
+    private int    idTypeBet;
+    private String typeBet;
+    private int    bet;
+    private double rate;
+    private int    payout;
     /** amount = 12*/
 
     public void setId(int id) {

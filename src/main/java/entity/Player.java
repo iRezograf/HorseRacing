@@ -1,6 +1,6 @@
 package entity;
 
-import org.testng.annotations.Test;
+//import org.testng.annotations.Test;
 
 public class Player {
     private int id;

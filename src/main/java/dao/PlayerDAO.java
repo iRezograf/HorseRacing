@@ -2,7 +2,6 @@ package dao;
 
 import dao.interfaces.IPlayerDAO;
 import entity.Player;
-import org.testng.annotations.Test;
 
 /**static дописываем, чтобы увидеть и статические переменные из Solution*/
 import static racing.Solution.*;
@@ -74,6 +73,11 @@ public class PlayerDAO implements IPlayerDAO {
                 }
             }
         }
+        player.setId(0);
+        player.setFirstName("");
+        player.setLastName("");
+        player.setLogin("");
+        player.setPassword("");
         return player;
     }
 
@@ -120,7 +124,7 @@ public class PlayerDAO implements IPlayerDAO {
     public List<Player> getPlayers() {
         Player player = null;
         Statement ps = null;
-        String sql = "SELECT [id]\n" +
+        String sql = "SELECT TOP (10) [id]\n" +
                 "      ,[first_n]\n" +
                 "      ,[last_n]\n" +
                 "      ,[login]\n" +

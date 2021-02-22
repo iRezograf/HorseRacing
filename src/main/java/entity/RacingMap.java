@@ -3,23 +3,23 @@ package entity;
 import java.sql.Date;
 
 public class RacingMap {
-    int id_ippodrom = 1;
-    String ippodromName;
-    Date date_ride;
-    int num_ride = 1;
-    int id_horse;
-    String horseName;
-    Date birth;
-    String sex;
-    int id_jokey;
-    String jokeyName;
-    int id_coach;
-    String coachName;
-    int weight = 0;
-    Date last_ride;
-    int distance =1600;
-    double rating = 1.0 ;
-    int prize_place = 1;
+    private int id_ippodrom = 1;
+    private String ippodromName;
+    private Date date_ride;
+    private int num_ride = 1;
+    private int id_horse;
+    private String horseName;
+    private Date birth;
+    private String sex;
+    private int id_jokey;
+    private String jokeyName;
+    private int id_coach;
+    private String coachName;
+    private int weight = 0;
+    private Date last_ride;
+    private int distance =1600;
+    private double rating = 1.0 ;
+    private int prize_place = 1;
     /** amount = 17 */
 
     public void setIppodromName(String ippodromName) {

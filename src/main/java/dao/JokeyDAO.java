@@ -2,12 +2,13 @@ package dao;
 
 import dao.interfaces.IJokeyDAO;
 import entity.Jokey;
+import racing.Solution;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static racing.Solution.*;
+import static racing.Solution.con;
 
 public class JokeyDAO implements IJokeyDAO {
 
@@ -72,10 +73,6 @@ public class JokeyDAO implements IJokeyDAO {
 
     @Override
     public Jokey save(Jokey jokey) {
-        /** INSERT INTO [dbo].[jokey]
-         ([name])
-         VALUES
-         (<name, varchar(100),>)*/
         PreparedStatement ps = null;
         String sql = "INSERT INTO jokey (name) VALUES (?)";
         try {
@@ -118,6 +115,8 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
+        jokey.setId(0);
+        jokey.setName("");
         return jokey;
     }
 
@@ -135,6 +134,32 @@ public class JokeyDAO implements IJokeyDAO {
             ps.executeUpdate();
             ResultSet resultSet = ps.getResultSet();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return jokey;
+    }
+
+    public Jokey lookFor(Jokey jokey) {
+        PreparedStatement ps = null;
+        String sql = "SELECT id,name FROM jokey WHERE name = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, jokey.getName());
+            ps.executeQuery();
+            ResultSet resultSet = ps.getResultSet();
+            resultSet.next();
+
+            jokey.setId(resultSet.getInt("id"));
+            jokey.setName(resultSet.getString("name"));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
