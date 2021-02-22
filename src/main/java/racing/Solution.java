@@ -13,6 +13,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class Solution {
+    /** Connect to worf Database = HorseRacing */
     //public final static String URL = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacing";
     /** Connect to Test DataBase = HorseRacingTest */
     public final static String URL = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";

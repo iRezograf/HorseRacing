@@ -16,11 +16,11 @@ import java.util.Scanner;
 import static org.testng.Assert.*;
 
 public class JokeyDAOTest {
-    JokeyDAO jokeyDAO;
-    Jokey jokey;
-    Jokey actualJokey;
-    int id;
-    @BeforeMethod(groups = {"dao,jokey,player,bet,map"})
+    private JokeyDAO jokeyDAO;
+    private Jokey jokey;
+    private Jokey actualJokey;
+    private int id;
+    @BeforeMethod(groups = {"jokey"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
@@ -84,7 +84,7 @@ public class JokeyDAOTest {
         Assert.assertEquals(actualJokey.getName(), "TestUpdate");
     }
 
-    @AfterMethod(groups = {"dao,jokey,player,bet,map"})
+    @AfterMethod(groups = {"jokey"})
     public void tearDown() {
         jokey = null;
         actualJokey = null;

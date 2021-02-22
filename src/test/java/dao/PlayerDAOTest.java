@@ -13,11 +13,12 @@ import java.sql.SQLException;
 import static org.testng.Assert.*;
 
 public class PlayerDAOTest {
-    Player player;
-    Player actual;
-    PlayerDAO playerDAO;
-    int id;
-    @BeforeMethod
+    private Player player;
+    private Player actual;
+    private PlayerDAO playerDAO;
+    private int id;
+
+    @BeforeMethod(groups = {"player"})
     public void beforeClass() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
@@ -27,7 +28,7 @@ public class PlayerDAOTest {
         Solution.con = DriverManager.getConnection(url, user, password);
     }
 
-    @Test(groups = {"dao,player"}, priority = 5)
+    @Test(groups = {"player"}, priority = 5)
     public void testSave() {
         playerDAO = new PlayerDAO();
         player = new Player();
@@ -99,7 +100,7 @@ public class PlayerDAOTest {
         Assert.assertEquals(actual.getPassword(), "PlayerPasswordUpdated");
     }
 
-    @AfterMethod
+    @AfterMethod(groups = {"player"})
     public void tearDown() {
         player = null;
         actual = null;

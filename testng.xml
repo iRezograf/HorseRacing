@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/rezog/IdeaProjects/horseracing/src/test/java">
+        <groups>
+            <run>
+                <include name="jokey"/>
+                <include name="player"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="dao.JokeyDAOTest"></class>
+            <class name="dao.PlayerDAOTest"></class>
+        </classes>
+    </test>
+</suite>
