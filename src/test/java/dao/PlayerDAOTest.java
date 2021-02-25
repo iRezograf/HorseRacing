@@ -28,7 +28,7 @@ public class PlayerDAOTest {
         Solution.con = DriverManager.getConnection(url, user, password);
     }
 
-    @Test(groups = {"player"}, priority = 5)
+    @Test(groups = {"player"}, priority = 10)
     public void testSave() {
         playerDAO = new PlayerDAO();
         player = new Player();
@@ -38,7 +38,7 @@ public class PlayerDAOTest {
         Assert.assertEquals(actual.getLogin(), "PlayerLogin");
     }
 
-    @Test(groups = {"player"}, priority = 6)
+    @Test(groups = {"player"}, priority = 11)
     public void testTestLookFor() {
         playerDAO = new PlayerDAO();
         player = new Player();
@@ -47,7 +47,7 @@ public class PlayerDAOTest {
         Assert.assertEquals(actual.getLogin(), "PlayerLogin");
     }
 
-    @Test(groups = {"player"}, priority = 7)
+    @Test(groups = {"player"}, priority = 12)
     public void testRemove() {
         playerDAO = new PlayerDAO();
         player = new Player();
@@ -56,7 +56,7 @@ public class PlayerDAOTest {
         Assert.assertNull(actual);
     }
 
-    @Test(groups = {"player"}, priority = 8)
+    @Test(groups = {"player"}, priority = 13)
     public void testLookFor() {
         playerDAO = new PlayerDAO();
         player = new Player();
@@ -73,7 +73,7 @@ public class PlayerDAOTest {
     }
 
 
-    @Test(groups = {"player"}, priority = 9)
+    @Test(groups = {"player"}, priority = 14)
     public void testUpdate() {
         playerDAO = new PlayerDAO();
         player = new Player();
@@ -86,7 +86,7 @@ public class PlayerDAOTest {
         Assert.assertEquals(actual.getLastName(), "LastNameUpdated");
     }
 
-    @Test(groups = {"player"}, priority = 10)
+    @Test(groups = {"player"}, priority = 15)
     public void testGet() {
         playerDAO = new PlayerDAO();
         player = new Player();

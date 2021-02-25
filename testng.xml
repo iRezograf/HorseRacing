@@ -8,6 +8,10 @@
                 <include name="player"/>
                 <include name="stud"/>
                 <include name="horse"/>
+                <include name="coach"/>
+                <include name="ippo"/>
+                <include name="typeBet"/>
+                <include name="playerBet"/>
             </run>
         </groups>
         <classes>
@@ -18,6 +22,7 @@
             <class name="dao.CoachDAOTest"></class>
             <class name="dao.IppoDAOTest"></class>
             <class name="dao.TypeBetDAOTest"></class>
+            <class name="dao.PlayerBetDAOTest"></class>
         </classes>
     </test>
 </suite>

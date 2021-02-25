@@ -22,7 +22,6 @@ public class JokeyDAO implements IJokeyDAO {
             ps = con.createStatement();
             ResultSet resultSet = ps.executeQuery(sql);
             while (resultSet.next()){
-                /**Jokey jokey = new Jokey(resultSet.getInt("id"), resultSet.getString("name"));*/
                 jokey = new Jokey();
                 jokey.setId(resultSet.getInt("id"));
                 jokey.setName(resultSet.getString("name"));
@@ -39,6 +38,7 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
+        System.out.println("From getJokeys:"+jokey);
         return jokeys;
     }
 
@@ -53,7 +53,6 @@ public class JokeyDAO implements IJokeyDAO {
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
             resultSet.next();
-            /**jokey = new Jokey(resultSet.getInt("id"), resultSet.getString("name"));*/
             jokey = new Jokey();
             jokey.setId(resultSet.getInt("id"));
             jokey.setName(resultSet.getString("name"));
@@ -68,6 +67,7 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
+        System.out.println("From Get:"+jokey);
         return jokey;
     }
 
@@ -92,6 +92,7 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
+        System.out.println("From Save:"+jokey);
         return jokey;
     }
 
@@ -116,6 +117,7 @@ public class JokeyDAO implements IJokeyDAO {
             }
         }
         jokey = null;
+        System.out.println("From Remove:"+jokey);
         return jokey;
     }
 
@@ -144,6 +146,7 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
+        System.out.println("From Update:"+jokey);
         return jokey;
     }
 
@@ -170,6 +173,7 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
+        System.out.println("From LookFor:"+jokey);
         return jokey;
     }
 }

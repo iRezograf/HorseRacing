@@ -28,7 +28,7 @@ public class CoachDAOTest {
         Solution.con = DriverManager.getConnection(url, user, password);
     }
 
-    @Test(groups = {"coach"}, priority = 0)
+    @Test(groups = {"coach"}, priority = 50)
     public void testSave()  {
         coachDAO = new CoachDAO();
         coach = new Coach();
@@ -37,7 +37,7 @@ public class CoachDAOTest {
         Assert.assertEquals(actualCoach.getName(), "Test");
     }
 
-    @Test (groups = {"coach"}, priority = 1)
+    @Test (groups = {"coach"}, priority = 51)
     public void testLookFor() {
         coachDAO = new CoachDAO();
         coach = new Coach();
@@ -47,7 +47,7 @@ public class CoachDAOTest {
         Assert.assertEquals(actualCoach.getName(), "Test");
     }
 
-    @Test(groups = {"coach"}, priority = 2)
+    @Test(groups = {"coach"}, priority = 52)
     public void testRemove() {
         coachDAO = new CoachDAO();
         coach = new Coach();
@@ -59,7 +59,7 @@ public class CoachDAOTest {
         Assert.assertNull(actualCoach);
     }
 
-    @Test(groups = {"coach"}, priority = 3)
+    @Test(groups = {"coach"}, priority = 53)
     public void testUpdate() {
         coachDAO = new CoachDAO();
         coach = new Coach();
@@ -73,7 +73,7 @@ public class CoachDAOTest {
         Assert.assertEquals(actualCoach.getName(), "TestUpdate");
     }
 
-    @Test(groups = {"coach"}, priority = 4)
+    @Test(groups = {"coach"}, priority = 54)
     public void testGet() {
         coachDAO = new CoachDAO();
         actualCoach = coachDAO.get(id);
