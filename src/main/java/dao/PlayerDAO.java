@@ -73,11 +73,7 @@ public class PlayerDAO implements IPlayerDAO {
                 }
             }
         }
-        player.setId(0);
-        player.setFirstName("");
-        player.setLastName("");
-        player.setLogin("");
-        player.setPassword("");
+        player = null;
         return player;
     }
 

@@ -53,7 +53,7 @@ public class PlayerDAOTest {
         player = new Player();
         player.setId(id);
         actual = playerDAO.remove(player);
-        Assert.assertEquals(actual.getId(), 0);
+        Assert.assertNull(actual);
     }
 
     @Test(groups = {"player"}, priority = 8)

@@ -1,32 +1,34 @@
 package dao;
 
-import dao.interfaces.IJokeyDAO;
-import entity.Jokey;
-import racing.Solution;
+import dao.interfaces.ICoachDAO;
+import entity.Coach;
+import entity.Stud;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import static racing.Solution.con;
 
-public class JokeyDAO implements IJokeyDAO {
+public class CoachDAO implements ICoachDAO {
 
     @Override
-    public List<Jokey> getJokeys() {
-        Jokey jokey = null;
+    public List<Object> getCoaches() {
+        Coach coach = null;
         Statement ps = null;
-        String sql = "SELECT id,name FROM jokey ";
-        List<Jokey> jokeys = new ArrayList<Jokey>();
+        String sql = "SELECT id,name FROM coach ";
+        List<Object> coaches = new ArrayList<>();
         try {
             ps = con.createStatement();
             ResultSet resultSet = ps.executeQuery(sql);
             while (resultSet.next()){
-                /**Jokey jokey = new Jokey(resultSet.getInt("id"), resultSet.getString("name"));*/
-                jokey = new Jokey();
-                jokey.setId(resultSet.getInt("id"));
-                jokey.setName(resultSet.getString("name"));
-                jokeys.add(jokey);
+                coach = new Coach();
+                coach.setId(resultSet.getInt("id"));
+                coach.setName(resultSet.getString("name"));
+                coaches.add(coach);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,24 +41,24 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        return jokeys;
+        return coaches;
     }
 
     @Override
-    public Jokey get(int id) {
-        Jokey jokey = null;
+    public Coach get(int id) {
+        Coach coach = null;
         PreparedStatement ps = null;
-        String sql = "SELECT id,name FROM jokey WHERE id = ?";
+        String sql = "SELECT id,name FROM coach WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
             resultSet.next();
-            /**jokey = new Jokey(resultSet.getInt("id"), resultSet.getString("name"));*/
-            jokey = new Jokey();
-            jokey.setId(resultSet.getInt("id"));
-            jokey.setName(resultSet.getString("name"));
+            /**coach = new Coach(resultSet.getInt("id"), resultSet.getString("name"));*/
+            coach = new Coach();
+            coach.setId(resultSet.getInt("id"));
+            coach.setName(resultSet.getString("name"));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -68,16 +70,17 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        return jokey;
+        return coach;
     }
 
     @Override
-    public Jokey save(Jokey jokey) {
+    public Object save(Object obj) {
+        Coach coach = (Coach) obj;
         PreparedStatement ps = null;
-        String sql = "INSERT INTO jokey (name) VALUES (?)";
+        String sql = "INSERT INTO coach (name) VALUES (?)";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, jokey.getName());
+            ps.setString(1, coach.getName());
             ps.executeUpdate();
             ResultSet resultSet = ps.getResultSet();
             /*resultSet.next();*/
@@ -92,18 +95,19 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        return jokey;
+        return coach;
     }
 
     @Override
-    public Jokey remove(Jokey jokey){
-    PreparedStatement ps = null;
-    String sql = "DELETE FROM jokey WHERE id = ?";
+    public Object remove(Object obj){
+        Coach coach = (Coach) obj;
+        PreparedStatement ps = null;
+        String sql = "DELETE FROM coach WHERE id = ?";
         try {
-        ps = con.prepareStatement(sql);
-        ps.setInt(1, jokey.getId());
-        ps.executeUpdate();
-        ResultSet resultSet = ps.getResultSet();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, coach.getId());
+            ps.executeUpdate();
+            ResultSet resultSet = ps.getResultSet();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -115,20 +119,21 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        jokey = null;
-        return jokey;
+        coach = null;
+        return coach;
     }
 
     @Override
-    public Jokey update(Jokey jokey) {
+    public Object update(Object obj) {
+        Coach coach = (Coach) obj;
         PreparedStatement ps = null;
-        String sql =    "UPDATE [dbo].[jokey] \n" +
-                        "SET [name] = ? \n" +
-                        "WHERE [id] = ?";
+        String sql =    "UPDATE [dbo].[coach] \n" +
+                "SET [name] = ? \n" +
+                "WHERE [id] = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString   (1, jokey.getName());
-            ps.setInt      (2, jokey.getId());
+            ps.setString   (1, coach.getName());
+            ps.setInt      (2, coach.getId());
 
             ps.executeUpdate();
             ResultSet resultSet = ps.getResultSet();
@@ -144,21 +149,21 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        return jokey;
+        return coach;
     }
 
-    public Jokey lookFor(Jokey jokey) {
+    public Coach lookFor(Coach coach) {
         PreparedStatement ps = null;
-        String sql = "SELECT id,name FROM jokey WHERE name = ?";
+        String sql = "SELECT id,name FROM coach WHERE name = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, jokey.getName());
+            ps.setString(1, coach.getName());
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
             resultSet.next();
 
-            jokey.setId(resultSet.getInt("id"));
-            jokey.setName(resultSet.getString("name"));
+            coach.setId(resultSet.getInt("id"));
+            coach.setName(resultSet.getString("name"));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -170,6 +175,7 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        return jokey;
+        return coach;
     }
+    
 }

@@ -6,11 +6,15 @@
             <run>
                 <include name="jokey"/>
                 <include name="player"/>
+                <include name="stud"/>
+                <include name="horse"/>
             </run>
         </groups>
         <classes>
             <class name="dao.JokeyDAOTest"></class>
             <class name="dao.PlayerDAOTest"></class>
+            <class name="dao.StudDAOTest"></class>
+            <class name="dao.HorseDAOTest"></class>
         </classes>
     </test>
 </suite>

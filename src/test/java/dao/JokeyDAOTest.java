@@ -58,8 +58,7 @@ public class JokeyDAOTest {
         id = actualJokey.getId();
         jokey.setId(id);
         actualJokey = jokeyDAO.remove(jokey);
-        Assert.assertEquals(actualJokey.getId(), 0);
-        Assert.assertEquals(actualJokey.getName(), "");
+        Assert.assertNull(actualJokey);
     }
 
     @Test(groups = {"jokey"}, priority = 3)
@@ -91,5 +90,4 @@ public class JokeyDAOTest {
         jokeyDAO = null;
         Solution.con = null;
     }
-
 }
