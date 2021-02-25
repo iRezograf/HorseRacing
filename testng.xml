@@ -15,6 +15,9 @@
             <class name="dao.PlayerDAOTest"></class>
             <class name="dao.StudDAOTest"></class>
             <class name="dao.HorseDAOTest"></class>
+            <class name="dao.CoachDAOTest"></class>
+            <class name="dao.IppoDAOTest"></class>
+            <class name="dao.TypeBetDAOTest"></class>
         </classes>
     </test>
 </suite>

@@ -41,6 +41,7 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
+        System.out.println("getCoaches:"+coaches);
         return coaches;
     }
 
@@ -70,6 +71,7 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
+        System.out.println("get:"+coach);
         return coach;
     }
 
@@ -95,6 +97,7 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
+        System.out.println("Save:"+coach);
         return coach;
     }
 
@@ -120,6 +123,7 @@ public class CoachDAO implements ICoachDAO {
             }
         }
         coach = null;
+        System.out.println("Remove:"+coach);
         return coach;
     }
 
@@ -149,6 +153,7 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
+        System.out.println("Update:"+coach);
         return coach;
     }
 
@@ -175,6 +180,7 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
+        System.out.println("LookFor:"+coach);
         return coach;
     }
     

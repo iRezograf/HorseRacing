@@ -1,7 +1,7 @@
 package dao;
 
-import dao.interfaces.IStudDAO;
-import entity.Stud;
+import dao.interfaces.ITypeBetDAO;
+import entity.TypeBet;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,22 +12,23 @@ import java.util.List;
 
 import static racing.Solution.con;
 
-public class StudDAO implements IStudDAO {
-
+public class TypeBetDAO implements ITypeBetDAO {
+    
     @Override
-    public List<Object> getStudes() {
-        Stud stud = null;
+    public List<Object> GetTypeBets() {
+        TypeBet typeBet = null;
         Statement ps = null;
-        String sql = "SELECT id,name FROM stud ";
-        List<Object> studs = new ArrayList<>();
+        String sql = "SELECT * FROM type_bet ";
+        List<Object> typeBets = new ArrayList<>();
         try {
             ps = con.createStatement();
             ResultSet resultSet = ps.executeQuery(sql);
             while (resultSet.next()){
-                stud = new Stud();
-                ((Stud) stud).setId(resultSet.getInt("id"));
-                ((Stud) stud).setName(resultSet.getString("name"));
-                studs.add((Stud) stud);
+                typeBet = new TypeBet();
+                ((TypeBet) typeBet).setId(resultSet.getInt(1));
+                ((TypeBet) typeBet).setTypeBet(resultSet.getString(2));
+                ((TypeBet) typeBet).setRate(resultSet.getDouble(3));
+                typeBets.add((TypeBet) typeBet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,25 +41,25 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("getStudes:"+stud);
-        return studs;
+        System.out.println("getHorses:"+typeBets);
+        return typeBets;
     }
 
     @Override
-    public Stud get(int id) {
-        Stud stud = null;
+    public TypeBet get(int id) {
+        TypeBet typeBet = null;
         PreparedStatement ps = null;
-        String sql = "SELECT id,name FROM stud WHERE id = ?";
+        String sql = "SELECT * FROM type_bet WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
             resultSet.next();
-            /**stud = new Stud(resultSet.getInt("id"), resultSet.getString("name"));*/
-            stud = new Stud();
-            stud.setId(resultSet.getInt("id"));
-            stud.setName(resultSet.getString("name"));
+            typeBet = new TypeBet();
+            ((TypeBet) typeBet).setId(resultSet.getInt(1));
+            ((TypeBet) typeBet).setTypeBet(resultSet.getString(2));
+            ((TypeBet) typeBet).setRate(resultSet.getDouble(3));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -70,21 +71,27 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("get"+stud);
-        return stud;
+        System.out.println("get:"+typeBet);
+        return typeBet;
     }
 
     @Override
     public Object save(Object obj) {
-        Stud stud = (Stud) obj;
+        TypeBet typeBet = (TypeBet) obj;
         PreparedStatement ps = null;
-        String sql = "INSERT INTO stud (name) VALUES (?)";
+        String sql = "INSERT INTO type_bet (type_bet, rate) " +
+                "VALUES (?, ?)";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, stud.getName());
+            /*((TypeBet) typeBet).setId(resultSet.getInt(1));
+                ((TypeBet) typeBet).setTypeBet(resultSet.getString(2));
+                ((TypeBet) typeBet).setRate(resultSet.getDouble(3));*/
+            ps.setString(1, typeBet.getTypeBet());
+            ps.setDouble(2, typeBet.getRate());
+
             ps.executeUpdate();
             ResultSet resultSet = ps.getResultSet();
-            /*resultSet.next();*/
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -96,18 +103,18 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("Save:"+stud);
-        return stud;
+        System.out.println("Save:"+typeBet);
+        return typeBet;
     }
 
     @Override
     public Object remove(Object obj){
-        Stud stud = (Stud) obj;
+        TypeBet typeBet = (TypeBet) obj;
         PreparedStatement ps = null;
-        String sql = "DELETE FROM stud WHERE id = ?";
+        String sql = "DELETE FROM type_bet WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(1, stud.getId());
+            ps.setInt(1, typeBet.getId());
             ps.executeUpdate();
             ResultSet resultSet = ps.getResultSet();
         } catch (SQLException e) {
@@ -121,24 +128,28 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        stud = null;
-        System.out.println("Remove:"+stud);
-        return stud;
+        typeBet = null;
+        System.out.println("Remove:"+typeBet);
+        return typeBet;
     }
 
 
-    public Stud lookFor(Stud stud) {
+    public TypeBet lookFor(TypeBet typeBet) {
         PreparedStatement ps = null;
-        String sql = "SELECT id,name FROM stud WHERE name = ?";
+        String sql = "SELECT * FROM type_bet WHERE type_bet = ? AND rate = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, stud.getName());
+            ps.setString(1, typeBet.getTypeBet());
+            ps.setDouble(2, typeBet.getRate());
             ps.executeQuery();
+
             ResultSet resultSet = ps.getResultSet();
             resultSet.next();
 
-            stud.setId(resultSet.getInt("id"));
-            stud.setName(resultSet.getString("name"));
+            typeBet.setId(resultSet.getInt(1));
+            typeBet.setTypeBet(resultSet.getString(2));
+            typeBet.setRate(resultSet.getDouble(3));
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -150,21 +161,23 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("LookFor:"+stud);
-        return stud;
+        System.out.println("LookFor:"+typeBet);
+        return typeBet;
     }
 
     @Override
     public Object update(Object obj) {
-        Stud stud = (Stud) obj;
+        TypeBet typeBet = (TypeBet) obj;
         PreparedStatement ps = null;
-        String sql =    "UPDATE [dbo].[stud] \n" +
-                "SET [name] = ? \n" +
-                "WHERE [id] = ?";
+        String sql =    "UPDATE type_bet \n" +
+                "SET type_bet  = ?, \n" +
+                " rate = ? \n" +
+                "WHERE  id = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString   (1, stud.getName());
-            ps.setInt      (2, stud.getId());
+            ps.setString   (1, typeBet.getTypeBet());
+            ps.setDouble   (2, typeBet.getRate());
+            ps.setInt      (3, typeBet.getId());
 
             ps.executeUpdate();
             ResultSet resultSet = ps.getResultSet();
@@ -180,7 +193,7 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("Update:"+stud);
-        return stud;
+        System.out.println("Update:"+typeBet);
+        return typeBet;
     }
 }

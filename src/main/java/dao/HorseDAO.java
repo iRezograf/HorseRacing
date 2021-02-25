@@ -53,7 +53,6 @@ public class HorseDAO implements IHorseDAO {
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
             resultSet.next();
-            /**horse = new Horse(resultSet.getInt("id"), resultSet.getString("name"));*/
             horse = new Horse();
             horse.setId(resultSet.getInt("id"));
             horse.setName(resultSet.getString("name"));

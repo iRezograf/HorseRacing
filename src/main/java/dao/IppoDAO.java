@@ -1,7 +1,7 @@
 package dao;
 
-import dao.interfaces.IStudDAO;
-import entity.Stud;
+import dao.interfaces.IIppoDAO;
+import entity.Ippo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,22 +12,22 @@ import java.util.List;
 
 import static racing.Solution.con;
 
-public class StudDAO implements IStudDAO {
+public class IppoDAO implements IIppoDAO {
 
     @Override
-    public List<Object> getStudes() {
-        Stud stud = null;
+    public List<Object> getIppoes() {
+        Ippo ippo = null;
         Statement ps = null;
-        String sql = "SELECT id,name FROM stud ";
-        List<Object> studs = new ArrayList<>();
+        String sql = "SELECT id,name FROM ippo ";
+        List<Object> ippodromes = new ArrayList<>();
         try {
             ps = con.createStatement();
             ResultSet resultSet = ps.executeQuery(sql);
             while (resultSet.next()){
-                stud = new Stud();
-                ((Stud) stud).setId(resultSet.getInt("id"));
-                ((Stud) stud).setName(resultSet.getString("name"));
-                studs.add((Stud) stud);
+                ippo = new Ippo();
+                ((Ippo) ippo).setId(resultSet.getInt("id"));
+                ((Ippo) ippo).setName(resultSet.getString("name"));
+                ippodromes.add((Ippo) ippo);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,25 +40,24 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("getStudes:"+stud);
-        return studs;
+        System.out.println("getStudes:"+ippo);
+        return ippodromes;
     }
 
     @Override
-    public Stud get(int id) {
-        Stud stud = null;
+    public Ippo get(int id) {
+        Ippo ippo = null;
         PreparedStatement ps = null;
-        String sql = "SELECT id,name FROM stud WHERE id = ?";
+        String sql = "SELECT id,name FROM ippo WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
             resultSet.next();
-            /**stud = new Stud(resultSet.getInt("id"), resultSet.getString("name"));*/
-            stud = new Stud();
-            stud.setId(resultSet.getInt("id"));
-            stud.setName(resultSet.getString("name"));
+            ippo = new Ippo();
+            ippo.setId(resultSet.getInt("id"));
+            ippo.setName(resultSet.getString("name"));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -70,18 +69,18 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("get"+stud);
-        return stud;
+        System.out.println("get"+ippo);
+        return ippo;
     }
 
     @Override
     public Object save(Object obj) {
-        Stud stud = (Stud) obj;
+        Ippo ippo = (Ippo) obj;
         PreparedStatement ps = null;
-        String sql = "INSERT INTO stud (name) VALUES (?)";
+        String sql = "INSERT INTO ippo (name) VALUES (?)";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, stud.getName());
+            ps.setString(1, ippo.getName());
             ps.executeUpdate();
             ResultSet resultSet = ps.getResultSet();
             /*resultSet.next();*/
@@ -96,18 +95,18 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("Save:"+stud);
-        return stud;
+        System.out.println("Save:"+ippo);
+        return ippo;
     }
 
     @Override
     public Object remove(Object obj){
-        Stud stud = (Stud) obj;
+        Ippo ippo = (Ippo) obj;
         PreparedStatement ps = null;
-        String sql = "DELETE FROM stud WHERE id = ?";
+        String sql = "DELETE FROM ippo WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(1, stud.getId());
+            ps.setInt(1, ippo.getId());
             ps.executeUpdate();
             ResultSet resultSet = ps.getResultSet();
         } catch (SQLException e) {
@@ -121,24 +120,24 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        stud = null;
-        System.out.println("Remove:"+stud);
-        return stud;
+        ippo = null;
+        System.out.println("Remove:"+ippo);
+        return ippo;
     }
 
 
-    public Stud lookFor(Stud stud) {
+    public Ippo lookFor(Ippo ippo) {
         PreparedStatement ps = null;
-        String sql = "SELECT id,name FROM stud WHERE name = ?";
+        String sql = "SELECT id,name FROM ippo WHERE name = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, stud.getName());
+            ps.setString(1, ippo.getName());
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
             resultSet.next();
 
-            stud.setId(resultSet.getInt("id"));
-            stud.setName(resultSet.getString("name"));
+            ippo.setId(resultSet.getInt("id"));
+            ippo.setName(resultSet.getString("name"));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -150,21 +149,21 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("LookFor:"+stud);
-        return stud;
+        System.out.println("LookFor:"+ippo);
+        return ippo;
     }
 
     @Override
     public Object update(Object obj) {
-        Stud stud = (Stud) obj;
+        Ippo ippo = (Ippo) obj;
         PreparedStatement ps = null;
-        String sql =    "UPDATE [dbo].[stud] \n" +
+        String sql =    "UPDATE [dbo].[ippo] \n" +
                 "SET [name] = ? \n" +
                 "WHERE [id] = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString   (1, stud.getName());
-            ps.setInt      (2, stud.getId());
+            ps.setString   (1, ippo.getName());
+            ps.setInt      (2, ippo.getId());
 
             ps.executeUpdate();
             ResultSet resultSet = ps.getResultSet();
@@ -180,7 +179,7 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("Update:"+stud);
-        return stud;
+        System.out.println("Update:"+ippo);
+        return ippo;
     }
 }
