@@ -14,7 +14,6 @@ public class PlayerDAO implements IPlayerDAO {
 
     @Override
     public Player save(Player player) {
-        /** insert player */
         PreparedStatement ps = null;
         String sql = "INSERT INTO player (first_n, last_n, login, password)" +
                 " VALUES (?,?,?,?)";
@@ -24,11 +23,9 @@ public class PlayerDAO implements IPlayerDAO {
             ps.setString(2, player.getLastName());
             ps.setString(3, player.getLogin());
             ps.setString(4, player.getPassword());
-            //ps.executeUpdate();
-            //ResultSet resultSet = ps.getResultSet();
             int rows = ps.executeUpdate();
             if (rows > 0 ){
-                System.out.println(player + "\n player is inserted");
+                System.out.println("From Save: "+ player);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,20 +43,18 @@ public class PlayerDAO implements IPlayerDAO {
 
     @Override
     public Player remove(Player player) {
-        /** delete */
-        //Player player = new Player();
+        Player playerRet = new Player();
         PreparedStatement ps = null;
-        String sql =    "DELETE FROM [dbo].[player]\n" +
-                        "WHERE [id] = ?";
+        String sql =    "DELETE FROM player " +
+                        "WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
-
             ps.setInt(1, player.getId());
-            //ps.executeUpdate();
-            //ResultSet resultSet = pst.getResultSet();
+
             int rows = ps.executeUpdate();
             if (rows > 0 ){
-                System.out.println(player + "\n player is removed");
+                playerRet = null;
+                System.out.println("From Remove: "+ player);
             }
 
         } catch (SQLException e) {
@@ -73,20 +68,18 @@ public class PlayerDAO implements IPlayerDAO {
                 }
             }
         }
-        player = null;
-        return player;
+        return playerRet;
     }
 
     @Override
     public Player update(Player player) {
-        /** update */
         PreparedStatement ps = null;
-        String sql =    "UPDATE [dbo].[player] \n" +
-                        "SET [first_n] = ? \n" +
-                        ",[last_n] = ? \n" +
-                        ",[login] = ? \n" +
-                        ",[password] = ? \n" +
-                        "WHERE [id] = ?";
+        String sql =    "UPDATE player \n" +
+                        "SET    first_n = ? \n" +
+                                ",last_n = ? \n" +
+                                ",login = ? \n" +
+                                ",password = ? \n" +
+                        "WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString   (1, player.getFirstName());
@@ -95,11 +88,9 @@ public class PlayerDAO implements IPlayerDAO {
             ps.setString   (4, player.getPassword());
             ps.setInt      (5, player.getId());
 
-            //ps.executeUpdate();
-            //ResultSet resultSet = pst.getResultSet();
             int rows = ps.executeUpdate();
             if (rows > 0 ){
-                System.out.println(player + "\n player is updated");
+                System.out.println("From Update" + player);
             }
 
         } catch (SQLException e) {
@@ -120,12 +111,13 @@ public class PlayerDAO implements IPlayerDAO {
     public List<Player> getPlayers() {
         Player player = null;
         Statement ps = null;
-        String sql = "SELECT TOP (10) [id]\n" +
-                "      ,[first_n]\n" +
-                "      ,[last_n]\n" +
-                "      ,[login]\n" +
-                "      ,[password]\n" +
-                "  FROM [player]";
+        String sql = "SELECT TOP (10)"+
+                            " id" +
+                            ",first_n" +
+                            ",last_n" +
+                            ",login" +
+                            ",password " +
+                    "FROM   player";
         List<Player> players = new ArrayList<Player>();
         try {
             ps = con.createStatement();
@@ -138,6 +130,7 @@ public class PlayerDAO implements IPlayerDAO {
                 player.setLogin(resultSet.getString(4));
                 player.setPassword(resultSet.getString(5));
                 players.add(player);
+                System.out.println("From getPlayers: " + player);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -155,12 +148,14 @@ public class PlayerDAO implements IPlayerDAO {
 
     @Override
     public Player get(int id) {
-        String sql = "SELECT [id]\n" +
-                "      ,[first_n]\n" +
-                "      ,[last_n]\n" +
-                "      ,[login]\n" +
-                "      ,[password]\n" +
-                "  FROM [dbo].[player] WHERE [id] = ?";
+        String sql = "SELECT "+
+                            "id" +
+                            ",first_n" +
+                            ",last_n" +
+                            ",login" +
+                            ",password " +
+                    "FROM player "   +
+                    "WHERE id = ?";
         PreparedStatement ps = null;
         Player player = null;
         try {
@@ -168,14 +163,19 @@ public class PlayerDAO implements IPlayerDAO {
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet rs = ps.getResultSet();
-            rs.next();
-            player = new Player();
-            player.setId(rs.getInt(1));
-            player.setFirstName(rs.getString(2));
-            player.setLastName(rs.getString(3));
-            player.setLogin(rs.getString(4));
-            player.setPassword(rs.getString(5));
-            System.out.println(player);
+            if (rs.next()){
+                player = new Player();
+                player.setId(rs.getInt(1));
+                player.setFirstName(rs.getString(2));
+                player.setLastName(rs.getString(3));
+                player.setLogin(rs.getString(4));
+                player.setPassword(rs.getString(5));
+                System.out.println("From get:"+player);
+            } else{
+                player = null;
+                System.out.println("From get (not found):"+player);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -191,17 +191,14 @@ public class PlayerDAO implements IPlayerDAO {
     }
 
     public Player lookFor(String login, String password) {
-        /*Look for player in table player. If found return player,
-         * if don't found return null.
-         * For registration  */
-        String sql =    "SELECT [id]\n" +
-                        ",[first_n]\n" +
-                        ",[last_n]\n" +
-                        ",[login]\n" +
-                        ",[password]\n" +
-                        "FROM [dbo].[player]\n " +
-                        "WHERE [login] = ?\n" +
-                        "AND [password] = ?";
+        String sql =    "SELECT id" +
+                        ",first_n" +
+                        ",last_n" +
+                        ",login" +
+                        ",password " +
+                        "FROM player " +
+                        "WHERE login = ?\n" +
+                        "AND password = ?";
         PreparedStatement ps = null;
         Player player = null;
         try {
@@ -210,17 +207,17 @@ public class PlayerDAO implements IPlayerDAO {
             ps.setString(2, password);
             ps.executeQuery();
             ResultSet rs = ps.getResultSet();
-            player = new Player();
             if (rs.next()) {
+                player = new Player();
                 player.setId(rs.getInt(1));
                 player.setFirstName(rs.getString(2));
                 player.setLastName(rs.getString(3));
                 player.setLogin(rs.getString(4));
                 player.setPassword(rs.getString(5));
+                System.out.println("From LookFor (log/pass):"+player);
             } else {
-                player.setId(0);
+                System.out.println("From LookFor (log/pass):" + player);
             }
-            System.out.println(player);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -235,19 +232,16 @@ public class PlayerDAO implements IPlayerDAO {
         return player;
     }
     public Player lookFor(Player player) {
-        /*Look for player in table player. If found return player,
-         * if don't found return null.
-         * For registration  */
-        String sql = "SELECT [id]\n" +
-                    ",[first_n]\n" +
-                    ",[last_n]\n" +
-                    ",[login]\n" +
-                    ",[password]\n" +
-                    "FROM [dbo].[player] " +
-                    "WHERE  [first_n] = ?\n" +
-                    "AND    [last_n] = ?\n" +
-                    "AND    [login] = ?\n" +
-                    "AND    [password] = ?";
+        String sql = "SELECT id " +
+                            ",first_n" +
+                            ",last_n" +
+                            ",login" +
+                            ",password " +
+                    "FROM player " +
+                    "WHERE  first_n = ? " +
+                    "AND    last_n = ? " +
+                    "AND    login = ? " +
+                    "AND    password = ?";
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(sql);
@@ -261,8 +255,11 @@ public class PlayerDAO implements IPlayerDAO {
             ResultSet rs = ps.getResultSet();
             if (rs.next()) {
                 player.setId(rs.getInt(1));
+                System.out.println("From LookFor(player):"+player);
+            } else {
+                System.out.println("From LookFor(player not found):"+player);
             }
-            System.out.println(player);
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

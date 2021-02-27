@@ -1,6 +1,5 @@
 package dao;
 
-import dao.interfaces.IStudDAO;
 import entity.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -8,40 +7,37 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import racing.Solution;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.Assert.*;
-import static racing.Solution.con;
 
-public class PlayerBetDAOTest {
-
-
-    Coach coach;
-    Horse horse;
-    Ippo ippo;
-    Jokey jokey;
+public class RacingMapDAOTest {
     Player player;
-
-    PlayerBet playerBet;
-    PlayerBet actualPlayerBet;
-
-    RacingMap racingMap;
+    Ippo ippo;
+    Horse horse;
     Stud stud;
     TypeBet typeBet;
+    PlayerBet playerBet;
+    Coach coach;
+    Jokey jokey;
+    RacingMap racingMap;
+    RacingMap actualRacingMap;
+    List<RacingMap> racingMaps;
 
-    List<PlayerBet> playerBets;
-
-    CoachDAO coachDAO;
-    HorseDAO horseDAO;
-    IppoDAO ippoDAO;
-    JokeyDAO jokeyDAO;
     PlayerDAO playerDAO;
-    PlayerBetDAO playerBetDAO;
-    RacingMapDAO racingMapDAO;
+    IppoDAO ippoDAO;
     StudDAO StudDAO;
+    HorseDAO horseDAO;
     TypeBetDAO typeBetDAO;
+    PlayerBetDAO playerBetDAO;
+    CoachDAO coachDAO;
+    JokeyDAO jokeyDAO;
+    RacingMapDAO racingMapDAO;
 
     @BeforeMethod
     public void setUp() throws SQLException {
@@ -52,6 +48,7 @@ public class PlayerBetDAOTest {
         Solution.con = DriverManager.getConnection(url, user, password);
 
         String sql =  "DELETE TOP(10) FROM horse";
+
         PreparedStatement ps = Solution.con.prepareStatement(sql);
         ps.executeUpdate();
 
@@ -144,19 +141,6 @@ public class PlayerBetDAOTest {
         /** coach.id */
         coach = coachDAO.lookFor(coach);
 
-/**
-        actualPlayerBet = new PlayerBet();
-        playerBet = new PlayerBet();
-        playerBet.setId(player.getId());
-        playerBet.setIdIppodrom(ippo.getId());
-        playerBet.setDateRide(Date.valueOf("2021-01-08"));
-        playerBet.setNumRide(1);
-        playerBet.setIdHorse(horse.getId());
-        playerBet.setIdTypeBet(typeBet.getId());
-        playerBet.setBet(999);
-        playerBet.setPayout(1999);
-*/
-
         racingMap = new RacingMap();
         racingMap.setId_ippodrom(ippo.getId());
         racingMap.setDate_ride(Date.valueOf("2021-01-08"));
@@ -168,7 +152,6 @@ public class PlayerBetDAOTest {
         /** Create values for Primary key*/
         racingMapDAO.save(racingMap);
 
-        actualPlayerBet = new PlayerBet();
         playerBet = new PlayerBet();
         playerBet.setId(player.getId());
         playerBet.setIdIppodrom(ippo.getId());
@@ -180,80 +163,58 @@ public class PlayerBetDAOTest {
         playerBet.setPayout(1999);
 
         playerBetDAO = new PlayerBetDAO();
-        playerBets = new ArrayList<>();
-    }
 
-
-    @Test(groups = {"playerBet"}, priority = 80)
-    public void testSave() throws SQLException {
         playerBet = playerBetDAO.save(playerBet);
-        Assert.assertEquals(playerBet.getPayout(), 1999, "Сумма платежа совпадает");
+
+
+        actualRacingMap = new RacingMap();
+
+/**
+        racingMap = new RacingMap();
+        racingMap.setId_ippodrom(ippo.getId());
+        racingMap.setDate_ride(Date.valueOf("2021-01-08"));
+        racingMap.setNum_ride(1);
+        racingMap.setId_horse(horse.getId());
+        racingMap.setId_jokey(jokey.getId());
+        racingMap.setId_coach(coach.getId());
+
+        racingMap.setIppodromName(ippo.getName());
+        racingMap.setHorseName(horse.getName());
+        racingMap.setBirth(horse.getBirth());
+        racingMap.setSex(horse.getSex());
+        racingMap.setJokeyName(jokey.getName());
+        racingMap.setCoachName(coach.getName());
+        racingMap.setLast_ride(horse.getBirth());
+        System.out.println(racingMap);
+        racingMapDAO = new RacingMapDAO();
+*/
+        //actualRacingMap = racingMapDAO.save(racingMap);
+
+        racingMaps = new ArrayList<>();
     }
 
-    @Test(groups = {"playerBet"}, priority = 82)
-    public void testGetPlayerBet() {
-        actualPlayerBet = playerBetDAO.save(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(actualPlayerBet);
-        Assert.assertEquals(actualPlayerBet.getHorse(), horse.getName(),"Names Are Equals and is: "+ playerBet.getHorse());
+
+    @Test(groups = {"racingMap"}, priority = 92)
+    public void testGetRacingMaps() {
+        //actualRacingMap = racingMapDAO.save(racingMap);
+        System.out.println(racingMap);
+        racingMaps = racingMapDAO.getRacingMaps(racingMap);
+        actualRacingMap = racingMaps.get(0);
+        Assert.assertEquals(actualRacingMap.getHorseName(), horse.getName());
     }
 
-
-    @Test(groups = {"playerBet"}, priority = 84)
-    public void testGetPlayerBets() {
-        actualPlayerBet = playerBetDAO.save(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
-        playerBets = playerBetDAO.getPlayerBets(actualPlayerBet);
-        actualPlayerBet = playerBets.get(0);
-        Assert.assertEquals(actualPlayerBet.getHorse(), horse.getName(),"Names Are Equals and is: "+ playerBet.getHorse());
+    @Test(groups = {"racingMap"}, priority = 94)
+    public void testSave() {
     }
 
-    @Test(groups = {"playerBet"}, priority = 86)
-    public void testUpdate() {
-        actualPlayerBet = playerBetDAO.save(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
-        playerBet.setBet(100);
-        playerBet.setPayout(1000);
-        actualPlayerBet = playerBetDAO.update(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
-        Assert.assertEquals(actualPlayerBet.getBet(), 100);
-    }
-
-    @Test(groups = {"playerBet"}, priority = 88)
+    @Test(groups = {"racingMap"}, priority = 96)
     public void testRemove() {
-        actualPlayerBet = playerBetDAO.save(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
-        playerBet.setBet(100);
-        playerBet.setPayout(1000);
-        actualPlayerBet = playerBetDAO.remove(playerBet);
-        Assert.assertNull(actualPlayerBet);
     }
 
+    @Test(groups = {"racingMap"}, priority = 98)
+    public void testUpdate() {
+    }
     @AfterMethod
     public void tearDown() {
-        coach = null;
-        horse = null;
-        ippo = null;
-        jokey = null;
-        player = null;
-
-        playerBet = null;
-        actualPlayerBet = null;
-
-        racingMap = null;
-        stud = null;
-        typeBet = null;
-
-        playerBets = null;
-
-        coachDAO = null;
-        horseDAO = null;
-        ippoDAO = null;
-        jokeyDAO = null;
-        playerDAO  = null;
-        playerBetDAO = null;
-        racingMapDAO  = null;
-        StudDAO = null;
-        typeBetDAO = null;
     }
-
 }

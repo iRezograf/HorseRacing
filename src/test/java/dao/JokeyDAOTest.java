@@ -10,77 +10,80 @@ import racing.Solution;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 import static org.testng.Assert.*;
 
 public class JokeyDAOTest {
-    private JokeyDAO jokeyDAO;
-    private Jokey jokey;
-    private Jokey actualJokey;
-    private int id;
+    JokeyDAO jokeyDAO;
+    Jokey jokey;
+    Jokey actualJokey;
+
     @BeforeMethod(groups = {"jokey"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        Connection con;
+
+
         Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
+        String sql =  "DELETE TOP(10) FROM jokey";
+        PreparedStatement ps = Solution.con.prepareStatement(sql);
+        ps.executeUpdate();
+        jokeyDAO = new JokeyDAO();
+        jokey = new Jokey();
+        actualJokey = new Jokey();
+        jokey.setName("TestName");
     }
 
     @Test(groups = {"jokey"}, priority = 0)
     public void testSave()  {
-        jokeyDAO = new JokeyDAO();
-        jokey = new Jokey();
-        jokey.setName("Test");
+        /** "TestName" */
         actualJokey = jokeyDAO.save(jokey);
-        Assert.assertEquals(actualJokey.getName(), "Test");
+        actualJokey = jokeyDAO.lookFor(jokey);
+
+        Assert.assertEquals(actualJokey.getName(), "TestName");
     }
 
     @Test (groups = {"jokey"}, priority = 1)
     public void testLookFor() {
-        jokeyDAO = new JokeyDAO();
-        jokey = new Jokey();
-        jokey.setName("Test");
+        actualJokey = jokeyDAO.save(jokey);
         actualJokey = jokeyDAO.lookFor(jokey);
-        id = actualJokey.getId();
-        Assert.assertEquals(actualJokey.getName(), "Test");
+        Assert.assertNotNull(actualJokey.getId());
     }
 
     @Test(groups = {"jokey"}, priority = 2)
     public void testRemove() {
-        jokeyDAO = new JokeyDAO();
-        jokey = new Jokey();
-        jokey.setName("Test");
+        actualJokey = jokeyDAO.save(jokey);
         actualJokey = jokeyDAO.lookFor(jokey);
-        id = actualJokey.getId();
-        jokey.setId(id);
+        jokey.setId(actualJokey.getId());
+
         actualJokey = jokeyDAO.remove(jokey);
         Assert.assertNull(actualJokey);
     }
 
     @Test(groups = {"jokey"}, priority = 3)
     public void testUpdate() {
-        jokeyDAO = new JokeyDAO();
-        jokey = new Jokey();
-        jokey.setName("Test");
-        jokeyDAO.save(jokey);
+        actualJokey = jokeyDAO.save(jokey);
         actualJokey = jokeyDAO.lookFor(jokey);
-        id = actualJokey.getId();
-        jokey.setId(id);
+        jokey.setId(actualJokey.getId());
         jokey.setName("TestUpdate");
+
         actualJokey = jokeyDAO.update(jokey);
         Assert.assertEquals(actualJokey.getName(), "TestUpdate");
     }
 
     @Test(groups = {"jokey"}, priority = 4)
     public void testGet() {
-        jokeyDAO = new JokeyDAO();
-        actualJokey = jokeyDAO.get(id);
+        jokey.setName("TestGet");
+        actualJokey = jokeyDAO.save(jokey);
+        actualJokey = jokeyDAO.lookFor(jokey);
+        actualJokey = jokeyDAO.get(actualJokey.getId());
         /**jokeyDAO.remove(jokey);*/
-        Assert.assertEquals(actualJokey.getName(), "TestUpdate");
+        Assert.assertEquals(actualJokey.getName(), "TestGet");
     }
 
     @AfterMethod(groups = {"jokey"})

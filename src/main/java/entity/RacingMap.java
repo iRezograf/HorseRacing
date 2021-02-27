@@ -37,6 +37,7 @@ public class RacingMap {
     public void setCoachName(String coachName) {
         this.coachName = coachName;
     }
+
     public void setId_ippodrom(int id_ippodrom) {
         this.id_ippodrom = id_ippodrom;
     }

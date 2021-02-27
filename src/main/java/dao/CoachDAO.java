@@ -105,7 +105,7 @@ public class CoachDAO implements ICoachDAO {
     public Object remove(Object obj){
         Coach coach = (Coach) obj;
         PreparedStatement ps = null;
-        String sql = "DELETE FROM coach WHERE id = ?";
+        String sql = "DELETE TOP (10) FROM coach WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, coach.getId());

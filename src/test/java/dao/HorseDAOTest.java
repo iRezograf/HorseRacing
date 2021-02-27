@@ -1,102 +1,101 @@
 package dao;
 
 import entity.Horse;
+import entity.Ippo;
+import entity.Stud;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import racing.Solution;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static org.testng.Assert.*;
 
 public class HorseDAOTest {
 
-    private HorseDAO horseDAO;
-    private Horse horse;
-    private Horse actualHorse;
-    private int id;
+    StudDAO studDAO;
+    Stud stud;
+    Stud actualStud;
+
+    HorseDAO horseDAO;
+    Horse horse;
+    Horse actualHorse;
 
     @BeforeMethod(groups = {"horse"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        Connection con;
         Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
-        StudDAOTest studDAOTest = new StudDAOTest();
-        studDAOTest.testSave();
-        studDAOTest.testLookFor();
+        String sql =  "DELETE TOP(10) FROM horse";
+        PreparedStatement ps = Solution.con.prepareStatement(sql);
+        ps.executeUpdate();
+
+        studDAO = new StudDAO();
+        stud = new Stud();
+        stud.setName("TestStudName");
+        actualStud = new Stud();
+
+        stud.setName("NameStud");
+        studDAO.save(stud);
+        actualStud = studDAO.lookFor(stud);
+
+        horseDAO = new HorseDAO();
+        horse = new Horse();
+        horse.setName("HorseName");
+        horse.setBirth(Date.valueOf("2021-01-08"));
+        horse.setSex("Жеребец");
+        horse.setIdStud(actualStud.getId());
+        actualHorse = new Horse();
     }
 
     @Test(groups = {"horse"}, priority = 40)
     public void testSave()  {
 
-        horseDAO = new HorseDAO();
-        horse = new Horse();
-        horse.setName("Test");
-        horse.setBirth(Date.valueOf("2021-01-08"));
-        horse.setSex("Жеребец");
-        horse.setIdStud(1);
+        horse.setName("TestSave");
         actualHorse = (Horse) horseDAO.save(horse);
-        Assert.assertEquals(actualHorse.getName(), "Test");
+        Assert.assertEquals(actualHorse.getName(), "TestSave");
     }
 
     @Test (groups = {"horse"}, priority = 41)
     public void testLookFor() {
-        horseDAO = new HorseDAO();
-        horse = new Horse();
-        horse.setName("Test");
-        horse.setBirth(Date.valueOf("2021-01-08"));
-        horse.setSex("Жеребец");
+        horse.setName("Test_LookFor");
+
+        actualHorse = (Horse) horseDAO.save(horse);
         actualHorse = horseDAO.lookFor(horse);
-        id = actualHorse.getId();
-        Assert.assertEquals(actualHorse.getName(), "Test");
+        Assert.assertEquals(actualHorse.getName(), "Test_LookFor");
     }
 
     @Test(groups = {"horse"}, priority = 42)
     public void testRemove() {
-        horseDAO = new HorseDAO();
-        horse = new Horse();
-        horse.setName("Test");
-        horse.setBirth(Date.valueOf("2021-01-08"));
-        horse.setSex("Жеребец");
-        horse.setIdStud(1);
+        horse.setName("TestRemove");
+        actualHorse = (Horse) horseDAO.save(horse);
         actualHorse = horseDAO.lookFor(horse);
-        id = actualHorse.getId();
-        horse.setId(id);
         actualHorse = (Horse) horseDAO.remove(horse);
         Assert.assertNull(actualHorse);
     }
 
     @Test(groups = {"horse"}, priority = 43)
     public void testUpdate() {
-        horseDAO = new HorseDAO();
-        horse = new Horse();
-        horse.setName("Test");
-        horse.setBirth(Date.valueOf("2021-01-08"));
-        horse.setSex("Жеребец");
-        horse.setIdStud(1);
-        horseDAO.save(horse);
+        horse.setName("TestUpdate_before");
+        actualHorse = (Horse) horseDAO.save(horse);
         actualHorse = horseDAO.lookFor(horse);
-        id = actualHorse.getId();
-        horse.setId(id);
-        horse.setName("TestUpdate");
+        horse.setName("TestUpdate_After");
         actualHorse = (Horse) horseDAO.update(horse);
-        Assert.assertEquals(actualHorse.getName(), "TestUpdate");
+        Assert.assertEquals(actualHorse.getName(), "TestUpdate_After");
     }
 
     @Test(groups = {"horse"}, priority = 44)
     public void testGet() {
-        horseDAO = new HorseDAO();
-        actualHorse = horseDAO.get(id);
+        //horse.setName("Test_get");
+        actualHorse = (Horse) horseDAO.save(horse);
+        actualHorse = horseDAO.lookFor(horse);
+        actualHorse = horseDAO.get(actualHorse.getId());
         /**horseDAO.remove(horse);*/
-        Assert.assertEquals(actualHorse.getName(), "TestUpdate");
+        Assert.assertEquals(actualHorse.getName(), horse.getName());
     }
 
     @AfterMethod(groups = {"horse"})

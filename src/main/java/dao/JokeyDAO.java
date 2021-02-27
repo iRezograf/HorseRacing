@@ -103,8 +103,14 @@ public class JokeyDAO implements IJokeyDAO {
         try {
         ps = con.prepareStatement(sql);
         ps.setInt(1, jokey.getId());
-        ps.executeUpdate();
-        ResultSet resultSet = ps.getResultSet();
+        //ResultSet resultSet = ps.getResultSet();
+        int rows = ps.executeUpdate();
+        if (rows > 0 ){
+            System.out.println("From Remove:"+jokey);
+        } else {
+            System.out.println(jokey + "Not Found. Not Deleted");
+        }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -117,23 +123,26 @@ public class JokeyDAO implements IJokeyDAO {
             }
         }
         jokey = null;
-        System.out.println("From Remove:"+jokey);
         return jokey;
     }
 
     @Override
     public Jokey update(Jokey jokey) {
         PreparedStatement ps = null;
-        String sql =    "UPDATE [dbo].[jokey] \n" +
-                        "SET [name] = ? \n" +
-                        "WHERE [id] = ?";
+        String sql =    "UPDATE jokey \n" +
+                        "SET    name = ? \n" +
+                        "WHERE  id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString   (1, jokey.getName());
             ps.setInt      (2, jokey.getId());
 
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
+            int rows = ps.executeUpdate();
+            if (rows > 0 ){
+                System.out.println("From Update:"+jokey);
+            } else {
+                System.out.println(jokey + "Not Found. Not Updated");
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,22 +155,25 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        System.out.println("From Update:"+jokey);
         return jokey;
     }
 
     public Jokey lookFor(Jokey jokey) {
         PreparedStatement ps = null;
+        Jokey jokeyRet = new Jokey();
         String sql = "SELECT id,name FROM jokey WHERE name = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, jokey.getName());
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-
-            jokey.setId(resultSet.getInt("id"));
-            jokey.setName(resultSet.getString("name"));
+            if (resultSet.next()){
+                jokeyRet.setId(resultSet.getInt("id"));
+                jokeyRet.setName(resultSet.getString("name"));
+                System.out.println("From LookFor:"+jokeyRet);
+            } else {
+                System.out.println("From LookFor:"+jokey + "\nNot Found");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -173,7 +185,6 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        System.out.println("From LookFor:"+jokey);
-        return jokey;
+        return jokeyRet;
     }
 }

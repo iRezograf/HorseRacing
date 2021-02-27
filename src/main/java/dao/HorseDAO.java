@@ -46,16 +46,28 @@ public class HorseDAO implements IHorseDAO {
     public Horse get(int id) {
         Horse horse = null;
         PreparedStatement ps = null;
-        String sql = "SELECT id,name FROM horse WHERE id = ?";
+        String sql = "SELECT id"+
+                ",name"+
+                ",birth"+
+                ",sex"+
+                ",id_stud"+
+                " FROM horse WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-            horse = new Horse();
-            horse.setId(resultSet.getInt("id"));
-            horse.setName(resultSet.getString("name"));
+            if (resultSet.next()){
+                horse = new Horse();
+                horse.setId(resultSet.getInt(1));
+                horse.setName(resultSet.getString(2));
+                horse.setBirth(resultSet.getDate(3));
+                horse.setSex(resultSet.getString(4));
+                horse.setIdStud(resultSet.getInt(5));
+                System.out.println("From get:"+horse);
+            } else{
+                System.out.println("From get (not found):"+horse);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -67,7 +79,7 @@ public class HorseDAO implements IHorseDAO {
                 }
             }
         }
-        System.out.println("get:"+horse);
+
         return horse;
     }
 

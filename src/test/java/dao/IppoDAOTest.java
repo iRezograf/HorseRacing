@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Ippo;
+import entity.Stud;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -9,77 +10,72 @@ import racing.Solution;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import static org.testng.Assert.*;
 
 public class IppoDAOTest {
-    private IppoDAO ippoDAO;
-    private Ippo ippo;
-    private Ippo actualIppo;
-    private int id;
-    
+    IppoDAO ippoDAO;
+    Ippo ippo;
+    Ippo actualIppo;
+
     @BeforeMethod(groups = {"ippo"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        Connection con;
-        Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
+        String sql =  "DELETE TOP(10) FROM ippo";
+        PreparedStatement ps = Solution.con.prepareStatement(sql);
+        ps.executeUpdate();
+        ippoDAO = new IppoDAO();
+        ippo = new Ippo();
+        ippo.setName("Test_ippoName");
+        actualIppo = new Ippo();
     }
 
     @Test(groups = {"ippo"}, priority = 60)
     public void testSave()  {
-        ippoDAO = new IppoDAO();
-        ippo = new Ippo();
-        ippo.setName("Test");
+        ippo.setName("Test_ippoName");
         actualIppo = (Ippo) ippoDAO.save(ippo);
-        Assert.assertEquals(actualIppo.getName(), "Test");
+        Assert.assertEquals(actualIppo.getName(), "Test_ippoName");
     }
 
     @Test (groups = {"ippo"}, priority = 61)
     public void testLookFor() {
-        ippoDAO = new IppoDAO();
-        ippo = new Ippo();
-        ippo.setName("Test");
+        ippo.setName("Test_ippoName_LookFor");
+        actualIppo = (Ippo) ippoDAO.save(ippo);
         actualIppo = ippoDAO.lookFor(ippo);
-        id = actualIppo.getId();
-        Assert.assertEquals(actualIppo.getName(), "Test");
+        Assert.assertEquals(actualIppo.getName(), "Test_ippoName_LookFor");
     }
 
     @Test(groups = {"ippo"}, priority = 62)
     public void testRemove() {
-        ippoDAO = new IppoDAO();
-        ippo = new Ippo();
-        ippo.setName("Test");
+        ippo.setName("Test_ippoName_Remove");
+        actualIppo = (Ippo) ippoDAO.save(ippo);
         actualIppo = ippoDAO.lookFor(ippo);
-        id = actualIppo.getId();
-        ippo.setId(id);
-        actualIppo = (Ippo) ippoDAO.remove(ippo);
+        actualIppo = (Ippo) ippoDAO.remove(actualIppo);
         Assert.assertNull(actualIppo);
     }
 
     @Test(groups = {"ippo"}, priority = 63)
     public void testUpdate() {
-        ippoDAO = new IppoDAO();
-        ippo = new Ippo();
-        ippo.setName("Test");
-        ippoDAO.save(ippo);
+        ippo.setName("Test_ippoName_Update_before");
+        actualIppo = (Ippo) ippoDAO.save(ippo);
         actualIppo = ippoDAO.lookFor(ippo);
-        id = actualIppo.getId();
-        ippo.setId(id);
-        ippo.setName("TestUpdate");
+        actualIppo.setName("Test_ippoName_Update_After");
         actualIppo = (Ippo) ippoDAO.update(ippo);
-        Assert.assertEquals(actualIppo.getName(), "TestUpdate");
+        Assert.assertEquals(actualIppo.getName(), "Test_ippoName_Update_After");
     }
 
     @Test(groups = {"ippo"}, priority = 64)
     public void testGet() {
-        ippoDAO = new IppoDAO();
-        actualIppo = ippoDAO.get(id);
-        /**ippoDAO.remove(ippo);*/
-        Assert.assertEquals(actualIppo.getName(), "TestUpdate");
+        ippo.setName("Test_Get");
+        actualIppo = (Ippo) ippoDAO.save(ippo);
+        actualIppo = ippoDAO.lookFor(ippo);
+        actualIppo = ippoDAO.get(actualIppo.getId());
+        Assert.assertEquals(actualIppo.getName(), "Test_Get");
     }
 
     @AfterMethod(groups = {"ippo"})

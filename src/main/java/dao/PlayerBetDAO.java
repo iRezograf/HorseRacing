@@ -77,59 +77,71 @@ public class PlayerBetDAO implements IPlayerBetDAO {
     }
 
     public PlayerBet getPlayerBet(PlayerBet playerBet) {
-            String sql = "SELECT player.id, " +
-                                "player.last_n, " +
-                                "player.first_n,\n"+
-                                "player_bet.id_ippo,"+
-                                "player_bet.date_ride, " +
-                                "player_bet.num_ride, " +
-                                "horse.name AS horse,\n"+
-                                "type_bet.type_bet, " +
-                                "player_bet.bet AS [bet(roubles)], " +
-                                "type_bet.rate, \n" +
-                                "player_bet.payout\n" +
-                            "FROM player INNER JOIN\n" +
-                                " player_bet ON player.id = player_bet.id_player INNER JOIN\n" +
-                                " horse ON player_bet.id_horse = horse.id INNER JOIN\n" +
-                                " type_bet ON player_bet.id_type_bet = type_bet.id\n" +
-                            "WHERE  " +
-                                "     (player_bet.id_player = ?)\n"+
-                                " AND (player_bet.date_ride = ?)\n"+
-                                " AND (player_bet.num_ride = ?)\n"+
-                                " AND (player_bet.id_horse = ?)\n"+
-                                " AND (player_bet.id_type_bet = ?\n)"+
-                                " AND (player_bet.id_ippo = ?)";
-
-        PlayerBet  playerBet1 = new PlayerBet();;
+            String sql = "SELECT " +
+                    " player.id,  " +
+                    " player.last_n,  " +
+                    " player.first_n,  " +
+                    " ippo.id AS ippo_id,  " +
+                    " ippo.name,  " +
+                    " player_bet.date_ride,  " +
+                    " player_bet.num_ride,  " +
+                    " horse.name AS horse,  " +
+                    " type_bet.type_bet,                           " +
+                    " player_bet.bet AS [bet(roubles)],  " +
+                    " type_bet.rate,  " +
+                    " player_bet.payout,  " +
+                    " type_bet.id AS type_bet_id,  " +
+                    " horse.id AS horse_id " +
+                    "FROM             " +
+                    " player INNER JOIN                          " +
+                    " player_bet ON player.id = player_bet.id_player INNER JOIN                          " +
+                    " horse ON player_bet.id_horse = horse.id INNER JOIN                          " +
+                    " type_bet ON player_bet.id_type_bet = type_bet.id INNER JOIN                          " +
+                    " ippo ON player_bet.id_ippo = ippo.id " +
+                    "WHERE " +
+                    "     player_bet.id_player = ? " +
+                    " AND player_bet.date_ride = ?" + //" CONVERT(DATETIME, '2021-01-08 00:00:00', 102))  " +
+                    " AND player_bet.num_ride  = ?  " +
+                    " AND player_bet.id_horse  = ? " +
+                    " AND player_bet.id_type_bet = ?  " +
+                    " AND player_bet.id_ippo   = ?" ;
+                    
+        PlayerBet  playerBetRet = null;
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(sql);
+
             ps.setInt (1, playerBet.getId());
             ps.setDate(2, playerBet.getDateRide());
             ps.setInt (3, playerBet.getNumRide());
             ps.setInt (4, playerBet.getIdHorse());
             ps.setInt (5, playerBet.getIdTypeBet());
             ps.setInt (6, playerBet.getIdIppodrom());
+
             ps.executeQuery();
             ResultSet rs = ps.getResultSet();
-            rs.next();
+            if (rs.next()){
+                playerBetRet = new PlayerBet();
+                playerBetRet.setId(rs.getInt(1));
+                playerBetRet.setLastName(rs.getString(2));
+                playerBetRet.setFirstName(rs.getString(3));
+                playerBetRet.setIdIppodrom(rs.getInt(4));
+                playerBetRet.setIppodromName(rs.getString(5));
+                playerBetRet.setDateRide(rs.getDate(6));
+                playerBetRet.setNumRide(rs.getInt(7));
+                playerBetRet.setHorse(rs.getString(8));
+                playerBetRet.setTypeBet(rs.getString(9));
+                playerBetRet.setBet(rs.getInt(10));
+                playerBetRet.setRate(rs.getDouble(11));
+                playerBetRet.setPayout(rs.getInt(12));
+                playerBetRet.setIdTypeBet(rs.getInt(13));
+                playerBetRet.setIdHorse(rs.getInt(14));
 
+                System.out.println("From getPlayerBet:"+playerBetRet);
+            } else {
+                System.out.println("From getPlayerBet (nothing to updated):"+playerBetRet);
+            }
 
-
-            playerBet1.setId(rs.getInt(1));
-            playerBet1.setLastName(rs.getString(2));
-            playerBet1.setFirstName(rs.getString(3));
-            playerBet1.setIdIppodrom(rs.getInt(4));
-            playerBet1.setIppodromName(playerBet.getIppodromName());
-            playerBet1.setDateRide(rs.getDate(5));
-            playerBet1.setNumRide(rs.getInt(6));
-            playerBet1.setHorse(rs.getString(7));
-            playerBet1.setIdHorse(playerBet.getIdHorse());
-            playerBet1.setTypeBet(rs.getString(8));
-            playerBet1.setBet(rs.getInt(9));
-            playerBet1.setTypeBet(playerBet.getTypeBet());
-            playerBet1.setRate(rs.getDouble(10));
-            playerBet1.setPayout(rs.getInt(11));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -141,22 +153,22 @@ public class PlayerBetDAO implements IPlayerBetDAO {
                 }
             }
         }
-        System.out.println("From getPlayerBet:"+playerBet1);
-        return playerBet1;
+
+        return playerBetRet;
     }
     @Override
     public PlayerBet save(PlayerBet playerBet) {
 
-        String sql = "INSERT INTO player_bet\n" +
-                "           (id_player\n" +
-                "           ,id_ippo\n" +
-                "           ,date_ride\n" +
-                "           ,num_ride\n" +
-                "           ,id_horse\n" +
-                "           ,id_type_bet\n" +
-                "           ,bet\n" +
-                "           ,payout)\n" +
-                "     VALUES\n" +
+        String sql = "INSERT INTO player_bet " +
+                "           (id_player " +
+                "           ,id_ippo " +
+                "           ,date_ride " +
+                "           ,num_ride " +
+                "           ,id_horse " +
+                "           ,id_type_bet " +
+                "           ,bet " +
+                "           ,payout) " +
+                "     VALUES " +
                 "           (?,?,?,?, ?,?,?,?)";
 
         PreparedStatement ps = null;
@@ -190,13 +202,14 @@ public class PlayerBetDAO implements IPlayerBetDAO {
 
     @Override
     public PlayerBet remove(PlayerBet playerBet) {
-        String sql =  "DELETE TOP(1)FROM player_bet\n"+
-                        "WHERE id_player = ?\n"+
-                        " AND  id_ippo = ?\n" +
-                        " AND  date_ride = ?\n" +
-                        " AND  num_ride = ?\n" +
-                        " AND  id_horse = ?\n" +
+        String sql =  "DELETE TOP(1)FROM player_bet "+
+                        "WHERE id_player = ? "+
+                        " AND  id_ippo = ? " +
+                        " AND  date_ride = ? " +
+                        " AND  num_ride = ? " +
+                        " AND  id_horse = ? " +
                         " AND  id_type_bet = ?";
+
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(sql);
@@ -208,7 +221,11 @@ public class PlayerBetDAO implements IPlayerBetDAO {
             ps.setInt (6, playerBet.getIdTypeBet());
             int rows = ps.executeUpdate();
             if (rows > 0 ){
-                System.out.println("From Remove:" + playerBet +"\n Bet is deleted");
+                System.out.println("From Remove:" + playerBet);
+                playerBet = null;
+            }
+            else{
+                System.out.println("From Remove (not removed):" + playerBet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -221,21 +238,21 @@ public class PlayerBetDAO implements IPlayerBetDAO {
                 }
             }
         }
-        playerBet = null;
         return playerBet;
     }
 
     @Override
     public PlayerBet update(PlayerBet playerBet) {
-        String sql ="UPDATE TOP(1) player_bet\n" +
-                    "SET  bet = ?\n" +
-                        ",payout = ?\n" +
-                    "WHERE id_player = ?\n" +
-                        "AND id_ippo = ?\n" +
-                        "AND date_ride = ?\n" +
-                        "AND num_ride = ?\n" +
-                        "AND id_horse = ?\n" +
+        String sql ="UPDATE TOP(1) player_bet " +
+                    "SET  bet = ?" +
+                        ",payout = ? " +
+                    "WHERE id_player = ? " +
+                        "AND id_ippo = ? " +
+                        "AND date_ride = ? " +
+                        "AND num_ride = ? " +
+                        "AND id_horse = ? " +
                         "AND id_type_bet = ?";
+        PlayerBet playerBetRet = null;
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(sql);
@@ -251,8 +268,20 @@ public class PlayerBetDAO implements IPlayerBetDAO {
 
             int rows = ps.executeUpdate();
             if (rows > 0 ){
-                System.out.println("From Update:"+ playerBet + "\n Bet is updated");
+                playerBetRet = new PlayerBet();
+                playerBetRet.setId(playerBet.getId());
+                playerBetRet.setIdIppodrom(playerBet.getIdIppodrom());
+                playerBetRet.setDateRide(playerBet.getDateRide());
+                playerBetRet.setNumRide(playerBet.getNumRide());
+                playerBetRet.setIdHorse(playerBet.getIdHorse());
+                playerBetRet.setIdTypeBet(playerBet.getIdTypeBet());
+                playerBetRet.setBet(playerBet.getBet());
+                playerBetRet.setPayout(playerBet.getPayout());
+                System.out.println("From Update:"+ playerBetRet);
+            } else{
+                System.out.println("From Update (not updated):"+ playerBetRet);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
@@ -267,3 +296,28 @@ public class PlayerBetDAO implements IPlayerBetDAO {
         return playerBet;
     }
 }
+
+                    
+                    /*"SELECT player.id, " +
+                                "player.last_n, " +
+                                "player.first_n,\n"+
+                                "player_bet.id_ippo,"+
+                                "player_bet.date_ride, " +
+                                "player_bet.num_ride, " +
+                                "horse.name AS horse,\n"+
+                                "type_bet.type_bet, " +
+                                "player_bet.bet AS [bet(roubles)], " +
+                                "type_bet.rate, \n" +
+                                "player_bet.payout\n" +
+                            "FROM player INNER JOIN\n" +
+                                " player_bet ON player.id = player_bet.id_player INNER JOIN\n" +
+                                " horse ON player_bet.id_horse = horse.id INNER JOIN\n" +
+                                " type_bet ON player_bet.id_type_bet = type_bet.id\n" +
+                            "WHERE  " +
+                                "     (player_bet.id_player = ?)\n"+
+                                " AND (player_bet.date_ride = ?)\n"+
+                                " AND (player_bet.num_ride = ?)\n"+
+                                " AND (player_bet.id_horse = ?)\n"+
+                                " AND (player_bet.id_type_bet = ?\n)"+
+                                " AND (player_bet.id_ippo = ?)";
+*/
