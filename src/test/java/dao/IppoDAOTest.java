@@ -1,19 +1,15 @@
 package dao;
 
 import entity.Ippo;
-import entity.Stud;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import racing.Solution;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import static org.testng.Assert.*;
 
 public class IppoDAOTest {
     IppoDAO ippoDAO;

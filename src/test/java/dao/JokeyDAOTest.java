@@ -1,21 +1,16 @@
 package dao;
 
 import entity.Jokey;
-import entity.Player;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import racing.Solution;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Scanner;
 
-import static org.testng.Assert.*;
 
 public class JokeyDAOTest {
     JokeyDAO jokeyDAO;
@@ -28,8 +23,6 @@ public class JokeyDAOTest {
         String user = "RRA";
         String password = "rra";
 
-
-        //Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
         String sql =  "DELETE TOP(10) FROM jokey";
         PreparedStatement ps = Solution.con.prepareStatement(sql);

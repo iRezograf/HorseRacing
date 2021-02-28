@@ -19,7 +19,6 @@ public class PlayerDAOTest {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
 
         String sql =  "DELETE TOP(10) FROM player";
@@ -67,8 +66,6 @@ public class PlayerDAOTest {
         actualPlayer = playerDAO.lookFor(player);
         Assert.assertEquals(actualPlayer.getFirstName(), "FirstName");
     }
-
-
 
     @Test(groups = {"player"}, priority = 14)
     public void testUpdate() {

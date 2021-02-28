@@ -5,15 +5,12 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import racing.Solution;
 
-import java.security.spec.RSAOtherPrimeInfo;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.*;
 
 public class RacingMapDAOTest {
     Player  player;
@@ -38,13 +35,11 @@ public class RacingMapDAOTest {
     JokeyDAO    jokeyDAO;
     RacingMapDAO racingMapDAO;
 
-    //@BeforeMethod(groups = {"racingMap"})
     @BeforeGroups(groups = {"racingMap"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        //Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
 
         String sql =  "DELETE TOP(10) FROM horse";
@@ -194,7 +189,6 @@ public class RacingMapDAOTest {
         Assert.assertEquals(actualRacingMap.getRating(), 2.00);
     }
 
-    //@AfterMethod(groups = {"racingMap"})
     @AfterGroups(groups = {"racingMap"})
     public void tearDown() {
     }

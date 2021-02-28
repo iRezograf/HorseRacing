@@ -1,10 +1,8 @@
 package dao;
 
-import dao.interfaces.IStudDAO;
 import entity.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import racing.Solution;
@@ -13,8 +11,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.*;
-import static racing.Solution.con;
 
 public class PlayerBetDAOTest {
 
@@ -44,12 +40,10 @@ public class PlayerBetDAOTest {
     TypeBetDAO typeBetDAO;
 
     @BeforeMethod(groups = {"playerBet"})
-    //@BeforeGroups(groups = {"playerBet"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
 
         String sql =  "DELETE TOP(10) FROM horse";
@@ -246,5 +240,4 @@ public class PlayerBetDAOTest {
         StudDAO = null;
         typeBetDAO = null;
     }
-
 }

@@ -19,7 +19,7 @@ public class PlayerActivity {
     public PlayerActivity() {
     }
 
-    public Player registration(){
+    public static Player registration(){
         Player playerIn;
 
         PlayerDAO playerDAO = new PlayerDAO();
@@ -50,7 +50,7 @@ public class PlayerActivity {
         return player;
     }
 
-    public Player changeMyInfo(){
+    public static Player changeMyInfo(){
         Player playerIn;
         PlayerDAO playerDAO = new PlayerDAO();
         playerIn    = new Player();
@@ -88,7 +88,7 @@ public class PlayerActivity {
         return player;
     }
 
-    public PlayerBetDAO setBet(Player player){
+    public static PlayerBetDAO setBet(Player player){
         /** player makes bet*/
 
         /** Look at the map of ride*/
@@ -124,7 +124,7 @@ public class PlayerActivity {
         return playerBetDAO;
     }
 
-    public void showRacingMap(int id_ippodrom, Date date){
+    public static void showRacingMap(int id_ippodrom, Date date){
         /** show map racing: num, horses, jokeys etc*/
         RacingMapDAO racingMapDAO = new RacingMapDAO();
         RacingMap racingMap = new RacingMap();
@@ -140,7 +140,7 @@ public class PlayerActivity {
         }
     }
 
-    public void showBetsOfPlayer(PlayerBet playerBet){
+    public static void showBetsOfPlayer(PlayerBet playerBet){
         /** show bets of player*/
         PlayerBetDAO playerBetDAO = new PlayerBetDAO();
         List<PlayerBet> playerBets; // = new ArrayList<PlayerBet>();
@@ -153,7 +153,7 @@ public class PlayerActivity {
         }
     }
 
-    public PlayerBet removeBet(PlayerBet playerBet){
+    public static PlayerBet removeBet(PlayerBet playerBet){
         PlayerBetDAO playerBetDAO = new PlayerBetDAO();
         Scanner in = new Scanner(System.in);
             System.out.println("Are you real would remove this bet? [Y/N]");

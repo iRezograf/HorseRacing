@@ -28,7 +28,6 @@ public class HorseDAOTest {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        //Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
         String sql =  "DELETE TOP(10) FROM horse";
         PreparedStatement ps = Solution.con.prepareStatement(sql);
