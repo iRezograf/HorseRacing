@@ -4,6 +4,7 @@ import dao.interfaces.IStudDAO;
 import entity.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import racing.Solution;
@@ -16,7 +17,6 @@ import static org.testng.Assert.*;
 import static racing.Solution.con;
 
 public class PlayerBetDAOTest {
-
 
     Coach coach;
     Horse horse;
@@ -43,7 +43,8 @@ public class PlayerBetDAOTest {
     StudDAO StudDAO;
     TypeBetDAO typeBetDAO;
 
-    @BeforeMethod
+    @BeforeMethod(groups = {"playerBet"})
+    //@BeforeGroups(groups = {"playerBet"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
@@ -97,7 +98,6 @@ public class PlayerBetDAOTest {
         /** player.id */
         player = playerDAO.lookFor("testLogin", "TestPassword");
 
-
         ippo = new Ippo();
         ippo.setName("TestIppodromeName");
         ippoDAO = new IppoDAO();
@@ -144,19 +144,6 @@ public class PlayerBetDAOTest {
         /** coach.id */
         coach = coachDAO.lookFor(coach);
 
-/**
-        actualPlayerBet = new PlayerBet();
-        playerBet = new PlayerBet();
-        playerBet.setId(player.getId());
-        playerBet.setIdIppodrom(ippo.getId());
-        playerBet.setDateRide(Date.valueOf("2021-01-08"));
-        playerBet.setNumRide(1);
-        playerBet.setIdHorse(horse.getId());
-        playerBet.setIdTypeBet(typeBet.getId());
-        playerBet.setBet(999);
-        playerBet.setPayout(1999);
-*/
-
         racingMap = new RacingMap();
         racingMap.setId_ippodrom(ippo.getId());
         racingMap.setDate_ride(Date.valueOf("2021-01-08"));
@@ -169,7 +156,7 @@ public class PlayerBetDAOTest {
         racingMapDAO.save(racingMap);
 
         actualPlayerBet = new PlayerBet();
-        playerBet = new PlayerBet();
+        playerBet       = new PlayerBet();
         playerBet.setId(player.getId());
         playerBet.setIdIppodrom(ippo.getId());
         playerBet.setDateRide(Date.valueOf("2021-01-08"));
@@ -192,6 +179,7 @@ public class PlayerBetDAOTest {
 
     @Test(groups = {"playerBet"}, priority = 82)
     public void testGetPlayerBet() {
+        actualPlayerBet = playerBetDAO.remove(playerBet);
         actualPlayerBet = playerBetDAO.save(playerBet);
         actualPlayerBet = playerBetDAO.getPlayerBet(actualPlayerBet);
         Assert.assertEquals(actualPlayerBet.getHorse(), horse.getName(),"Names Are Equals and is: "+ playerBet.getHorse());
@@ -200,6 +188,7 @@ public class PlayerBetDAOTest {
 
     @Test(groups = {"playerBet"}, priority = 84)
     public void testGetPlayerBets() {
+        actualPlayerBet = playerBetDAO.remove(playerBet);
         actualPlayerBet = playerBetDAO.save(playerBet);
         actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
         playerBets = playerBetDAO.getPlayerBets(actualPlayerBet);
@@ -209,6 +198,7 @@ public class PlayerBetDAOTest {
 
     @Test(groups = {"playerBet"}, priority = 86)
     public void testUpdate() {
+        actualPlayerBet = playerBetDAO.remove(playerBet);
         actualPlayerBet = playerBetDAO.save(playerBet);
         actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
         playerBet.setBet(100);
@@ -220,6 +210,7 @@ public class PlayerBetDAOTest {
 
     @Test(groups = {"playerBet"}, priority = 88)
     public void testRemove() {
+        actualPlayerBet = playerBetDAO.remove(playerBet);
         actualPlayerBet = playerBetDAO.save(playerBet);
         actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
         playerBet.setBet(100);
@@ -228,7 +219,7 @@ public class PlayerBetDAOTest {
         Assert.assertNull(actualPlayerBet);
     }
 
-    @AfterMethod
+    @AfterMethod(groups = {"playerBet"})
     public void tearDown() {
         coach = null;
         horse = null;

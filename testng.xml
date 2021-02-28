@@ -11,7 +11,7 @@
                 <include name="coach"/>
                 <include name="ippo"/>
                 <include name="typeBet"/>
-                <!--include name="playerBet"/-->
+                <include name="playerBet"/>
                 <include name="racingMap"/>
             </run>
         </groups>
@@ -23,7 +23,7 @@
             <class name="dao.CoachDAOTest"></class>
             <class name="dao.IppoDAOTest"></class>
             <class name="dao.TypeBetDAOTest"></class>
-            <!--class name="dao.PlayerBetDAOTest"></class-->
+            <class name="dao.PlayerBetDAOTest"></class>
             <class name="dao.RacingMapDAOTest"></class>
         </classes>
     </test>

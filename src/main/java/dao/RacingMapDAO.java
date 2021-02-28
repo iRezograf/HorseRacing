@@ -62,6 +62,7 @@ public class RacingMapDAO implements IRacingMap {
                 racingMap.setRating(rs.getInt(16));
                 racingMap.setPrize_place(rs.getInt(17));
                 racingMaps.add(racingMap);
+                System.out.println("From getRacingMaps:"+racingMap);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,19 +81,20 @@ public class RacingMapDAO implements IRacingMap {
     @Override
     public RacingMap save(RacingMap racingMap) {
         PreparedStatement ps = null;
-        String sql =    "INSERT INTO [dbo].[racing_map]\n" +
-                        "([id_ippo]\n" +
-                        ",[date_ride]\n" +
-                        ",[num_ride]\n" +
-                        ",[id_horse]\n" +
-                        ",[id_jokey]\n" +
-                        ",[id_coach]\n" +
-                        ",[weight]\n" +
-                        ",[last_ride]\n" +
-                        ",[distance]\n" +
-                        ",[rating]\n" +
-                        ",[prize_place]) \n" +
-                        "VALUES (?,?,? ,?,?,?, ?,?,?, ?,?)";
+        RacingMap racingMapRet = null;
+        String sql =    "INSERT INTO racing_map " +
+                        "(id_ippo" +
+                        ",date_ride" +
+                        ",num_ride" +
+                        ",id_horse" +
+                        ",id_jokey" +
+                        ",id_coach" +
+                        ",weight" +
+                        ",last_ride" +
+                        ",distance" +
+                        ",rating" +
+                        ",prize_place) " +
+                        " VALUES (?,?,? ,?,?,?, ?,?,?, ?,?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt (1, racingMap.getId_ippodrom());
@@ -107,8 +109,12 @@ public class RacingMapDAO implements IRacingMap {
             ps.setDouble(10, racingMap.getRating());
             ps.setInt (11, racingMap.getPrize_place());
 
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
+            int rows = ps.executeUpdate();
+            if (rows > 0 ){
+                System.out.println("From Save:"+ racingMap);
+            } else {
+                System.out.println("From Save (not added):"+ racingMap);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -125,12 +131,13 @@ public class RacingMapDAO implements IRacingMap {
 
     @Override
     public RacingMap remove(RacingMap racingMap) {
-                String sql = "DELETE TOP(1) FROM [dbo].[racing_map]\n" +
-                            " WHERE id_ippo = ?\n" +
-                            " AND   date_ride   = ?\n" +
-                            " AND   num_ride    = ?\n" +
+                String sql = "DELETE TOP(1) FROM racing_map " +
+                            " WHERE id_ippo = ? " +
+                            " AND   date_ride   = ?" +
+                            " AND   num_ride    = ?" +
                             " AND   id_horse    = ?";
         PreparedStatement ps = null;
+        RacingMap racingMapRet = null;
         try {
             ps = con.prepareStatement(sql);
 
@@ -139,11 +146,14 @@ public class RacingMapDAO implements IRacingMap {
             ps.setInt (3, racingMap.getNum_ride());
             ps.setInt (4, racingMap.getId_horse());
             int cnt = ps.executeUpdate();
+            racingMapRet  = new RacingMap();
             if (cnt > 0) {
-                System.out.println(racingMap + "\n was deleted.");
+                System.out.println("From Remove:"+racingMapRet);
+                racingMapRet = null;
             }
             else {
-                System.out.println(racingMap + "\n didn't deleted.");
+                racingMapRet = racingMap;
+                System.out.println("From Remove (not removed):"+racingMap);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -156,27 +166,27 @@ public class RacingMapDAO implements IRacingMap {
                 }
             }
         }
-        return racingMap;
+        return racingMapRet;
     }
 
     @Override
     public RacingMap update(RacingMap racingMap) {
-        String sql = "UPDATE [dbo].[racing_map] \n" +
-                        "SET [id_ippo] = ?\n" +
-                        ",[date_ride] = ?\n" +
-                        ",[num_ride] = ?\n" +
-                        ",[id_horse] = ?\n" +
-                        ",[id_jokey] = ?\n" +
-                        ",[id_coach] = ?\n" +
-                        ",[weight] = ?\n" +
-                        ",[last_ride] = ?\n" +
-                        ",[distance] = ?\n" +
-                        ",[rating] = ?\n" +
-                        ",[prize_place] = ?\n"+
-                        "WHERE [id_ippo] = ?\n" +
-                        " AND [date_ride] = ?\n" +
-                        " AND [num_ride] = ?\n" +
-                        " AND[id_horse] = ?";
+        String sql = "UPDATE racing_map " +
+                        "SET id_ippo = ?" +
+                        ",date_ride = ?" +
+                        ",num_ride = ?" +
+                        ",id_horse = ?" +
+                        ",id_jokey = ?" +
+                        ",id_coach = ?" +
+                        ",weight = ?" +
+                        ",last_ride = ?" +
+                        ",distance = ?" +
+                        ",rating = ?" +
+                        ",prize_place = ? "+
+                        "WHERE id_ippo = ?" +
+                        " AND  date_ride = ?" +
+                        " AND  num_ride = ?" +
+                        " AND  id_horse = ?";
                         /** = 15*/
         PreparedStatement ps = null;
         try {
@@ -201,7 +211,9 @@ public class RacingMapDAO implements IRacingMap {
 
             int rows = ps.executeUpdate();
             if (rows > 0 ){
-                System.out.println("RacingMap is updated");
+                System.out.println("From update: "+ racingMap);
+            } else{
+                System.out.println("From update: (isn't updated) :" + racingMap);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -214,6 +226,6 @@ public class RacingMapDAO implements IRacingMap {
                 }
             }
         }
-        return null;
+        return racingMap;
     }
 }

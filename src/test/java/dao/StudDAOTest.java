@@ -26,7 +26,7 @@ public class StudDAOTest {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        Solution solution = new Solution();
+        //Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
         String sql =  "DELETE TOP(10) FROM stud";
         PreparedStatement ps = Solution.con.prepareStatement(sql);

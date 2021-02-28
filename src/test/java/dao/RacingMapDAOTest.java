@@ -2,11 +2,10 @@ package dao;
 
 import entity.*;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import racing.Solution;
 
+import java.security.spec.RSAOtherPrimeInfo;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,34 +16,35 @@ import java.util.List;
 import static org.testng.Assert.*;
 
 public class RacingMapDAOTest {
-    Player player;
-    Ippo ippo;
-    Horse horse;
-    Stud stud;
+    Player  player;
+    Ippo    ippo;
+    Horse   horse;
+    Stud    stud;
     TypeBet typeBet;
     PlayerBet playerBet;
-    Coach coach;
-    Jokey jokey;
+    Coach   coach;
+    Jokey   jokey;
     RacingMap racingMap;
     RacingMap actualRacingMap;
     List<RacingMap> racingMaps;
 
-    PlayerDAO playerDAO;
-    IppoDAO ippoDAO;
-    StudDAO StudDAO;
-    HorseDAO horseDAO;
-    TypeBetDAO typeBetDAO;
+    PlayerDAO   playerDAO;
+    IppoDAO     ippoDAO;
+    StudDAO     StudDAO;
+    HorseDAO    horseDAO;
+    TypeBetDAO  typeBetDAO;
     PlayerBetDAO playerBetDAO;
-    CoachDAO coachDAO;
-    JokeyDAO jokeyDAO;
+    CoachDAO    coachDAO;
+    JokeyDAO    jokeyDAO;
     RacingMapDAO racingMapDAO;
 
-    @BeforeMethod
+    //@BeforeMethod(groups = {"racingMap"})
+    @BeforeGroups(groups = {"racingMap"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        Solution solution = new Solution();
+        //Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
 
         String sql =  "DELETE TOP(10) FROM horse";
@@ -93,7 +93,6 @@ public class RacingMapDAOTest {
         playerDAO.save(player);
         /** player.id */
         player = playerDAO.lookFor("testLogin", "TestPassword");
-
 
         ippo = new Ippo();
         ippo.setName("TestIppodromeName");
@@ -149,72 +148,54 @@ public class RacingMapDAOTest {
         racingMap.setId_jokey(jokey.getId());
         racingMap.setId_coach(coach.getId());
         racingMapDAO = new RacingMapDAO();
-        /** Create values for Primary key*/
-        racingMapDAO.save(racingMap);
-
-        playerBet = new PlayerBet();
-        playerBet.setId(player.getId());
-        playerBet.setIdIppodrom(ippo.getId());
-        playerBet.setDateRide(Date.valueOf("2021-01-08"));
-        playerBet.setNumRide(1);
-        playerBet.setIdHorse(horse.getId());
-        playerBet.setIdTypeBet(typeBet.getId());
-        playerBet.setBet(999);
-        playerBet.setPayout(1999);
-
-        playerBetDAO = new PlayerBetDAO();
-
-        playerBet = playerBetDAO.save(playerBet);
-
-
-        actualRacingMap = new RacingMap();
-
-/**
-        racingMap = new RacingMap();
-        racingMap.setId_ippodrom(ippo.getId());
-        racingMap.setDate_ride(Date.valueOf("2021-01-08"));
-        racingMap.setNum_ride(1);
-        racingMap.setId_horse(horse.getId());
-        racingMap.setId_jokey(jokey.getId());
-        racingMap.setId_coach(coach.getId());
-
-        racingMap.setIppodromName(ippo.getName());
-        racingMap.setHorseName(horse.getName());
-        racingMap.setBirth(horse.getBirth());
-        racingMap.setSex(horse.getSex());
-        racingMap.setJokeyName(jokey.getName());
-        racingMap.setCoachName(coach.getName());
-        racingMap.setLast_ride(horse.getBirth());
-        System.out.println(racingMap);
-        racingMapDAO = new RacingMapDAO();
-*/
-        //actualRacingMap = racingMapDAO.save(racingMap);
-
-        racingMaps = new ArrayList<>();
     }
 
-
     @Test(groups = {"racingMap"}, priority = 92)
-    public void testGetRacingMaps() {
-        //actualRacingMap = racingMapDAO.save(racingMap);
-        System.out.println(racingMap);
+    public void testSave() {
+        actualRacingMap = racingMapDAO.save(racingMap);
         racingMaps = racingMapDAO.getRacingMaps(racingMap);
         actualRacingMap = racingMaps.get(0);
         Assert.assertEquals(actualRacingMap.getHorseName(), horse.getName());
     }
 
     @Test(groups = {"racingMap"}, priority = 94)
-    public void testSave() {
+    public void testGetRacingMaps() {
+        racingMaps = racingMapDAO.getRacingMaps(racingMap);
+        actualRacingMap = racingMaps.get(0);
+        Assert.assertEquals(actualRacingMap.getIppodromName(), ippo.getName());
     }
 
     @Test(groups = {"racingMap"}, priority = 96)
     public void testRemove() {
+        actualRacingMap = racingMapDAO.remove(racingMap);
+        racingMapDAO.save(racingMap);
+        Assert.assertNull(actualRacingMap);
     }
 
     @Test(groups = {"racingMap"}, priority = 98)
-    public void testUpdate() {
+    public void testUpdateWeight() {
+
+        racingMap.setWeight(2);
+
+        actualRacingMap = racingMapDAO.update(racingMap);
+        racingMaps = racingMapDAO.getRacingMaps(racingMap);
+        actualRacingMap = racingMaps.get(0);
+        Assert.assertEquals(actualRacingMap.getWeight(), 2);
     }
-    @AfterMethod
+
+    @Test(groups = {"racingMap"}, priority = 99)
+    public void testUpdateRating() {
+
+        racingMap.setRating(2.00);
+
+        actualRacingMap = racingMapDAO.update(racingMap);
+        racingMaps = racingMapDAO.getRacingMaps(racingMap);
+        actualRacingMap = racingMaps.get(0);
+        Assert.assertEquals(actualRacingMap.getRating(), 2.00);
+    }
+
+    //@AfterMethod(groups = {"racingMap"})
+    @AfterGroups(groups = {"racingMap"})
     public void tearDown() {
     }
 }

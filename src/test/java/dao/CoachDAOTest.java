@@ -24,7 +24,6 @@ public class CoachDAOTest {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
         String password = "rra";
-        Solution solution = new Solution();
         Solution.con = DriverManager.getConnection(url, user, password);
         String sql =  "DELETE TOP(10) FROM coach";
         PreparedStatement ps = Solution.con.prepareStatement(sql);
@@ -39,7 +38,6 @@ public class CoachDAOTest {
 
     @Test(groups = {"coach"}, priority = 50)
     public void testSave()  {
-        /** CoachName */
         actualCoach = (Coach) coachDAO.save(coach);
         Assert.assertEquals(actualCoach.getName(), "CoachName");
     }
