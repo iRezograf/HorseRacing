@@ -13,6 +13,9 @@
                 <include name="typeBet"/>
                 <include name="playerBet"/>
                 <include name="racingMap"/>
+                <include name="viewStats"/>
+                <include name="playerActivity"/>
+
             </run>
         </groups>
         <classes>
@@ -25,6 +28,8 @@
             <class name="dao.TypeBetDAOTest"></class>
             <class name="dao.PlayerBetDAOTest"></class>
             <class name="dao.RacingMapDAOTest"></class>
+            <class name="dao.ViewStatsTest"></class>
+            <class name="racing.PlayerActivityTest"></class>
         </classes>
     </test>
 </suite>

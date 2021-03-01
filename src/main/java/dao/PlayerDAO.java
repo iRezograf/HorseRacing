@@ -2,6 +2,7 @@ package dao;
 
 import dao.interfaces.IPlayerDAO;
 import entity.Player;
+import racing.Solution;
 
 /**static дописываем, чтобы увидеть и статические переменные из Solution*/
 import static racing.Solution.*;
@@ -208,15 +209,15 @@ public class PlayerDAO implements IPlayerDAO {
             ps.executeQuery();
             ResultSet rs = ps.getResultSet();
             if (rs.next()) {
-                player = new Player();
-                player.setId(rs.getInt(1));
-                player.setFirstName(rs.getString(2));
-                player.setLastName(rs.getString(3));
-                player.setLogin(rs.getString(4));
-                player.setPassword(rs.getString(5));
-                System.out.println("From LookFor (log/pass):"+player);
+                Solution.player.setId(rs.getInt(1));
+                Solution.player.setFirstName(rs.getString(2));
+                Solution.player.setLastName(rs.getString(3));
+                Solution.player.setLogin(rs.getString(4));
+                Solution.player.setPassword(rs.getString(5));
+                System.out.println("From LookFor (log/pass):"+Solution.player);
             } else {
-                System.out.println("From LookFor (log/pass):" + player);
+                Solution.player = null;
+                System.out.println("From LookFor (log/pass not found):" + Solution.player);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -229,7 +230,7 @@ public class PlayerDAO implements IPlayerDAO {
                 }
             }
         }
-        return player;
+        return Solution.player;
     }
     public Player lookFor(Player player) {
         String sql = "SELECT id " +
@@ -254,10 +255,15 @@ public class PlayerDAO implements IPlayerDAO {
 
             ResultSet rs = ps.getResultSet();
             if (rs.next()) {
-                player.setId(rs.getInt(1));
-                System.out.println("From LookFor(player):"+player);
+                Solution.player.setId(rs.getInt(1));
+                Solution.player.setFirstName(rs.getString(2));
+                Solution.player.setLastName(rs.getString(3));
+                Solution.player.setLogin(rs.getString(4));
+                Solution.player.setPassword(rs.getString(5));
+                System.out.println("From LookFor(player):"+Solution.player);
             } else {
-                System.out.println("From LookFor(player not found):"+player);
+                Solution.player = null;
+                System.out.println("From LookFor(player not found):"+Solution.player);
             }
 
         } catch (SQLException e) {
@@ -271,6 +277,6 @@ public class PlayerDAO implements IPlayerDAO {
                 }
             }
         }
-        return player;
+        return Solution.player;
     }
 }

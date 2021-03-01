@@ -112,6 +112,12 @@ public class PlayerDAOTest {
         actualPlayer = playerDAO.lookFor(player);
         Assert.assertNotNull(actualPlayer.getFirstName());
     }
+    @Test(groups = {"player"}, priority = 17)
+    public void testTestLookForBadPassword() {
+        actualPlayer = playerDAO.save(player);
+        actualPlayer = playerDAO.lookFor("PlayerLogin_", "PlayerPassword");
+        Assert.assertNull(actualPlayer);
+    }
 
     @AfterMethod(groups = {"player"})
     public void tearDown() {

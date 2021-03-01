@@ -1,24 +1,30 @@
-package dao;
+package racing;
 
+import dao.*;
 import entity.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import racing.Solution;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.testng.Assert.*;
+import static racing.Solution.player;
 
-public class PlayerBetDAOTest {
-
+public class PlayerActivityTest {
     Coach coach;
     Horse horse;
     Ippo ippo;
     Jokey jokey;
     Player player;
+    Player playerIn;
 
     PlayerBet playerBet;
     PlayerBet actualPlayerBet;
@@ -39,7 +45,7 @@ public class PlayerBetDAOTest {
     StudDAO StudDAO;
     TypeBetDAO typeBetDAO;
 
-    @BeforeMethod(groups = {"playerBet"})
+    @BeforeGroups(groups = {"playerActivity"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
@@ -82,6 +88,8 @@ public class PlayerBetDAOTest {
         ps = Solution.con.prepareStatement(sql);
         ps.executeUpdate();
 
+
+        playerIn = new Player();
         player = new Player();
         Solution.player = new Player();
         player.setLogin("testLogin");
@@ -163,58 +171,110 @@ public class PlayerBetDAOTest {
 
         playerBetDAO = new PlayerBetDAO();
         playerBets = new ArrayList<>();
+
     }
 
 
-    @Test(groups = {"playerBet"}, priority = 80)
-    public void testSave() throws SQLException {
-        playerBet = playerBetDAO.save(playerBet);
-        Assert.assertEquals(playerBet.getPayout(), 1999, "Сумма платежа совпадает");
+    @Test(groups = {"playerActivity"}, priority = 200)
+    public void testLoginNotNull() {
+/*
+        player.setLogin("testLogin");
+        player.setPassword("TestPassword");
+        player.setFirstName("TestFirstName");
+        player.setLastName("TestLastName");
+*/
+
+        Solution.player = playerDAO.lookFor("testLogin", "TestPassword");
+        if (Solution.player != null){
+            System.out.println("You are logged !");
+            System.out.println("----------------");
+        }
+
+        Assert.assertNotNull(Solution.player);
     }
 
-    @Test(groups = {"playerBet"}, priority = 82)
-    public void testGetPlayerBet() {
-        actualPlayerBet = playerBetDAO.remove(playerBet);
-        actualPlayerBet = playerBetDAO.save(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(actualPlayerBet);
-        Assert.assertEquals(actualPlayerBet.getHorse(), horse.getName(),"Names Are Equals and is: "+ playerBet.getHorse());
+    @Test(groups = {"playerActivity"}, priority = 201)
+    public void testLoginSetStaticPlayer() {
+        PlayerDAO playerDAO = new PlayerDAO();
+        Solution.player = playerDAO.lookFor("testLogin", "TestPassword");
+        if (Solution.player != null){
+            System.out.println("You are logged !");
+            System.out.println("----------------");
+        }
+        System.out.println(Solution.player.getLogin());
+        Assert.assertEquals(Solution.player.getLogin(),"testLogin");
     }
 
+    @Test(groups = {"playerActivity"}, priority = 202)
+    public void testLoginNotFound() {
+        PlayerDAO playerDAO = new PlayerDAO();
+        Solution.player = playerDAO.lookFor("testLogin NOT", "TestPassword");
+        if (Solution.player != null){
+            System.out.println("You are logged !");
+            System.out.println("----------------");
+        } else
+        {
+            System.out.println("You are NOT logged !");
+            System.out.println("----------------");
 
-    @Test(groups = {"playerBet"}, priority = 84)
-    public void testGetPlayerBets() {
-        actualPlayerBet = playerBetDAO.remove(playerBet);
-        actualPlayerBet = playerBetDAO.save(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
-        playerBets = playerBetDAO.getPlayerBets(actualPlayerBet);
-        actualPlayerBet = playerBets.get(0);
-        Assert.assertEquals(actualPlayerBet.getHorse(), horse.getName(),"Names Are Equals and is: "+ playerBet.getHorse());
+        }
+        Assert.assertNull(Solution.player);
     }
 
-    @Test(groups = {"playerBet"}, priority = 86)
-    public void testUpdate() {
-        actualPlayerBet = playerBetDAO.remove(playerBet);
-        actualPlayerBet = playerBetDAO.save(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
-        playerBet.setBet(100);
-        playerBet.setPayout(1000);
-        actualPlayerBet = playerBetDAO.update(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
-        Assert.assertEquals(actualPlayerBet.getBet(), 100);
+    @Test(groups = {"playerActivity"}, priority = 203)
+    public void testFirstRegistration() {
+        PlayerDAO playerDAO = new PlayerDAO();
+        Player playerIn = new Player();
+        Solution.player = new Player();
+        playerIn.setLogin("testLogin");
+        playerIn.setPassword("TestPassword");
+        playerIn.setFirstName("TestFirstName");
+        playerIn.setLastName("TestLastName");
+
+        Solution.player = playerDAO.lookFor(playerIn);
+        if (Solution.player == null){
+            Solution.player = playerDAO.save(playerIn);
+            Solution.player = playerDAO.lookFor(playerIn);
+        } else
+        {
+            System.out.println("You are already registered ! You should login");
+            Assert.assertNotNull(Solution.player);
+        }
+        Assert.assertEquals(Solution.player.getLogin(),playerIn.getLogin(),"registation successfull");
     }
 
-    @Test(groups = {"playerBet"}, priority = 88)
-    public void testRemove() {
-        actualPlayerBet = playerBetDAO.remove(playerBet);
-        actualPlayerBet = playerBetDAO.save(playerBet);
-        actualPlayerBet = playerBetDAO.getPlayerBet(playerBet);
-        playerBet.setBet(100);
-        playerBet.setPayout(1000);
-        actualPlayerBet = playerBetDAO.remove(playerBet);
-        Assert.assertNull(actualPlayerBet);
+    @Test(groups = {"playerActivity"}, priority = 207)
+    public void testChangeMyInfo() {
+        PlayerDAO playerDAO = new PlayerDAO();
+        Player playerIn = new Player();
+        Solution.player = playerDAO.lookFor("testLogin", "TestPassword");
+        playerIn.setId(Solution.player.getId());
+        playerIn.setLogin("testLogin");
+        playerIn.setPassword("TestPassword");
+        playerIn.setFirstName("TestFirstNameChange");
+        playerIn.setLastName("TestLastName");
+        playerIn = playerDAO.update(playerIn);
+        Solution.player = playerDAO.lookFor(playerIn);
+        Assert.assertEquals(Solution.player.getFirstName(),playerIn.getFirstName());
     }
 
-    @AfterMethod(groups = {"playerBet"})
+    @Test(groups = {"playerActivity"}, priority = 209)
+    public void testSetBet() {
+    }
+
+    @Test(groups = {"playerActivity"}, priority = 211)
+    public void testShowRacingMap() {
+    }
+
+    @Test(groups = {"playerActivity"}, priority = 213)
+    public void testShowBetsOfPlayer() {
+    }
+
+    @Test(groups = {"playerActivity"}, priority = 215)
+    public void testRemoveBet() {
+    }
+
+    @AfterMethod(groups = {"playerActivity"})
     public void tearDown() {
         coach = null;
         horse = null;
@@ -241,4 +301,5 @@ public class PlayerBetDAOTest {
         StudDAO = null;
         typeBetDAO = null;
     }
+
 }

@@ -17,17 +17,23 @@ public class PlayerBetDAO implements IPlayerBetDAO {
 
     @Override
     public List<PlayerBet> getPlayerBets(PlayerBet playerBet) {
-        String sql =    "SELECT dbo.player.id, dbo.player.last_n, dbo.player.first_n,\n"+
-                        "dbo.player_bet.date_ride, dbo.player_bet.num_ride,\n " +
-                        "dbo.player_bet.id_horse, dbo.horse.name AS horse,\n"+
-                        "dbo.player_bet.id_type_bet, dbo.type_bet.type_bet, dbo.player_bet.bet\n " +
-                        "AS [bet(roubles)],\n " +
-                        "dbo.type_bet.rate, dbo.player_bet.payout\n" +
-                        "FROM dbo.player INNER JOIN\n" +
-                        " dbo.player_bet ON dbo.player.id = dbo.player_bet.id_player INNER JOIN\n" +
-                        " dbo.horse ON dbo.player_bet.id_horse = dbo.horse.id INNER JOIN\n" +
-                        " dbo.type_bet ON dbo.player_bet.id_type_bet = dbo.type_bet.id\n" +
-                        "WHERE        (dbo.player.id = ?) AND (dbo.player_bet.date_ride = ?)";
+        String sql = "SELECT  "+
+                "       player.id, \n" +
+                "       player.last_n, \n" +
+                "       player.first_n, \n" +
+                "       player_bet.date_ride, \n" +
+                "       player_bet.num_ride, \n" +
+                "       horse.name AS horse, \n" +
+                "       type_bet.type_bet, \n" +
+                "       player_bet.bet AS [bet(roubles)], \n" +
+                "       type_bet.rate,              \n" +
+                "       player_bet.payout\n" +
+                "FROM    player INNER JOIN\n" +
+                "        player_bet ON player.id = player_bet.id_player INNER JOIN\n" +
+                "        horse ON player_bet.id_horse = horse.id INNER JOIN\n" +
+                "        type_bet ON player_bet.id_type_bet = type_bet.id\n" +
+                "WHERE        (player.id = ?)" +
+                "AND (player_bet.date_ride = ?)";
 
 
         PreparedStatement ps = null;
@@ -41,21 +47,18 @@ public class PlayerBetDAO implements IPlayerBetDAO {
             ResultSet rs = ps.getResultSet();
             playerBets = new ArrayList<>();
             while (rs.next()){
+                playerBet = new PlayerBet();
                 playerBet.setId(rs.getInt(1));
                 playerBet.setLastName(rs.getString(2));
                 playerBet.setFirstName(rs.getString(3));
                 playerBet.setDateRide(rs.getDate(4));
                 playerBet.setNumRide(rs.getInt(5));
-                playerBet.setIdHorse(rs.getInt(6));
-                playerBet.setHorse(rs.getString(7));
-                playerBet.setIdTypeBet(rs.getInt(8));
-                playerBet.setTypeBet(rs.getString(9));
-                playerBet.setBet(rs.getInt(10));
-                playerBet.setRate(rs.getDouble(11));
-                playerBet.setPayout(rs.getInt(12));
-
+                playerBet.setHorse(rs.getString(6));
+                playerBet.setTypeBet(rs.getString(7));
+                playerBet.setBet(rs.getInt(8));
+                playerBet.setRate(rs.getDouble(9));
+                playerBet.setPayout(rs.getInt(10));
                 playerBets.add(playerBet);
-                System.out.println(playerBets);
             }
 
         } catch (SQLException e) {
@@ -296,28 +299,3 @@ public class PlayerBetDAO implements IPlayerBetDAO {
         return playerBet;
     }
 }
-
-                    
-                    /*"SELECT player.id, " +
-                                "player.last_n, " +
-                                "player.first_n,\n"+
-                                "player_bet.id_ippo,"+
-                                "player_bet.date_ride, " +
-                                "player_bet.num_ride, " +
-                                "horse.name AS horse,\n"+
-                                "type_bet.type_bet, " +
-                                "player_bet.bet AS [bet(roubles)], " +
-                                "type_bet.rate, \n" +
-                                "player_bet.payout\n" +
-                            "FROM player INNER JOIN\n" +
-                                " player_bet ON player.id = player_bet.id_player INNER JOIN\n" +
-                                " horse ON player_bet.id_horse = horse.id INNER JOIN\n" +
-                                " type_bet ON player_bet.id_type_bet = type_bet.id\n" +
-                            "WHERE  " +
-                                "     (player_bet.id_player = ?)\n"+
-                                " AND (player_bet.date_ride = ?)\n"+
-                                " AND (player_bet.num_ride = ?)\n"+
-                                " AND (player_bet.id_horse = ?)\n"+
-                                " AND (player_bet.id_type_bet = ?\n)"+
-                                " AND (player_bet.id_ippo = ?)";
-*/
