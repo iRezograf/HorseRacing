@@ -34,6 +34,6 @@ public class Solution {
                 if (con != null) con.close();
         }
     }
-
+/** Протестирую, что commit сразу свадивается в GitHub*/
 }
 
