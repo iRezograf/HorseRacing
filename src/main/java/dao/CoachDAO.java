@@ -2,7 +2,6 @@ package dao;
 
 import dao.interfaces.ICoachDAO;
 import entity.Coach;
-import entity.Stud;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,6 +28,7 @@ public class CoachDAO implements ICoachDAO {
                 coach.setId(resultSet.getInt("id"));
                 coach.setName(resultSet.getString("name"));
                 coaches.add(coach);
+                System.out.println("From getCoaches: "+coach);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,7 +41,6 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
-        System.out.println("getCoaches:"+coaches);
         return coaches;
     }
 
@@ -55,11 +54,15 @@ public class CoachDAO implements ICoachDAO {
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-            /**coach = new Coach(resultSet.getInt("id"), resultSet.getString("name"));*/
-            coach = new Coach();
-            coach.setId(resultSet.getInt("id"));
-            coach.setName(resultSet.getString("name"));
+            if (resultSet.next()){
+                coach = new Coach();
+                coach.setId(resultSet.getInt("id"));
+                coach.setName(resultSet.getString("name"));
+                System.out.println("From get: "+coach);
+            } else {
+                System.out.println("From get (not found): "+coach);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -71,7 +74,6 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
-        System.out.println("get:"+coach);
         return coach;
     }
 
@@ -83,9 +85,11 @@ public class CoachDAO implements ICoachDAO {
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, coach.getName());
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-            /*resultSet.next();*/
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Save: "+coach);
+            } else {
+                System.out.println("From Save (not saved): "+coach);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -97,7 +101,6 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
-        System.out.println("Save:"+coach);
         return coach;
     }
 
@@ -109,8 +112,12 @@ public class CoachDAO implements ICoachDAO {
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, coach.getId());
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
+            if (ps.executeUpdate() > 0 ){
+                coach = null;
+                System.out.println("From Remove: "+coach);
+            } else {
+                System.out.println("From Remove: (not removed)"+coach);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -122,8 +129,6 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
-        coach = null;
-        System.out.println("Remove:"+coach);
         return coach;
     }
 
@@ -138,10 +143,11 @@ public class CoachDAO implements ICoachDAO {
             ps = con.prepareStatement(sql);
             ps.setString   (1, coach.getName());
             ps.setInt      (2, coach.getId());
-
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Update: "+coach);
+            } else {
+                System.out.println("From Update (not updated): "+coach);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -153,7 +159,7 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
-        System.out.println("Update:"+coach);
+
         return coach;
     }
 
@@ -165,10 +171,13 @@ public class CoachDAO implements ICoachDAO {
             ps.setString(1, coach.getName());
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-
-            coach.setId(resultSet.getInt("id"));
-            coach.setName(resultSet.getString("name"));
+            if (resultSet.next()){
+                coach.setId(resultSet.getInt("id"));
+                coach.setName(resultSet.getString("name"));
+                System.out.println("From LookFor: "+coach);
+            } else {
+                System.out.println("From LookFor (not found): "+coach);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -180,7 +189,6 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
-        System.out.println("LookFor:"+coach);
         return coach;
     }
     

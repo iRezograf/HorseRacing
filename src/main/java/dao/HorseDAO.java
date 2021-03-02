@@ -26,6 +26,7 @@ public class HorseDAO implements IHorseDAO {
                 ((Horse) horse).setId(resultSet.getInt("id"));
                 ((Horse) horse).setName(resultSet.getString("name"));
                 horses.add((Horse) horse);
+                System.out.println("From getHorses:"+horse);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,7 +39,7 @@ public class HorseDAO implements IHorseDAO {
                 }
             }
         }
-        System.out.println("getHorses:"+horses);
+
         return horses;
     }
 
@@ -95,10 +96,11 @@ public class HorseDAO implements IHorseDAO {
             ps.setDate(2, horse.getBirth());
             ps.setString(3, horse.getSex());
             ps.setInt(4, horse.getIdStud());
-
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Save: "+horse);
+            } else {
+                System.out.println("From Save (not saved): "+horse);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -110,7 +112,6 @@ public class HorseDAO implements IHorseDAO {
                 }
             }
         }
-        System.out.println("Save:"+horse);
         return horse;
     }
 
@@ -122,8 +123,12 @@ public class HorseDAO implements IHorseDAO {
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, horse.getId());
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
+            if (ps.executeUpdate() > 0 ){
+                horse = null;
+                System.out.println("From Remove: "+horse);
+            } else {
+                System.out.println("From Remove (not removed): "+horse);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -135,8 +140,6 @@ public class HorseDAO implements IHorseDAO {
                 }
             }
         }
-        horse = null;
-        System.out.println("Remove:"+horse);
         return horse;
     }
 
@@ -151,10 +154,15 @@ public class HorseDAO implements IHorseDAO {
             ps.setString(3, horse.getSex());
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
+            if (resultSet.next()){
+                horse.setId(resultSet.getInt("id"));
+                horse.setName(resultSet.getString("name"));
+                System.out.println("From LookFor:"+horse);
+            } else
+            {
+                System.out.println("From LookFor (not found):"+horse);
+            }
 
-            horse.setId(resultSet.getInt("id"));
-            horse.setName(resultSet.getString("name"));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -166,7 +174,6 @@ public class HorseDAO implements IHorseDAO {
                 }
             }
         }
-        System.out.println("LookFor:"+horse);
         return horse;
     }
 
@@ -174,17 +181,24 @@ public class HorseDAO implements IHorseDAO {
     public Object update(Object obj) {
         Horse horse = (Horse) obj;
         PreparedStatement ps = null;
-        String sql =    "UPDATE [dbo].[horse] \n" +
-                "SET [name] = ? \n" +
-                "WHERE [id] = ?";
+        String sql = "  UPDATE  horse " +
+                "       SET     name = ?, " +
+                "               birth = ?, " +
+                "               sex = ?, " +
+                "               id_stud = ? " +
+                "       WHERE   id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString   (1, horse.getName());
-            ps.setInt      (2, horse.getId());
-
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-
+            ps.setDate(2, horse.getBirth() );
+            ps.setString(3, horse.getSex());
+            ps.setInt(4, horse.getIdStud());
+            ps.setInt      (5, horse.getId());
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Update: "+horse);
+            } else {
+                System.out.println("From Update (not updated): "+horse);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -196,7 +210,6 @@ public class HorseDAO implements IHorseDAO {
                 }
             }
         }
-        System.out.println("Update:"+horse);
         return horse;
     }
 }

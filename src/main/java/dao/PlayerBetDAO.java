@@ -6,7 +6,6 @@ import entity.Player;
 
 import static racing.Solution.*;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -142,7 +141,7 @@ public class PlayerBetDAO implements IPlayerBetDAO {
 
                 System.out.println("From getPlayerBet:"+playerBetRet);
             } else {
-                System.out.println("From getPlayerBet (nothing to updated):"+playerBetRet);
+                System.out.println("From getPlayerBet (records not found):"+playerBetRet);
             }
 
         } catch (SQLException e) {
@@ -185,9 +184,10 @@ public class PlayerBetDAO implements IPlayerBetDAO {
             ps.setInt (6, playerBet.getIdTypeBet());
             ps.setInt (7, playerBet.getBet());
             ps.setInt (8, playerBet.getPayout());
-            int rows = ps.executeUpdate();
-            if (rows > 0 ){
-                System.out.println("From Save:"+ playerBet+ "\n Bet is added");
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Save: "+ playerBet+ "\n Bet is added");
+            } else {
+                System.out.println("From Save (not saved): "+ playerBet+ "\n Bet is added");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -222,8 +222,7 @@ public class PlayerBetDAO implements IPlayerBetDAO {
             ps.setInt (4, playerBet.getNumRide());
             ps.setInt (5, playerBet.getIdHorse());
             ps.setInt (6, playerBet.getIdTypeBet());
-            int rows = ps.executeUpdate();
-            if (rows > 0 ){
+            if (ps.executeUpdate() > 0 ){
                 System.out.println("From Remove:" + playerBet);
                 playerBet = null;
             }
@@ -269,8 +268,7 @@ public class PlayerBetDAO implements IPlayerBetDAO {
             ps.setInt (7, playerBet.getIdHorse());
             ps.setInt (8, playerBet.getIdTypeBet());
 
-            int rows = ps.executeUpdate();
-            if (rows > 0 ){
+            if (ps.executeUpdate() > 0 ){
                 playerBetRet = new PlayerBet();
                 playerBetRet.setId(playerBet.getId());
                 playerBetRet.setIdIppodrom(playerBet.getIdIppodrom());
@@ -280,11 +278,10 @@ public class PlayerBetDAO implements IPlayerBetDAO {
                 playerBetRet.setIdTypeBet(playerBet.getIdTypeBet());
                 playerBetRet.setBet(playerBet.getBet());
                 playerBetRet.setPayout(playerBet.getPayout());
-                System.out.println("From Update:"+ playerBetRet);
+                System.out.println("From Update: "+ playerBetRet);
             } else{
-                System.out.println("From Update (not updated):"+ playerBetRet);
+                System.out.println("From Update (not updated): "+ playerBetRet);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {

@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -155,6 +156,7 @@ public class RacingMapDAOTest {
 
     @Test(groups = {"racingMap"}, priority = 94)
     public void testGetRacingMaps() {
+
         racingMaps = racingMapDAO.getRacingMaps(racingMap);
         actualRacingMap = racingMaps.get(0);
         Assert.assertEquals(actualRacingMap.getIppodromName(), ippo.getName());

@@ -1,9 +1,6 @@
 package racing;
 
-import dao.HorseDAO;
-import dao.PlayerBetDAO;
-import dao.RacingMapDAO;
-import dao.ViewStats;
+import dao.*;
 import entity.Horse;
 import entity.Player;
 import entity.PlayerBet;
@@ -138,43 +135,98 @@ public  class MainMenu {
 
     public static void menu3(){
         /**                  Racing admninistration            **/
-        Scanner in  = new Scanner(System.in);
+        Horse horse = new Horse();
+        HorseDAO horseDAO = new HorseDAO();
         int choice;
+
+        Scanner in  = new Scanner(System.in);
         do {
             System.out.println("            1. Add horse");
             System.out.println("            2. Update horse");
-            System.out.println("            3. Add Racing Map");
-            System.out.println("            4. Update Racing Map");
-            System.out.println("            5. Exit");
+            System.out.println("            3. Delete horse");
+            System.out.println("            4. Add Racing Map");
+            System.out.println("            5. Update Racing Map");
+            System.out.println("            6. Exit");
 
             System.out.println("            --------------------\n"+"Make your choice ...");
             choice = in.nextInt();
 
+            StudDAO studDAO = new StudDAO();
+            horse = new Horse();
+            String misc;
             switch (choice){
                 case 1:
-                    Horse horse = new Horse();
+                    misc = in.nextLine();
+                    System.out.println("            Input horse name: ");
+                    horse.setName(in.nextLine());
+                    System.out.println("            Input horse birth day [2021-01-08]: ");
+                    horse.setBirth(Date.valueOf(in.nextLine()));
+                    System.out.println("            Input horse sex [stallion/mare]: ");
+                    horse.setSex(in.nextLine());
 
-                    horse.setName("HorseName");
-                    horse.setBirth(Date.valueOf("2021-01-08"));
-                    horse.setSex("Жеребец");
+                    studDAO.getStudes();
 
-                    HorseDAO horseDAO = new HorseDAO();
+                    System.out.println("            Input ID of stud [N]: ");
+                    horse.setIdStud(in.nextInt());
+
+                    horseDAO = new HorseDAO();
                     horseDAO.save(horse);
                     horse = horseDAO.lookFor(horse);
                     break;
                 case 2:
-                    System.out.println("Update horse");
+                    misc = in.nextLine();
+                    System.out.println("            Input horse name: ");
+                    horse.setName(in.nextLine());
+                    System.out.println("            Input horse birth day [2021-01-08]: ");
+                    horse.setBirth(Date.valueOf(in.nextLine()));
+                    System.out.println("            Input horse sex [stallion/mare]: ");
+                    horse.setSex(in.nextLine());
+
+                    studDAO.getStudes();
+
+                    System.out.println("            Input ID of stud [N]: ");
+                    horse.setIdStud(in.nextInt());
+
+                    horse = horseDAO.lookFor(horse);
+
+                    misc = in.nextLine();
+                    System.out.println("            Input horse NEW name: ");
+                    horse.setName(in.nextLine());
+                    System.out.println("            Input horse NEW birth day [2021-01-08]: ");
+                    horse.setBirth(Date.valueOf(in.nextLine()));
+                    System.out.println("            Input horse NEW sex [stallion/mare]: ");
+                    horse.setSex(in.nextLine());
+
+                    studDAO.getStudes();
+
+                    System.out.println("            Input NEW ID of stud [N]: ");
+                    horse.setIdStud(in.nextInt());
+
+                    horseDAO.update(horse);
                     break;
                 case 3:
-                    System.out.println("Add Racing Map");
+                    misc = in.nextLine();
+                    System.out.println("            Input horse name: ");
+                    horse.setName(in.nextLine());
+                    System.out.println("            Input horse birth day [2021-01-08]: ");
+                    horse.setBirth(Date.valueOf(in.nextLine()));
+                    System.out.println("            Input horse sex [stallion/mare]: ");
+                    horse.setSex(in.nextLine());
+
+                    horse = horseDAO.lookFor(horse);
+
+                    horseDAO.remove(horse);
                     break;
                 case 4:
-                    System.out.println("Update Racing Map");
+                    System.out.println("Add Racing Map. = UNDER CONSTRACTION =");
+                    break;
+                case 5:
+                    System.out.println("Update Racing Map. = UNDER CONSTRACTION =");
                     break;
                 default:
                     break;
             }
-        } while (choice != 5);
+        } while (choice != 6);
     }
 
 }

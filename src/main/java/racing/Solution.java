@@ -1,16 +1,7 @@
 package racing;
 
-import dao.JokeyDAO;
-import dao.PlayerBetDAO;
-import dao.PlayerDAO;
-import dao.RacingMapDAO;
-import entity.Jokey;
 import entity.Player;
-import entity.PlayerBet;
-import entity.RacingMap;
-
 import java.sql.*;
-import java.util.Scanner;
 
 public class Solution {
     public final static String URL = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacing";

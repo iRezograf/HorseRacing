@@ -43,7 +43,6 @@ public class RacingMapDAO implements IRacingMap {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                //RacingMap racingMap = new RacingMap();
                 racingMap.setId_ippodrom(rs.getInt(1));
                 racingMap.setIppodromName(rs.getString(2));
                 racingMap.setDate_ride(rs.getDate(3));
@@ -109,11 +108,10 @@ public class RacingMapDAO implements IRacingMap {
             ps.setDouble(10, racingMap.getRating());
             ps.setInt (11, racingMap.getPrize_place());
 
-            int rows = ps.executeUpdate();
-            if (rows > 0 ){
-                System.out.println("From Save:"+ racingMap);
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Save: "+ racingMap);
             } else {
-                System.out.println("From Save (not added):"+ racingMap);
+                System.out.println("From Save (not added): "+ racingMap);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -145,15 +143,14 @@ public class RacingMapDAO implements IRacingMap {
             ps.setDate(2, racingMap.getDate_ride());
             ps.setInt (3, racingMap.getNum_ride());
             ps.setInt (4, racingMap.getId_horse());
-            int cnt = ps.executeUpdate();
             racingMapRet  = new RacingMap();
-            if (cnt > 0) {
-                System.out.println("From Remove:"+racingMapRet);
+            if (ps.executeUpdate() > 0) {
+                System.out.println("From Remove: "+racingMapRet);
                 racingMapRet = null;
             }
             else {
                 racingMapRet = racingMap;
-                System.out.println("From Remove (not removed):"+racingMap);
+                System.out.println("From Remove (not removed): "+racingMap);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -209,11 +206,10 @@ public class RacingMapDAO implements IRacingMap {
             ps.setInt (14, racingMap.getNum_ride());
             ps.setInt (15, racingMap.getId_horse());
 
-            int rows = ps.executeUpdate();
-            if (rows > 0 ){
+            if (ps.executeUpdate() > 0 ){
                 System.out.println("From update: "+ racingMap);
             } else{
-                System.out.println("From update: (isn't updated) :" + racingMap);
+                System.out.println("From update: (isn't updated): " + racingMap);
             }
         } catch (SQLException e) {
             e.printStackTrace();

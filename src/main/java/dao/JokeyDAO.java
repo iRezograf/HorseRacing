@@ -2,7 +2,6 @@ package dao;
 
 import dao.interfaces.IJokeyDAO;
 import entity.Jokey;
-import racing.Solution;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ public class JokeyDAO implements IJokeyDAO {
                 jokey.setId(resultSet.getInt("id"));
                 jokey.setName(resultSet.getString("name"));
                 jokeys.add(jokey);
+                System.out.println("From getJokeys: "+jokey);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,7 +38,6 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        System.out.println("From getJokeys:"+jokey);
         return jokeys;
     }
 
@@ -52,10 +51,13 @@ public class JokeyDAO implements IJokeyDAO {
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-            jokey = new Jokey();
-            jokey.setId(resultSet.getInt("id"));
-            jokey.setName(resultSet.getString("name"));
+            if (resultSet.next()){
+                jokey = new Jokey();
+                jokey.setId(resultSet.getInt("id"));
+                jokey.setName(resultSet.getString("name"));
+                System.out.println("From Get: "+jokey);
+            } else
+                System.out.println("From Get (records not found): "+jokey);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -67,7 +69,6 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        System.out.println("From Get:"+jokey);
         return jokey;
     }
 
@@ -78,9 +79,11 @@ public class JokeyDAO implements IJokeyDAO {
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, jokey.getName());
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-            /*resultSet.next();*/
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Save: "+jokey);
+            } else {
+                System.out.println("From Save (not saved): "+jokey);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -92,7 +95,6 @@ public class JokeyDAO implements IJokeyDAO {
                 }
             }
         }
-        System.out.println("From Save:"+jokey);
         return jokey;
     }
 
@@ -103,14 +105,11 @@ public class JokeyDAO implements IJokeyDAO {
         try {
         ps = con.prepareStatement(sql);
         ps.setInt(1, jokey.getId());
-        //ResultSet resultSet = ps.getResultSet();
-        int rows = ps.executeUpdate();
-        if (rows > 0 ){
+        if (ps.executeUpdate() > 0 ){
             System.out.println("From Remove:"+jokey);
         } else {
             System.out.println(jokey + "Not Found. Not Deleted");
         }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -136,14 +135,11 @@ public class JokeyDAO implements IJokeyDAO {
             ps = con.prepareStatement(sql);
             ps.setString   (1, jokey.getName());
             ps.setInt      (2, jokey.getId());
-
-            int rows = ps.executeUpdate();
-            if (rows > 0 ){
+            if (ps.executeUpdate() > 0 ){
                 System.out.println("From Update:"+jokey);
             } else {
                 System.out.println(jokey + "Not Found. Not Updated");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -170,9 +166,9 @@ public class JokeyDAO implements IJokeyDAO {
             if (resultSet.next()){
                 jokeyRet.setId(resultSet.getInt("id"));
                 jokeyRet.setName(resultSet.getString("name"));
-                System.out.println("From LookFor:"+jokeyRet);
+                System.out.println("From LookFor: "+jokeyRet);
             } else {
-                System.out.println("From LookFor:"+jokey + "\nNot Found");
+                System.out.println("From LookFor: "+jokey + "\nNot Found");
             }
         } catch (SQLException e) {
             e.printStackTrace();

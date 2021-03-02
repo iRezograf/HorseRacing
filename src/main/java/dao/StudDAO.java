@@ -28,6 +28,7 @@ public class StudDAO implements IStudDAO {
                 ((Stud) stud).setId(resultSet.getInt("id"));
                 ((Stud) stud).setName(resultSet.getString("name"));
                 studs.add((Stud) stud);
+                System.out.println("getStudes:"+stud);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,7 +41,7 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("getStudes:"+stud);
+
         return studs;
     }
 
@@ -54,11 +55,14 @@ public class StudDAO implements IStudDAO {
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-            /**stud = new Stud(resultSet.getInt("id"), resultSet.getString("name"));*/
-            stud = new Stud();
-            stud.setId(resultSet.getInt("id"));
-            stud.setName(resultSet.getString("name"));
+            if (resultSet.next()) {
+                stud = new Stud();
+                stud.setId(resultSet.getInt("id"));
+                stud.setName(resultSet.getString("name"));
+                System.out.println("From get:"+stud);
+            } else {
+                System.out.println("From get (records not found):"+stud);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -70,7 +74,6 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("get"+stud);
         return stud;
     }
 
@@ -82,9 +85,12 @@ public class StudDAO implements IStudDAO {
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, stud.getName());
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-            /*resultSet.next();*/
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Save:"+stud);
+            }
+                else {
+                    System.out.println("From Save (not saved):"+stud);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -96,7 +102,6 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("Save:"+stud);
         return stud;
     }
 
@@ -108,8 +113,13 @@ public class StudDAO implements IStudDAO {
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, stud.getId());
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
+            if (ps.executeUpdate() > 0 ){
+                stud = null;
+                System.out.println("From Remove:"+stud);
+            }
+            else {
+                System.out.println("From Remove (not removed):"+stud);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -121,8 +131,6 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        stud = null;
-        System.out.println("Remove:"+stud);
         return stud;
     }
 
@@ -135,10 +143,13 @@ public class StudDAO implements IStudDAO {
             ps.setString(1, stud.getName());
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-
-            stud.setId(resultSet.getInt("id"));
-            stud.setName(resultSet.getString("name"));
+            if (resultSet.next()){
+                stud.setId(resultSet.getInt("id"));
+                stud.setName(resultSet.getString("name"));
+                System.out.println("LookFor: "+stud);
+            } else {
+                System.out.println("LookFor (records not found): "+stud);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -150,7 +161,6 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("LookFor:"+stud);
         return stud;
     }
 
@@ -158,17 +168,19 @@ public class StudDAO implements IStudDAO {
     public Object update(Object obj) {
         Stud stud = (Stud) obj;
         PreparedStatement ps = null;
-        String sql =    "UPDATE [dbo].[stud] \n" +
-                "SET [name] = ? \n" +
-                "WHERE [id] = ?";
+        String sql =    "UPDATE stud " +
+                "SET name = ? " +
+                "WHERE id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString   (1, stud.getName());
             ps.setInt      (2, stud.getId());
-
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Update:"+stud);
+            }
+            else {
+                System.out.println("From Update (not updated):"+stud);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -180,7 +192,6 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-        System.out.println("Update:"+stud);
         return stud;
     }
 }

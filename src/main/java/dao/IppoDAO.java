@@ -28,6 +28,7 @@ public class IppoDAO implements IIppoDAO {
                 ((Ippo) ippo).setId(resultSet.getInt("id"));
                 ((Ippo) ippo).setName(resultSet.getString("name"));
                 ippodromes.add((Ippo) ippo);
+                System.out.println("From getStudes:"+ippo);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,7 +41,6 @@ public class IppoDAO implements IIppoDAO {
                 }
             }
         }
-        System.out.println("getStudes:"+ippo);
         return ippodromes;
     }
 
@@ -54,10 +54,14 @@ public class IppoDAO implements IIppoDAO {
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-            ippo = new Ippo();
-            ippo.setId(resultSet.getInt("id"));
-            ippo.setName(resultSet.getString("name"));
+            if (resultSet.next()){
+                ippo = new Ippo();
+                ippo.setId(resultSet.getInt("id"));
+                ippo.setName(resultSet.getString("name"));
+                System.out.println("From get: "+ippo);
+            } else {
+                System.out.println("From get (records not found): "+ippo);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -69,7 +73,7 @@ public class IppoDAO implements IIppoDAO {
                 }
             }
         }
-        System.out.println("get"+ippo);
+
         return ippo;
     }
 
@@ -81,9 +85,11 @@ public class IppoDAO implements IIppoDAO {
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, ippo.getName());
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-            /*resultSet.next();*/
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Save: "+ippo);
+            } else {
+                System.out.println("From Save(not saved): "+ippo);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -95,7 +101,6 @@ public class IppoDAO implements IIppoDAO {
                 }
             }
         }
-        System.out.println("Save:"+ippo);
         return ippo;
     }
 
@@ -107,8 +112,12 @@ public class IppoDAO implements IIppoDAO {
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, ippo.getId());
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
+            if (ps.executeUpdate() > 0 ){
+                ippo = null;
+                System.out.println("From Remove: "+ippo);
+            } else {
+                System.out.println("From Remove (not removed): "+ippo);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -120,8 +129,6 @@ public class IppoDAO implements IIppoDAO {
                 }
             }
         }
-        ippo = null;
-        System.out.println("Remove:"+ippo);
         return ippo;
     }
 
@@ -134,10 +141,13 @@ public class IppoDAO implements IIppoDAO {
             ps.setString(1, ippo.getName());
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-
-            ippo.setId(resultSet.getInt("id"));
-            ippo.setName(resultSet.getString("name"));
+            if (resultSet.next()){
+                ippo.setId(resultSet.getInt("id"));
+                ippo.setName(resultSet.getString("name"));
+                System.out.println("From LookFor: "+ippo);
+            }else {
+                System.out.println("From LookFor (not found): "+ippo);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -149,7 +159,6 @@ public class IppoDAO implements IIppoDAO {
                 }
             }
         }
-        System.out.println("LookFor:"+ippo);
         return ippo;
     }
 
@@ -157,17 +166,18 @@ public class IppoDAO implements IIppoDAO {
     public Object update(Object obj) {
         Ippo ippo = (Ippo) obj;
         PreparedStatement ps = null;
-        String sql =    "UPDATE [dbo].[ippo] \n" +
-                "SET [name] = ? \n" +
-                "WHERE [id] = ?";
+        String sql =    "UPDATE ippo " +
+                "SET    name = ? " +
+                "WHERE  id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString   (1, ippo.getName());
             ps.setInt      (2, ippo.getId());
-
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Update: "+ippo);
+            } else {
+                System.out.println("From Update (not updated): "+ippo);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -179,7 +189,6 @@ public class IppoDAO implements IIppoDAO {
                 }
             }
         }
-        System.out.println("Update:"+ippo);
         return ippo;
     }
 }

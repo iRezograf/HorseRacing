@@ -29,6 +29,7 @@ public class TypeBetDAO implements ITypeBetDAO {
                 ((TypeBet) typeBet).setTypeBet(resultSet.getString(2));
                 ((TypeBet) typeBet).setRate(resultSet.getDouble(3));
                 typeBets.add((TypeBet) typeBet);
+                System.out.println("getHorses:"+typeBet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,7 +42,6 @@ public class TypeBetDAO implements ITypeBetDAO {
                 }
             }
         }
-        System.out.println("getHorses:"+typeBets);
         return typeBets;
     }
 
@@ -55,11 +55,15 @@ public class TypeBetDAO implements ITypeBetDAO {
             ps.setInt(1, id);
             ps.executeQuery();
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-            typeBet = new TypeBet();
-            ((TypeBet) typeBet).setId(resultSet.getInt(1));
-            ((TypeBet) typeBet).setTypeBet(resultSet.getString(2));
-            ((TypeBet) typeBet).setRate(resultSet.getDouble(3));
+            if (resultSet.next()){
+                typeBet = new TypeBet();
+                ((TypeBet) typeBet).setId(resultSet.getInt(1));
+                ((TypeBet) typeBet).setTypeBet(resultSet.getString(2));
+                ((TypeBet) typeBet).setRate(resultSet.getDouble(3));
+                System.out.println("From get:"+typeBet);
+            }else {
+                System.out.println("From get (records not found):"+typeBet);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -71,7 +75,6 @@ public class TypeBetDAO implements ITypeBetDAO {
                 }
             }
         }
-        System.out.println("get:"+typeBet);
         return typeBet;
     }
 
@@ -83,15 +86,15 @@ public class TypeBetDAO implements ITypeBetDAO {
                 "VALUES (?, ?)";
         try {
             ps = con.prepareStatement(sql);
-            /*((TypeBet) typeBet).setId(resultSet.getInt(1));
-                ((TypeBet) typeBet).setTypeBet(resultSet.getString(2));
-                ((TypeBet) typeBet).setRate(resultSet.getDouble(3));*/
             ps.setString(1, typeBet.getTypeBet());
             ps.setDouble(2, typeBet.getRate());
 
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("Form Save:"+typeBet);
+            }
+            else {
+                System.out.println("Form Save (not saved):"+typeBet);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -103,7 +106,6 @@ public class TypeBetDAO implements ITypeBetDAO {
                 }
             }
         }
-        System.out.println("Save:"+typeBet);
         return typeBet;
     }
 
@@ -115,8 +117,13 @@ public class TypeBetDAO implements ITypeBetDAO {
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, typeBet.getId());
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
+            if (ps.executeUpdate() > 0 ){
+                typeBet = null;
+                System.out.println("Remove:"+typeBet);
+            }
+            else {
+                System.out.println("Remove (not removed):"+typeBet);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -128,8 +135,6 @@ public class TypeBetDAO implements ITypeBetDAO {
                 }
             }
         }
-        typeBet = null;
-        System.out.println("Remove:"+typeBet);
         return typeBet;
     }
 
@@ -144,12 +149,12 @@ public class TypeBetDAO implements ITypeBetDAO {
             ps.executeQuery();
 
             ResultSet resultSet = ps.getResultSet();
-            resultSet.next();
-
-            typeBet.setId(resultSet.getInt(1));
-            typeBet.setTypeBet(resultSet.getString(2));
-            typeBet.setRate(resultSet.getDouble(3));
-
+            if (resultSet.next()) {
+                typeBet.setId(resultSet.getInt(1));
+                typeBet.setTypeBet(resultSet.getString(2));
+                typeBet.setRate(resultSet.getDouble(3));
+                System.out.println("From LookFor:"+typeBet);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -161,7 +166,6 @@ public class TypeBetDAO implements ITypeBetDAO {
                 }
             }
         }
-        System.out.println("LookFor:"+typeBet);
         return typeBet;
     }
 
@@ -179,9 +183,12 @@ public class TypeBetDAO implements ITypeBetDAO {
             ps.setDouble   (2, typeBet.getRate());
             ps.setInt      (3, typeBet.getId());
 
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getResultSet();
-
+            if (ps.executeUpdate() > 0 ){
+                System.out.println("From Update:"+typeBet);
+            }
+            else {
+                System.out.println("From Update (not updated):"+typeBet);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -193,7 +200,6 @@ public class TypeBetDAO implements ITypeBetDAO {
                 }
             }
         }
-        System.out.println("Update:"+typeBet);
         return typeBet;
     }
 }

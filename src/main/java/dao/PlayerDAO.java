@@ -24,9 +24,10 @@ public class PlayerDAO implements IPlayerDAO {
             ps.setString(2, player.getLastName());
             ps.setString(3, player.getLogin());
             ps.setString(4, player.getPassword());
-            int rows = ps.executeUpdate();
-            if (rows > 0 ){
+            if (ps.executeUpdate() > 0 ){
                 System.out.println("From Save: "+ player);
+            } else{
+                System.out.println("From Save (not saved): "+ player);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,12 +53,12 @@ public class PlayerDAO implements IPlayerDAO {
             ps = con.prepareStatement(sql);
             ps.setInt(1, player.getId());
 
-            int rows = ps.executeUpdate();
-            if (rows > 0 ){
+            if (ps.executeUpdate() > 0 ){
                 playerRet = null;
                 System.out.println("From Remove: "+ player);
+            } else {
+                System.out.println("From Remove (nor removed): "+ player);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -89,11 +90,11 @@ public class PlayerDAO implements IPlayerDAO {
             ps.setString   (4, player.getPassword());
             ps.setInt      (5, player.getId());
 
-            int rows = ps.executeUpdate();
-            if (rows > 0 ){
+            if (ps.executeUpdate() > 0 ){
                 System.out.println("From Update" + player);
+            } else {
+                System.out.println("From Update (not updated)" + player);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -176,7 +177,6 @@ public class PlayerDAO implements IPlayerDAO {
                 player = null;
                 System.out.println("From get (not found):"+player);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -265,7 +265,6 @@ public class PlayerDAO implements IPlayerDAO {
                 Solution.player = null;
                 System.out.println("From LookFor(player not found):"+Solution.player);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

@@ -10,8 +10,6 @@ import entity.RacingMap;
 import static racing.Solution.*;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class PlayerActivity {
@@ -123,6 +121,55 @@ public class PlayerActivity {
     public static PlayerBetDAO setBet(Player player){
         /** player makes bet*/
 
+        login();
+
+        Scanner in = new Scanner(System.in);
+        /** Look at the map of ride*/
+        RacingMapDAO racingMapDAO = new RacingMapDAO();
+        RacingMap racingMap = new RacingMap();
+        racingMap.setId_ippodrom(curIppo);
+        racingMap.setDate_ride(curDate);
+        racingMapDAO.getRacingMaps(racingMap);
+
+        PlayerBetDAO playerBetDAO = new PlayerBetDAO();
+        PlayerBet playerBet = new PlayerBet();
+
+        /** инициализируем значения перед поиском его ставок*/
+        playerBet.setId(Solution.player.getId());
+        playerBet.setDateRide(Date.valueOf("2021-01-08"));
+        /** Let's look at bets made by player before*/
+        playerBetDAO.getPlayerBets(playerBet);
+
+        //String misc = in.nextLine();
+        System.out.println("            Input ID of ippodrome [N]: ");
+        playerBet.setIdIppodrom(Integer.valueOf(in.nextLine()));
+
+        System.out.println("            Input Date of ride [2021-01-08]: ");
+        playerBet.setDateRide(Date.valueOf(in.nextLine()));
+
+        System.out.println("            Input number of ride [N]: ");
+        playerBet.setNumRide(in.nextInt());
+
+        System.out.println("            Input ID of horse [N]: ");
+        playerBet.setIdHorse(in.nextInt());
+
+        System.out.println("            Input ID of bet [N]: ");
+        playerBet.setIdTypeBet(in.nextInt());
+
+        /** Let's look at bet made by player before*/
+        if (playerBetDAO.getPlayerBet(playerBet) == null){
+            /** Change values of Bet and insert new if not found */
+            //playerBet.setIdTypeBet(3);
+            System.out.println("            Input your BET (roubles)[N]: ");
+            playerBet.setBet(in.nextInt());
+            playerBetDAO.save(playerBet);
+        }
+        return playerBetDAO;
+    }
+
+    public static PlayerBetDAO ChangeBet(Player player){
+        /** player makes bet*/
+
         /** Look at the map of ride*/
         RacingMapDAO racingMapDAO = new RacingMapDAO();
         RacingMap racingMap = new RacingMap();
@@ -146,12 +193,7 @@ public class PlayerActivity {
         playerBet.setIdTypeBet(5);
 
         /** Let's look at bet made by player before*/
-        if (playerBetDAO.getPlayerBet(playerBet) == null){
-            /** Change values of Bet and insert new if not found */
-            playerBet.setIdTypeBet(3);
-            playerBet.setBet(900);
-            playerBetDAO.save(playerBet);
-        } else{
+        if (playerBetDAO.getPlayerBet(playerBet) != null){
             /** Change values of Bet and update if found */
             playerBet.setIdTypeBet(5);
             playerBet.setBet(900);

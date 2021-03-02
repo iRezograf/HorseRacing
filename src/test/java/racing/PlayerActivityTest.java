@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.Assert.*;
-import static racing.Solution.player;
+import static racing.Solution.*;
 
 public class PlayerActivityTest {
     Coach coach;
@@ -45,7 +45,7 @@ public class PlayerActivityTest {
     StudDAO StudDAO;
     TypeBetDAO typeBetDAO;
 
-    @BeforeGroups(groups = {"playerActivity"})
+    @BeforeMethod(groups = {"playerActivity"})
     public void setUp() throws SQLException {
         String url = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacingTest";
         String user = "RRA";
@@ -245,9 +245,9 @@ public class PlayerActivityTest {
 
     @Test(groups = {"playerActivity"}, priority = 207)
     public void testChangeMyInfo() {
-        PlayerDAO playerDAO = new PlayerDAO();
-        Player playerIn = new Player();
-        Solution.player = playerDAO.lookFor("testLogin", "TestPassword");
+        //PlayerDAO playerDAO = new PlayerDAO();
+        //Player playerIn = new Player();
+        //Solution.player = playerDAO.lookFor("testLogin", "TestPassword");
         playerIn.setId(Solution.player.getId());
         playerIn.setLogin("testLogin");
         playerIn.setPassword("TestPassword");
@@ -260,7 +260,60 @@ public class PlayerActivityTest {
 
     @Test(groups = {"playerActivity"}, priority = 209)
     public void testSetBet() {
+        //playerBet = new PlayerBet();
+        //playerDAO = new PlayerDAO();
+        //player = playerDAO.lookFor("testLogin", "TestPassword");
+
+        playerBet.setId(Solution.player.getId());
+        playerBet.setIdIppodrom(racingMap.getId_ippodrom());
+        playerBet.setDateRide(racingMap.getDate_ride()); //Date.valueOf("2021-01-08"));
+        playerBet.setNumRide(racingMap.getNum_ride());
+        playerBet.setIdHorse(racingMap.getId_horse());
+        playerBet.setIdTypeBet(typeBet.getId());
+
+        /** Let's look at bet made by player before*/
+        if (playerBetDAO.getPlayerBet(playerBet) == null){
+            /** Change values of Bet and insert new if not found */
+            playerBet.setIdTypeBet(typeBet.getId());
+            playerBet.setBet(900);
+            playerBetDAO.save(playerBet);
+            playerBet = playerBetDAO.getPlayerBet(playerBet);
+        } else {
+            /** Change values of Bet and update if found */
+            playerBet.setIdTypeBet(typeBet.getId());
+            playerBet.setBet(1000);
+            playerBetDAO.update(playerBet);
+            playerBet = playerBetDAO.getPlayerBet(playerBet);
+        }
+        Assert.assertEquals(playerBet.getRate(), typeBet.getRate());
     }
+
+    @Test(groups = {"playerActivity"}, priority = 210)
+    public void testChangeBet() {
+        player = playerDAO.lookFor("testLogin", "TestPassword");
+        playerBet.setId(Solution.player.getId());
+        playerBet.setIdIppodrom(racingMap.getId_ippodrom());
+        playerBet.setDateRide(racingMap.getDate_ride()); //Date.valueOf("2021-01-08"));
+        playerBet.setNumRide(racingMap.getNum_ride());
+        playerBet.setIdHorse(racingMap.getId_horse());
+        playerBet.setIdTypeBet(typeBet.getId());
+
+        /** Let's look at bet made by player before*/
+        if (playerBetDAO.getPlayerBet(playerBet) == null){
+            /** Change values of Bet and insert new if not found */
+            playerBet.setIdTypeBet(typeBet.getId());
+            playerBet.setBet(900);
+            playerBetDAO.save(playerBet);
+            playerBet = playerBetDAO.getPlayerBet(playerBet);
+
+            playerBet.setIdTypeBet(typeBet.getId());
+            playerBet.setBet(1000);
+            playerBetDAO.update(playerBet);
+            playerBet = playerBetDAO.getPlayerBet(playerBet);
+        }
+        Assert.assertEquals(playerBet.getBet(), 1000);
+    }
+
 
     @Test(groups = {"playerActivity"}, priority = 211)
     public void testShowRacingMap() {
@@ -268,10 +321,6 @@ public class PlayerActivityTest {
 
     @Test(groups = {"playerActivity"}, priority = 213)
     public void testShowBetsOfPlayer() {
-    }
-
-    @Test(groups = {"playerActivity"}, priority = 215)
-    public void testRemoveBet() {
     }
 
     @AfterMethod(groups = {"playerActivity"})
@@ -301,5 +350,4 @@ public class PlayerActivityTest {
         StudDAO = null;
         typeBetDAO = null;
     }
-
 }
