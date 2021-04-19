@@ -15,20 +15,20 @@ import static racing.Solution.con;
 public class TypeBetDAO implements ITypeBetDAO {
     
     @Override
-    public List<Object> GetTypeBets() {
-        TypeBet typeBet = null;
+    public List<TypeBet> GetTypeBets() {
+        TypeBet typeBet;
         Statement ps = null;
         String sql = "SELECT * FROM type_bet ";
-        List<Object> typeBets = new ArrayList<>();
+        List<TypeBet> typeBets = new ArrayList<>();
         try {
             ps = con.createStatement();
             ResultSet resultSet = ps.executeQuery(sql);
             while (resultSet.next()){
                 typeBet = new TypeBet();
-                ((TypeBet) typeBet).setId(resultSet.getInt(1));
-                ((TypeBet) typeBet).setTypeBet(resultSet.getString(2));
-                ((TypeBet) typeBet).setRate(resultSet.getDouble(3));
-                typeBets.add((TypeBet) typeBet);
+                typeBet.setId(resultSet.getInt(1));
+                typeBet.setTypeBet(resultSet.getString(2));
+                typeBet.setRate(resultSet.getDouble(3));
+                typeBets.add(typeBet);
                 System.out.println("getHorses:"+typeBet);
             }
         } catch (SQLException e) {
@@ -79,8 +79,7 @@ public class TypeBetDAO implements ITypeBetDAO {
     }
 
     @Override
-    public Object save(Object obj) {
-        TypeBet typeBet = (TypeBet) obj;
+    public TypeBet save(TypeBet typeBet) {
         PreparedStatement ps = null;
         String sql = "INSERT INTO type_bet (type_bet, rate) " +
                 "VALUES (?, ?)";
@@ -110,8 +109,7 @@ public class TypeBetDAO implements ITypeBetDAO {
     }
 
     @Override
-    public Object remove(Object obj){
-        TypeBet typeBet = (TypeBet) obj;
+    public TypeBet remove(TypeBet typeBet){
         PreparedStatement ps = null;
         String sql = "DELETE FROM type_bet WHERE id = ?";
         try {
@@ -170,8 +168,7 @@ public class TypeBetDAO implements ITypeBetDAO {
     }
 
     @Override
-    public Object update(Object obj) {
-        TypeBet typeBet = (TypeBet) obj;
+    public TypeBet update(TypeBet typeBet) {
         PreparedStatement ps = null;
         String sql =    "UPDATE type_bet \n" +
                 "SET type_bet  = ?, \n" +

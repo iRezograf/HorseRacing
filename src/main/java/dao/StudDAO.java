@@ -15,19 +15,19 @@ import static racing.Solution.con;
 public class StudDAO implements IStudDAO {
 
     @Override
-    public List<Object> getStudes() {
-        Stud stud = null;
+    public List<Stud> getStudes() {
+        Stud stud;
         Statement ps = null;
         String sql = "SELECT id,name FROM stud ";
-        List<Object> studs = new ArrayList<>();
+        List<Stud> studs = new ArrayList<>();
         try {
             ps = con.createStatement();
             ResultSet resultSet = ps.executeQuery(sql);
             while (resultSet.next()){
                 stud = new Stud();
-                ((Stud) stud).setId(resultSet.getInt("id"));
-                ((Stud) stud).setName(resultSet.getString("name"));
-                studs.add((Stud) stud);
+                stud.setId(resultSet.getInt("id"));
+                stud.setName(resultSet.getString("name"));
+                studs.add(stud);
                 System.out.println("getStudes:"+stud);
             }
         } catch (SQLException e) {
@@ -41,7 +41,6 @@ public class StudDAO implements IStudDAO {
                 }
             }
         }
-
         return studs;
     }
 
@@ -78,8 +77,7 @@ public class StudDAO implements IStudDAO {
     }
 
     @Override
-    public Object save(Object obj) {
-        Stud stud = (Stud) obj;
+    public Stud save(Stud stud) {
         PreparedStatement ps = null;
         String sql = "INSERT INTO stud (name) VALUES (?)";
         try {
@@ -106,8 +104,7 @@ public class StudDAO implements IStudDAO {
     }
 
     @Override
-    public Object remove(Object obj){
-        Stud stud = (Stud) obj;
+    public Stud remove(Stud stud){
         PreparedStatement ps = null;
         String sql = "DELETE FROM stud WHERE id = ?";
         try {
@@ -165,8 +162,7 @@ public class StudDAO implements IStudDAO {
     }
 
     @Override
-    public Object update(Object obj) {
-        Stud stud = (Stud) obj;
+    public Stud update(Stud stud) {
         PreparedStatement ps = null;
         String sql =    "UPDATE stud " +
                 "SET name = ? " +

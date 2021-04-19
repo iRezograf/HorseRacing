@@ -15,11 +15,11 @@ import static racing.Solution.con;
 public class CoachDAO implements ICoachDAO {
 
     @Override
-    public List<Object> getCoaches() {
-        Coach coach = null;
+    public List<Coach> getCoaches() {
+        Coach coach;
         Statement ps = null;
         String sql = "SELECT id,name FROM coach ";
-        List<Object> coaches = new ArrayList<>();
+        List<Coach> coaches = new ArrayList<>();
         try {
             ps = con.createStatement();
             ResultSet resultSet = ps.executeQuery(sql);
@@ -60,7 +60,7 @@ public class CoachDAO implements ICoachDAO {
                 coach.setName(resultSet.getString("name"));
                 System.out.println("From get: "+coach);
             } else {
-                System.out.println("From get (not found): "+coach);
+                System.out.println("From get (not found): "+ coach);
             }
 
         } catch (SQLException e) {
@@ -78,8 +78,7 @@ public class CoachDAO implements ICoachDAO {
     }
 
     @Override
-    public Object save(Object obj) {
-        Coach coach = (Coach) obj;
+    public Coach save(Coach coach) {
         PreparedStatement ps = null;
         String sql = "INSERT INTO coach (name) VALUES (?)";
         try {
@@ -105,8 +104,7 @@ public class CoachDAO implements ICoachDAO {
     }
 
     @Override
-    public Object remove(Object obj){
-        Coach coach = (Coach) obj;
+    public Coach remove(Coach coach){
         PreparedStatement ps = null;
         String sql = "DELETE TOP (10) FROM coach WHERE id = ?";
         try {
@@ -133,8 +131,7 @@ public class CoachDAO implements ICoachDAO {
     }
 
     @Override
-    public Object update(Object obj) {
-        Coach coach = (Coach) obj;
+    public Coach update(Coach coach) {
         PreparedStatement ps = null;
         String sql =    "UPDATE [dbo].[coach] \n" +
                 "SET [name] = ? \n" +
@@ -159,7 +156,6 @@ public class CoachDAO implements ICoachDAO {
                 }
             }
         }
-
         return coach;
     }
 
@@ -191,5 +187,4 @@ public class CoachDAO implements ICoachDAO {
         }
         return coach;
     }
-    
 }

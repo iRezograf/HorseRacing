@@ -15,19 +15,19 @@ import static racing.Solution.con;
 public class IppoDAO implements IIppoDAO {
 
     @Override
-    public List<Object> getIppoes() {
-        Ippo ippo = null;
+    public List<Ippo> getIppoes() {
+        Ippo ippo;
         Statement ps = null;
         String sql = "SELECT id,name FROM ippo ";
-        List<Object> ippodromes = new ArrayList<>();
+        List<Ippo> ippodromes = new ArrayList<>();
         try {
             ps = con.createStatement();
             ResultSet resultSet = ps.executeQuery(sql);
             while (resultSet.next()){
                 ippo = new Ippo();
-                ((Ippo) ippo).setId(resultSet.getInt("id"));
-                ((Ippo) ippo).setName(resultSet.getString("name"));
-                ippodromes.add((Ippo) ippo);
+                ippo.setId(resultSet.getInt("id"));
+                ippo.setName(resultSet.getString("name"));
+                ippodromes.add(ippo);
                 System.out.println("From getStudes:"+ippo);
             }
         } catch (SQLException e) {
@@ -73,13 +73,11 @@ public class IppoDAO implements IIppoDAO {
                 }
             }
         }
-
         return ippo;
     }
 
     @Override
-    public Object save(Object obj) {
-        Ippo ippo = (Ippo) obj;
+    public Ippo save(Ippo ippo) {
         PreparedStatement ps = null;
         String sql = "INSERT INTO ippo (name) VALUES (?)";
         try {
@@ -105,8 +103,7 @@ public class IppoDAO implements IIppoDAO {
     }
 
     @Override
-    public Object remove(Object obj){
-        Ippo ippo = (Ippo) obj;
+    public Ippo remove(Ippo ippo){
         PreparedStatement ps = null;
         String sql = "DELETE FROM ippo WHERE id = ?";
         try {
@@ -163,8 +160,7 @@ public class IppoDAO implements IIppoDAO {
     }
 
     @Override
-    public Object update(Object obj) {
-        Ippo ippo = (Ippo) obj;
+    public Ippo update(Ippo ippo) {
         PreparedStatement ps = null;
         String sql =    "UPDATE ippo " +
                 "SET    name = ? " +

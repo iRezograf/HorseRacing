@@ -4,14 +4,15 @@ import entity.Player;
 import java.sql.*;
 
 public class Solution {
-    public final static String URL = "jdbc:sqlserver://RRA-W10\\SQLEXPRESS;database=HorseRacing";
+    public final static String URL = "jdbc:sqlserver://RRA-W10-KING\\SQLEXPRESS;database=HorseRacing";
     public final static String USER = "RRA";
-    public final static String PASSWORD = "rra";
+    public final static String PASSWORD = "453210Rrqwerty";
     public static Connection con;
     static {
         try {
             con = DriverManager.getConnection(URL, USER,PASSWORD);
         } catch (SQLException throwables) {
+            System.out.println("Не удалось законнектиться");
             throwables.printStackTrace();
         }
     }
@@ -28,12 +29,11 @@ public class Solution {
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println(e);;
+            System.out.println(e);
     }
         finally {
                 if (con != null) con.close();
         }
     }
-/** Протестирую, что commit сразу свадивается в GitHub*/
 }
 
