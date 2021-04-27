@@ -12,7 +12,7 @@ public class Solution {
         try {
             con = DriverManager.getConnection(URL, USER,PASSWORD);
         } catch (SQLException throwables) {
-            System.out.println("Не удалось законнектиться.");
+            System.out.println("Не удалось законнектиться");
             throwables.printStackTrace();
         }
     }
